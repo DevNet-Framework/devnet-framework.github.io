@@ -161,8 +161,8 @@
                   
                   use Artister\System\Dependency\IServiceCollection;
                   use Artister\Web\Dispatcher\IApplicationBuilder;
-                  use Artister\Web\Extensions\DependencyExtensions;
-                  use Artister\Web\Extensions\HostingExtensions;
+                  use Artister\Web\Extensions\ServiceCollectionExtensions;
+                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
                   use Application\Middlewares\MyMiddleware;
 
                   class Startup
@@ -189,8 +189,8 @@
                   use Artister\System\Process\Task;
                   use Artister\System\Dependency\IServiceCollection;
                   use Artister\web\Dispatcher\IApplicationBuilder;
-                  use Artister\web\Extensions\DependencyExtensions;
-                  use Artister\web\Extensions\HostingExtensions;
+                  use Artister\Web\Extensions\ServiceCollectionExtensions;
+                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
                   use Artister\Web\Http\HttpContext;
 
                   class Startup
@@ -229,7 +229,7 @@
                   </thead>
                   <tbody>
                   <tr>
-                     <td>UseDeveloperExceptionHandler</td>
+                     <td>UseExceptionHandler</td>
                      <td>add ExceptionHandler middleware to the pipeline</td>
                   </tr>
                   <tr>

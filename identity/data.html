@@ -120,7 +120,7 @@
                   use Artister\Web\Mvc\Controller;
                   use Artister\Web\Mvc\IActionResult;
                   use Artister\Web\Identity\UserManager;
-                  use Artister\Web\Identity\User;
+                  use Artister\Web\Identity\UserIdentity;
 
                   class AccountController extends Controller
                   {
@@ -136,7 +136,7 @@
                <pre><code class="language-php">
                   public function create() : IActionResult
                   {
-                     $user = new User();
+                     $user = new UserIdentity();
                      $user->Username = "Username";
                      $user->Password = "Password";
 
