@@ -144,16 +144,18 @@
 
                   namespace Application\Models;
 
-                  use Artister\System\Database\DbConnection;
                   use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntityModelBuilder;
                   use Artister\Entity\EntitySet;
+                  use Artister\Entity\EntityOptions;
+                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
-                     public function __construct(DbConnection $dbConnection)
+                     private EntitySet $Authors;
+
+                     public function __construct(EntityOptions $options)
                      {
-                        parent::__construct($dbConnection);
+                        parent::__construct($options);
                      }
 
                      public function __get(string $name) : void
@@ -164,11 +166,7 @@
                </code></pre>
                <h3>Registing EntityContext</h3>
                <p>
-                  To use Entity ORM in our application we need to register and configure <code>EntityContext</code> as a service in configureServices method of Startup class using the Extension method <code>addEntityContext</code> as shown in the code below.
-                  <ul>
-                     <li><code>useConnection</code> method is used to connect to the database using a connection string</li>
-                     <li><code>useEntityContext</code> method is optionally used to define a derived EntityContext class</li>
-                  </ul>
+                  To use Entity ORM in our application we need to register and configure <code>EntityContext</code> as a service in configureServices method of Startup class using the Extension method <code>addEntityContext</code> as shown in following example code:
                </p>
                <pre><code class="language-php">
                   &lt;?php
@@ -185,18 +183,55 @@
                   {
                      public function configureServices(IServiceCollection $services)
                      {
-                        $services->addEntityContext(function($options){
-                           $options->useConnection("mysql://user:password@127.0.0.1:3306/database");
+                        $services->addEntityContext(function($options)
+                        {
                            $options->useContext(EntityManager::class);
+                           $options->useMysql("//username:password@127.0.0.1:3306/database");
                         });
                      }
                       ...
                   }
                </code></pre>
+               <h5>Options</h5>
+               <ul>
+                  <li>
+                     <code>useContext</code> optionally used to define a derived EntityContext class, that wrap entity repositories.
+                  </li>
+                  <li>
+                     <code>useMysql</code> used to register one of pre-built data providers that access and manupilate Mysql database, and you can chose other data providers for other database platforms .
+                  </li>
+               </ul>
+               <h5>Pre-Built Data Providers</h5>
+               <table class="table">
+                  <thead>
+                  <tr>
+                     <th scope="col">Provider</th>
+                     <th scope="col">Method</th>
+                     <th scope="col">Connection String</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                     <td>Mysql</td>
+                     <td><code>useMysql(string $connection)</code></td>
+                     <td><samp>"//username:password@127.0.0.1:3306/database"</samp></td>
+                  </tr>
+                  <tr>
+                     <td>Postgres</td>
+                     <td><code>usePgsql(string $connection)</code></td>
+                     <td><samp>"//username:password@127.0.0.1:5432/database"</samp></td>
+                  </tr>
+                  <tr>
+                     <td>Sqlite</td>
+                     <td><code>useSqlite(string $connection)</code></td>
+                     <td><samp>"//memory" or "path/to/database"</samp></td>
+                  </tr>
+                  </tbody>
+               </table>
                <blockquote>
                   <p>
-                     <b>Note:</b> For sqlite database use <code>$options->useConnection("sqlite:/path/to/database.db");</code><br>
-                     You can also connect to other types of database by defining the database driver name as schema name of the Url.
+                     <b>Note:</b> The connection string used by the data providers follows the following url format: <br>
+                     <code>"//[username]:[password]@[host]:[port]/[database]?[option=value]"</code>
                   </p>
                </blockquote>
                <footer>

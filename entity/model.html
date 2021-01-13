@@ -120,7 +120,7 @@
                   Entity class can be created manually inside "Models" folder or by using DevNet SDK command line:
                </p>
                <pre class="terminal rounded"><code>
-./devnet new entity Student
+devnet new entity Student
                </code></pre>
                <pre><code class="language-php">
                   &lt;?php
@@ -148,7 +148,7 @@
                </code></pre>
                <blockquote>
                   <p>
-                     <b>Note:</b> DevNet SDK will create an empty entity class with one property <code>Id</code>, you have to define the other properties manualy.
+                     <b>Note:</b> DevNet SDK will create an empty entity class with one property <code>Id</code>, and you have to define the other properties manualy.
                   </p>
                </blockquote>
                <h5>Inisialiation of netity set</h5>
@@ -160,18 +160,19 @@
 
                   namespace Application\Models;
 
-                  use Artister\System\Database\DbConnection;
                   use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntityModelBuilder;
                   use Artister\Entity\EntitySet;
+                  use Artister\Entity\EntityOptions;
+                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
                      private EntitySet $Authors;
 
-                     public function __construct(DbConnection $dbConnection)
+                     public function __construct(EntityOptions $options)
                      {
-                        parent::__construct($dbConnection);
+                        parent::__construct($options);
+
                         $this->Authors = $this->set(Author::class);
                      }
 
@@ -195,16 +196,18 @@
                   namespace Application\Models;
 
                   use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntityModelBuilder;
+                  use Artister\Entity\EntityOptions;
                   use Artister\Entity\EntitySet;
+                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
                      private EntitySet $Authors;
 
-                     public function __construct()
+                     public function __construct(EntityOptions $options)
                      {
-                        $this->Authors = $this->Set(Author::class);
+                        parent::__construct($options);
+                        $this->Authors = $this->set(Author::class);
                      }
 
                      public function onModelCreate(EntityModelBuilder $builder)

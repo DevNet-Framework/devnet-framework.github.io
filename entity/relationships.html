@@ -189,17 +189,20 @@
                   namespace Application\Models;
 
                   use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntityModelBuilder;
                   use Artister\Entity\EntitySet;
+                  use Artister\Entity\EntityOptions;
+                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
                      private EntitySet $Groups;
                      private EntitySet $Students;
 
-                     public function __construct()
+                     public function __construct(EntityOptions $options)
                      {
-                        $this->Groups = $this->Set(Group::class);
+                        parent::__construct($options);
+
+                        $this->Groups   = $this->Set(Group::class);
                         $this->Students = $this->Set(Student::class);
                      }
 
@@ -269,17 +272,20 @@
                   namespace Application\Models;
 
                   use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntityModelBuilder;
                   use Artister\Entity\EntitySet;
+                  use Artister\Entity\EntityOptions;
+                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
                      private EntitySet $Posts;
                      private EntitySet $Pictures;
 
-                     public function __construct()
+                     public function __construct(EntityOptions $options)
                      {
-                        $this->Posts = $this->Set(Post::class);
+                        parent::__construct($options);
+
+                        $this->Posts    = $this->Set(Post::class);
                         $this->Pictures = $this->Set(Picture::class);
                      }
                      
@@ -371,18 +377,21 @@
                   namespace Application\Models;
 
                   use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntityModelBuilder;
                   use Artister\Entity\EntitySet;
+                  use Artister\Entity\EntityOptions;
+                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
                      private EntitySet $Students;
                      private EntitySet $Courses;
 
-                     public function __construct()
+                     public function __construct(EntityOptions $options)
                      {
+                        parent::__construct($options);
+
                         $this->Students = $this->Set(Student::class);
-                        $this->Courses = $this->Set(Course::class);
+                        $this->Courses  = $this->Set(Course::class);
                      }
 
                      public function onModelCreate(EntityModelBuilder $builder)
