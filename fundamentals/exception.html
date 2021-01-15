@@ -112,6 +112,9 @@
             <article class="flex-grow-1" style="width: 400px;">
                <h1>Error Handling</h1>
                <hr>
+               <p>
+                  Exception Handler is enabled through the <code>configure</code> method by calling the extension method <code>useExceptionHandler</code> of the Appliction builder, which adds the pre-built <code>ExceptionHandlerMiddleware</code> to the request pipeline, and must be in the top order of all other middlewares as shown in code below:
+               </p>
                <pre><code class="language-php">
                   &lt;?php
 
@@ -135,6 +138,7 @@
                      }
                   }
                </code></pre>
+               <h3>Custom Error Handling</h3>
                <pre><code class="language-php">
                   &lt;?php
 
