@@ -54,25 +54,25 @@
                         <li><a class="nav-link text-dark" href="#">Configuration</a></li>
                      </ul>
                   </div>
-                  <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Fundamentals</a>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
+                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Fundamentals</a>
+                  <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark" href="../fundamentals/middleware.html">Middleware</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/routing.html">Routing</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/dependency.html">Dependency injection</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/exception.html">Error Handling</a></li>
+                        <li><a class="nav-link text-dark" href="middleware.html">Middleware</a></li>
+                        <li><a class="nav-link text-dark" href="routing.html">Routing</a></li>
+                        <li><a class="nav-link text-dark" href="dependency.html">Dependency injection</a></li>
+                        <li><a class="nav-link text-dark fw-bold" href="exception.html">Error Handling</a></li>
                         <li><a class="nav-link text-dark" href="#">Http message</a></li>
                         <li><a class="nav-link text-dark" href="#">Security</a></li>
                      </ul>
                   </div>
-                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><span class="arrow"></span>MVC</a>
-                  <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-bs-parent="#accordion">
+                  <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><span class="arrow"></span>MVC</a>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark fw-bold" href="overview.html">Overview</a></li>
-                        <li><a class="nav-link text-dark" href="controller.html">Controller</a></li>
-                        <li><a class="nav-link text-dark" href="view.html">View</a></li>
-                        <li><a class="nav-link text-dark" href="layout.html">Layout</a></li>
-                        <li><a class="nav-link text-dark" href="filters.html">Filters</a></li>
+                        <li><a class="nav-link text-dark" href="../mvc/overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="../mvc/controller.html">Controller</a></li>
+                        <li><a class="nav-link text-dark" href="../mvc/view.html">View</a></li>
+                        <li><a class="nav-link text-dark" href="../mvc/layout.html">Layout</a></li>
+                        <li><a class="nav-link text-dark" href="../mvc/filters.html">Filters</a></li>
                      </ul>
                   </div>
                   <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><span class="arrow"></span>Entity ORM</a>
@@ -110,92 +110,89 @@
                </nav>
             </aside>
             <article class="flex-grow-1" style="width: 400px;">
-               <h1>Overview</h1>
+               <h1>Error Handling</h1>
                <hr>
-               <p>
-                  The MVC (Model View Controller) is an architectural pattern helps to achieve separation of concerns, it make appliaction more testable and easier to update than traditional monolithic apps, it separates the application into three main components: Model, View, and Controller.
-               </p>
-               <p>
-                  <b>Model:</b> is a classe that represent the data of the app. The model classes use validation logic to enforce business rules for that data. Typically, model objects retrieve and store model state in a database.
-               </p>
-               <p>
-                  <b>View:</b> is the component that displays the appliaction's user interface (UI). Generally, this UI displays the model data.
-               </p>
-               <p>
-                  <b>Controller:</b> is a class used to define and group a set of methods called actions, that handles incoming requests which are mapped to actions through routing, and retrieve model data and call view template that return a response.
-               </p>
-               <img src="../images/mvc.svg" alt="Web app home page" width="80%" height="auto">
-               <br><br>
-               <p>
-                  User requests are routed to a Controller which is responsible for working with the Model to perform user actions and/or retrieve results of queries. The Controller chooses the View to display to the user, and provides it with any Model data it requires.
-               </p>
-               <h3>MVC Registraction</h3>
-               <p>
-                  Befor using MVC components, make sure the service MVC is registered inside the <code>configureServices</code> method of <code>Startup</code> class, by calling the extension method <code>addMvc()</code> of the instance of the type <code>IServiceCollection</code>.
-               </p>
                <pre><code class="language-php">
                   &lt;?php
-                  
+
                   namespace Application;
                   
+                  use Artister\System\Process\Task;
                   use Artister\System\Dependency\IServiceCollection;
                   use Artister\Web\Dispatcher\IApplicationBuilder;
-                  use Artister\Web\Extensions\DependencyExtensions;
-                  use Artister\Web\Extensions\HostingExtensions;
-                  
+                  use Artister\Web\Extensions\ServiceCollectionExtensions;
+                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
+
                   class Startup
                   {
-                     public function configureServices(IServiceCollection $services)
-                     {
-                        $services->addMvc();
-                     }
-                      ...
-                  }
-               </code></pre>
-               <h3>Conventional Routing</h3>
-               <p>
-                  Conventional Routing is the default routing of MVC application, onley one generic route template : <code>{controller=Home}/{action=Index}/{id?}</code> which can handle all url requests, by parsing it into 3 segments:<br>
-                  <ol>
-                     <li><b>Controller name:</b> default name is "home"</li>
-                     <li><b>Action name:</b> default name is "index"</li>
-                     <li><b>Id parameter:</b> is optionnal</li>
-                  </ol>
-               </p>
-               <p>
-                  In order to use the Conventional Routing, you have to make sure that the Middlewars <code>RouterMiddlewar</code> and <code>EndpointMiddlewar</code> are added to the pipeline in the method <code>configure(IApplicationBuilder $app)</code> of the <code>Startup</code> class, with the help of the Extension methods <code>addRouter()</code> and <code>addEndpoint(RouteCollection $routes)</code>.
-               </p>
-               <pre><code class="language-php">
-                  class Startup
-                  {
-                     ...                     
+                     ...
                      public function configure(IApplicationBuilder $app)
                      {
-                        $app->useRouter();
+                        $app->useExceptionHandler();
 
-                        // Middlewars here
-                        
-                        $app->useEndpoint(function($routes)
-                        {
-                              $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                        });
+                        // middlewars here
+
                      }
                   }
                </code></pre>
-               <blockquote>
-                  <p>
-                     <b>Note:</b> if you add a Literal route with Conventional route make sure to put the conventional route at the buttom of the routes list, because it has a greedy pattern and will catch all the urls.
-                  </p>
-               </blockquote>
+               <pre><code class="language-php">
+                  &lt;?php
+
+                  namespace Application;
+                  
+                  use Artister\System\Process\Task;
+                  use Artister\System\Dependency\IServiceCollection;
+                  use Artister\Web\Dispatcher\IApplicationBuilder;
+                  use Artister\Web\Extensions\ServiceCollectionExtensions;
+                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
+                  use Artister\Web\Http\HttpContext;
+
+                  class Startup
+                  {
+                     ...
+                     public function configure(IApplicationBuilder $app)
+                     {
+                        $app->useExceptionHandler("/error");
+
+                        $app->useRouter();
+
+                        // middlewars here
+
+                        $app->useEndpoint(function($routes)
+                        {
+                           $routes->mapGet("/error", function(HttpContext $context) : Task
+                           {
+                              $error = $context->Error;
+
+                              switch ($error->getCode())
+                              {
+                                 case 404:
+                                    $context->Response->Body->write("&lt;h1>404 : Page not found&lt;/h1>");
+                                    break;
+                                 case 403:
+                                    $context->Response->Body->write("&lt;h1>403 : Forbidden Access&lt;/h1>");
+                                    break;
+                                 default:
+                                    $context->Response->Body->write("&lt;h1>500 : Unexpected Error&lt;/h1>");
+                                    break;
+                              }
+
+                              return Task::completedTask();
+                           });
+                        }
+                     }
+                  }
+               </code></pre>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="../fundamentals/dependency.html">
+                           <a class="nav-page-link" href="middleware.html">
                               <i class="chevron left"></i> Previous
                            </a>
                         </li>
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="controller.html">
+                           <a class="nav-page-link" href="dependency.html">
                               Next <i class="chevron right"></i>
                            </a>
                         </li>
