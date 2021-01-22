@@ -215,8 +215,8 @@
                   $app->useEndpoint(function($routes) {
                      $routes->mapGet("/service", function(HttpContext $context) : Task
                      {
-                        $service1 = HttpContext->RequestServices->getService(IMyService::class);
-                        $service2 = HttpContext->RequestServices->getService(IMyService::class);
+                        $service1 = $context->RequestServices->getService(IMyService::class);
+                        $service2 = $context->RequestServices->getService(IMyService::class);
                         
                         $output = "Service Id: ". $service1->getId()." & Dependency Id: ". $service1->DependencyId()."&lt;br>";
                         $output .= "Service Id: ". $service2->getId()." & Dependency Id: ". $service2->DependencyId();
