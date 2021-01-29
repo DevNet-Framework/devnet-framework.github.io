@@ -126,13 +126,13 @@
 
                   use Artister\Web\Mvc\Controller;
                   use Artister\Web\Mvc\IActionResult;
-                  use Artister\Web\Mvc\EntityManager;
+                  use Artister\Entity\EntityContext;
 
                   class HelloController extends Controller
                   {
-                     private EntityManager $DbManager;
+                     private EntityContext $DbManager;
 
-                     public function __construct(EntityManager $dbManager)
+                     public function __construct(EntityContext $dbManager)
                      {
                         $this->DbManager = $dbManager;
                      }
@@ -196,14 +196,14 @@
 
                   use Artister\Web\Mvc\Controller;
                   use Artister\Web\Mvc\IActionResult;
-                  use Artister\Web\Mvc\EntityManager;
+                  use Artister\Entity\EntityContext;
                   use Artister\System\Linq;
 
                   class HelloController extends Controller
                   {
-                     private EntityManager $DbManager;
+                     private EntityContext $DbManager;
 
-                     public function __construct(EntityManager $dbManager)
+                     public function __construct(EntityContext $dbManager)
                      {
                         $this->DbManager = $dbManager;
                      }

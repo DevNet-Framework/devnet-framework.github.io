@@ -172,7 +172,6 @@ devnet new entity Student
                      public function __construct(EntityOptions $options)
                      {
                         parent::__construct($options);
-
                         $this->Authors = $this->set(Author::class);
                      }
 
@@ -208,6 +207,11 @@ devnet new entity Student
                      {
                         parent::__construct($options);
                         $this->Authors = $this->set(Author::class);
+                     }
+
+                     public function __get(string $name) : void
+                     {
+                        return $this->$name;
                      }
 
                      public function onModelCreate(EntityModelBuilder $builder)

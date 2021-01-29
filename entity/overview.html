@@ -156,6 +156,7 @@
                      public function __construct(EntityOptions $options)
                      {
                         parent::__construct($options);
+                        this->Authors = $this->set(Author::class);
                      }
 
                      public function __get(string $name) : void
@@ -183,25 +184,16 @@
                   {
                      public function configureServices(IServiceCollection $services)
                      {
-                        $services->addEntityContext(function($options)
+                        $services->addEntityContext(EntityManager::class, function($options)
                         {
-                           $options->useContext(EntityManager::class);
                            $options->useMysql("//username:password@127.0.0.1:3306/database");
                         });
                      }
                       ...
                   }
                </code></pre>
-               <h5>Options</h5>
-               <ul>
-                  <li>
-                     <code>useContext</code> optionally used to define a derived EntityContext class, that wrap entity repositories.
-                  </li>
-                  <li>
-                     <code>useMysql</code> used to register one of pre-built data providers that access and manupilate Mysql database, and you can chose other data providers for other database platforms .
-                  </li>
-               </ul>
-               <h5>Pre-Built Data Providers</h5>
+               <h5>Database Providers</h5>
+               <code>EntityOptions</code> uses one of the following databse providers methods to connect to a specific database platform.
                <table class="table">
                   <thead>
                   <tr>
