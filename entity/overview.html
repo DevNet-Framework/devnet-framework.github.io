@@ -147,7 +147,6 @@
                   use Artister\Entity\EntityContext;
                   use Artister\Entity\EntitySet;
                   use Artister\Entity\EntityOptions;
-                  use Artister\Entity\EntityModelBuilder;
 
                   class EntityManager extends EntityContext
                   {
@@ -159,7 +158,7 @@
                         this->Authors = $this->set(Author::class);
                      }
 
-                     public function __get(string $name) : void
+                     public function __get(string $name)
                      {
                         return $this->$name;
                      }

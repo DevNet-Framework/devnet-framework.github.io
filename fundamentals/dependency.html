@@ -196,9 +196,9 @@
                   {
                      public function configureServices(IServiceCollection $services)
                      {
-                        services.addTransient(MyDependency::class);
+                        services->addTransient(MyDependency::class);
 
-                        services.addSingleton(IMyService::class, MyService::class);
+                        services->addSingleton(IMyService::class, MyService::class);
                      }
                      ...
                   }
@@ -254,10 +254,10 @@
                   {
                      public function configureServices(IServiceCollection $services)
                      {
-                        services.addSingleton(IMyService::class, 
+                        services->addSingleton(IMyService::class, 
                            fn($provider) => new MyService($provider->getService(MyDependency::class)));
                         
-                        services.addTransient(MyDependency::class);
+                        services->addTransient(MyDependency::class);
                      }
                      ...
                   }
