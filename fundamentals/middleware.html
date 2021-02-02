@@ -148,7 +148,7 @@
                            return Task::completedTask();
                         }
                         // can do some work befor the next delegate.
-                        $next();
+                        $next($context);
                         // can do some work after the next delegate.
                      }
                   }
@@ -174,9 +174,10 @@
 
                         $app->use(MyMiddleware::class);
 
-                        $app->useEndpoint(function($routes) {
+                        $app->useEndpoint(function($routes)
+                        {
                            $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                       });
+                        });
                      }
                   }
                </code></pre>
@@ -208,7 +209,7 @@
                               return Task::completedTask();
                            }
                            // can do some work befor the next delegate.
-                           $next();
+                           $next($context);
                            // can do some work after the next delegate.
                         });
 
