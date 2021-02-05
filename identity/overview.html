@@ -144,9 +144,9 @@
                         $services->addAuthentication();
                         $services->addAuthorisation();
 
-                        $services->addEntityContext(function($options){
-                           $options->useConnection("mysql://user:password@127.0.0.1:3306/database");
-                           $options->useEntityContext(EntityManager::class);
+                        $services->addEntityContext(EntityManager::class, function($options)
+                        {
+                           $options->useMysql("//username:password@127.0.0.1:3306/database");
                         });
 
                         $services->addIdentity();
