@@ -135,6 +135,51 @@
                </p>
                <img src="../images/orm.svg" alt="Web app home page" width="100%" height="auto">
                <br><br>
+               <h3>Installation</h3>
+               <p>
+                  Entity ORM package is not a part of DevNet Installer, so you need to install it separetly, and will not work without Database Provider, so you have to chose which database provider you want to use (Mysql, Sqlite, ...) and by installing database provider for Entity ORM, it will automatically install Entity ORM core library package by requirement.
+               </p>
+               <p>
+                  For example if you want to use Entity ORM with Mysql database, you have to install the following pakcage:
+               </p>
+               <pre class="terminal rounded"><code>
+composer require devnet/entity-mysql
+               </code></pre>
+               <blockquote>
+                  <p>
+                     <b>Note:</b> You can install Entity ORM globaly by adding the argument <code>global</code>
+                  </p>
+               </blockquote>
+               <h5>Database Providers</h5>
+               <p>
+                  The following table is a list of the database provider packages disponible for Entity ORM:
+               </p>
+               <table class="table">
+                  <thead>
+                  <tr>
+                     <th scope="col">Provider</th>
+                     <th scope="col">Package</th>
+                     <th scope="col">Repository</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                     <td>Mysql</td>
+                     <td><samp><code>devnet/entity-mysql</code></samp></td>
+                     <td><a href="https://packagist.org/packages/devnet/entity-mysql">packagist.org/packages/devnet/entity-mysql</a></td>
+                  </tr>
+                  <tr>
+                     <td>Postgres</td>
+                     <td><samp><code>devnet/entity-postgresql</samp></td>
+                     <td><a href="https://packagist.org/packages/devnet/entity-postgresql">packagist.org/packages/devnet/entity-postgresql</a></td>
+                  </tr>
+                  <tr>
+                     <td>Sqlite</td>
+                     <td><samp><code>devnet/entity-sqlite</samp></td>
+                     <td><a href="https://packagist.org/packages/devnet/entity-sqlite">packagist.org/packages/devnet/entity-sqlite</a></td>
+                  </tr>
+                  </tbody>
+               </table>
                <h3>Defining EntityContext</h3>
                <p>
                   The recommended way to work with context is to define a context class in <b>"Models"</b> folder that derives from <code>EntityContext</code> and exposes <code>EntitySet</code> properties that represent collections of the specified entities in the context, as shown in the following example.
@@ -177,6 +222,7 @@
                   use Artister\Web\Dispatcher\IApplicationBuilder;
                   use Artister\Web\Extensions\ServiceCollectionExtensions;
                   use Artister\Web\Extensions\ApplicationBuilderExtensions;
+                  use Artister\Entity\Mysql\MysqlEntityOptionsExtension;
                   use Application\Models\EntityManager;
 
                   class Startup
@@ -185,44 +231,80 @@
                      {
                         $services->addEntityContext(EntityManager::class, function($options)
                         {
-                           $options->useMysql("//username:password@127.0.0.1:3306/database");
+                           $options->useMysql("//username:password@127.0.0.1/database");
                         });
                      }
                       ...
                   }
                </code></pre>
-               <h5>Database Providers</h5>
-               <code>EntityOptions</code> uses one of the following databse providers methods to connect to a specific database platform.
+               <h5>EntityOptions Extensions</h5>
+               <p>
+                  <code>EntityOptions</code> can extends extension methods by declaring the extension class using the keyword <code>use</code>, like in the example above: <br>
+                  <code>use Artister\Entity\Mysql\MysqlEntityOptionsExtension;</code> 
+               </p>
+               <p>
+                  The method <code>useMysql(string $connection)</code> used by <code>EntityOptions</code> class, actually belong to <code>MysqlEntityOptionsExtension</code> class.
+               </p>
+               <p>
+                  The following table is a list of EntityOptions Extensions with their extention method for each database provider:
+               </p>
                <table class="table">
                   <thead>
                   <tr>
                      <th scope="col">Provider</th>
-                     <th scope="col">Method</th>
+                     <th scope="col">Extension Class</th>
+                     <th scope="col">Extension Method</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                     <td>Mysql</td>
+                     <td><samp><code>Artister\Entity\Mysql\MysqlEntityOptionsExtension</code></samp></td>
+                     <td><code>useMysql(string $connection)</code></td>
+                  </tr>
+                  <tr>
+                     <td>Postgres</td>
+                     <td><samp><code>Artister\Entity\Postgresql\PostgresqlEntityOptionsExtension</samp></td>
+                     <td><code>usePgsql(string $connection)</code></td>
+                  </tr>
+                  <tr>
+                     <td>Sqlite</td>
+                     <td><samp><code>Artister\Entity\Sqlite\SqliteEntityOptionsExtension</samp></td>
+                     <td><code>useSqlite(string $connection)</code></td>
+                  </tr>
+                  </tbody>
+               </table>
+               <h5>Connection String</h5>
+               <p>
+                  The connection string used by the database providers follows the following url format: <br>
+                  <code>"//[username]:[password]@[host]:[port]/[database]?[option=value]"</code>
+               </p>
+               <table class="table">
+                  <thead>
+                  <tr>
+                     <th scope="col">Provider</th>
                      <th scope="col">Connection String</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
                      <td>Mysql</td>
-                     <td><code>useMysql(string $connection)</code></td>
                      <td><samp>"//username:password@127.0.0.1:3306/database"</samp></td>
                   </tr>
                   <tr>
                      <td>Postgres</td>
-                     <td><code>usePgsql(string $connection)</code></td>
                      <td><samp>"//username:password@127.0.0.1:5432/database"</samp></td>
                   </tr>
                   <tr>
                      <td>Sqlite</td>
-                     <td><code>useSqlite(string $connection)</code></td>
                      <td><samp>"//memory" or "path/to/database"</samp></td>
                   </tr>
                   </tbody>
                </table>
                <blockquote>
                   <p>
-                     <b>Note:</b> The connection string used by the data providers follows the following url format: <br>
-                     <code>"//[username]:[password]@[host]:[port]/[database]?[option=value]"</code>
+                     <b>Note:</b> If you want to use the default port value you can just skip it like this: <br>
+                     <code>"//username:password@127.0.0.1/database"</code>
                   </p>
                </blockquote>
                <footer>
