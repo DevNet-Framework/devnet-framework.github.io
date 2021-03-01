@@ -120,6 +120,7 @@
                   use Artister\Web\Mvc\Controller;
                   use Artister\Web\Mvc\IActionResult;
                   use Artister\Web\Identity\UserManager;
+                  use Artister\Web\MVC\Filters\AuthorizeFilter;
 
                   class AccountController extends Controller
                   {
@@ -130,8 +131,18 @@
                      {
                         $this->Users = $users;
                         $this->Identity = $identity;
+
+                        // autorize only logged users to access account index page
+                        $this->filter('index', AuthorizeFilter::class);
                      }
                      ...
+                  }
+               </code></pre>
+               <pre><code class="language-php">
+                  public function index() : IActionResult
+                  {
+                     $user = $this->Users->getUser();
+                     return $this->content("Welcome {$user->Username}");
                   }
                </code></pre>
                <pre><code class="language-php">
@@ -139,13 +150,13 @@
                   {
                      $user = $this->HttpContext->User;
 
-                     // if user is authenticated, no need to log in
+                     // if user is authenticated, no need to log-in
                      if ($user->isAuthenticated())
                      {
                            return $this->redirect('account/index');
                      }
 
-                     // if one or more fields are empty then request log in again.
+                     // if one or more fields are empty then show log-in page.
                      if (!$form->isValide())
                      {
                            return $this->view('account/login');

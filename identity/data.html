@@ -121,6 +121,7 @@
                   use Artister\Web\Mvc\IActionResult;
                   use Artister\Web\Identity\UserManager;
                   use Artister\Web\Identity\User;
+                  use Application\Models\RegisterForm;
 
                   class AccountController extends Controller
                   {
@@ -134,15 +135,20 @@
                   }
                </code></pre>
                <pre><code class="language-php">
-                  public function create() : IActionResult
+                  public function create(RegisterForm $form) : IActionResult
                   {
-                     $user = new User();
-                     $user->Username = "Username";
-                     $user->Password = "Password";
+                     // if one or more fields are empty then show registration page.
+                     if (!$form->isValide())
+                     {
+                           return $this->view('account/register');
+                     }
 
+                     $user = new User();
+                     $user->Username = $form->Email;
+                     $user->Password = $form->Password;
                      $this->Users->create($user);
 
-                     return $this->redirect('home/index');
+                     return $this->content("User {$user->Username} has been created");
                   }
                </code></pre>
                <pre><code class="language-php">
