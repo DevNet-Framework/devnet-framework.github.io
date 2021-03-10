@@ -151,7 +151,7 @@
                   }
                </code></pre>
                <p>
-                  <b>Note:</b> The EntitySet is an iterable collection, so you can also iterate EntitySet instance using <code>foreach</code> statment, without using <code>toArray()</code> method, but it's not recommended to use it in the view template.
+                  <b>Note:</b> The EntitySet is an iterable collection, so you can also iterate EntitySet instance using <code>foreach</code> statement, without using <code>toArray()</code> method, but it's not recommended to use it in the view template.
                </p>
                <h3>Loading a single entity</h3>
                <p>
@@ -187,7 +187,8 @@
                <h5>Filtering Data</h5>
                <p>
                   Use the extension method <code>EntitySet::Where(closure $predecate)</code> to filter the data. <br>
-                  The following code is equivalent to <code>"SELECT * FROM Student WHERE Name = 'Alice' AND Age > 16"</code>
+                  The following code is equivalent to: <br>
+                  <code>"SELECT * FROM Student WHERE Name = 'Alice' AND Age > 16"</code>
                </p>
                <pre><code class="language-php">
                   &lt;?php
@@ -218,7 +219,8 @@
                </code></pre>
                <h5>Ordering Data</h5>
                <p>
-                  The following code is equivalent to <code>"SELECT * FROM Student ORDER BY Name, Age"</code>
+                  The following code is equivalent to: <br>
+                  <code>"SELECT * FROM Student ORDER BY Name, Age"</code>
                </p>
                <pre><code class="language-php">
                   public function order() : IActionResult
@@ -229,15 +231,38 @@
                                                  ->toArray();
                   }
                </code></pre>
-               <blockquote>
-                  <p>
-                     <b>Note:</b> For the reverse ordoring you can use the methods <code>orderByDescending</code> and <code>thenByDescending</code>
-                  </p>
-               </blockquote>
+               <h5>Reverse Ordering Data</h5>
+               <p>
+                  You can use the methods <code>orderByDescending</code> and <code>thenByDescending</code> for reverse ordoring like in the The following code, which is equivalent to: <br>
+                  <code>"SELECT * FROM Student ORDER BY Name DESC, Age DESC"</code>
+               </p>
+               <pre><code class="language-php">
+                  public function order() : IActionResult
+                  {
+                     $students = $this->DbManager->Students
+                                                 ->orderByDescending(fn($s) => $s->Name)
+                                                 ->thenByDescending((fn($s) => $s->Age)
+                                                 ->toArray();
+                  }
+               </code></pre>
+               <h5>Limiting Data</h5>
+               <p>
+                  The following code is equivalent to: <br>
+                  <code>"SELECT * FROM Student LIMIT 5,10"</code>
+               </p>
+               <pre><code class="language-php">
+                  public function order() : IActionResult
+                  {
+                     $students = $this->DbManager->Students
+                                                 ->skip(5)
+                                                 ->take(10)
+                                                 ->toArray();
+                  }
+               </code></pre>
                <h5>Complex Query</h5>
                <p>
-                  You can use filer query <code>where</code> and ordering query like <code>orderBy</code> together. <br>
-                  The following code is equivalent to <code>"SELECT * FROM Student WHERE Age > 16 ORDER BY Name"</code>
+                  Sometimes a simple query is not enough to solve a complex problem, so you can combine two or more clauses together to make a complex query like in the The following code, which is equivalent to: <br>
+                  <code>"SELECT * FROM Student WHERE Age > 16 ORDER BY Name LIMIT 10"</code>
                </p>
                <pre><code class="language-php">
                   public function index() : IActionResult
@@ -245,6 +270,7 @@
                      $student = $this->Entity->Students
                                              ->where(fn($s) => $s->Age > 16)
                                              ->orderBy(fn($s) => $s->Name)
+                                             ->take(10)
                                              ->toArray();
                   }
                </code></pre>
