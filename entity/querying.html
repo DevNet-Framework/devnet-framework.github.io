@@ -117,7 +117,7 @@
                </p>
                <h3>Loading All Entities</h3>
                <p>
-                  To load all the entities into an array, you can use the method <code>toArray()</code> of <code>EntitySet</code> property, as shown in the following example:
+                  The EntitySet is an iterable collection, so you can load all entities by iterating EntitySet instance using <code>foreach</code> as shown in the following example:
                </p>
                <pre><code class="language-php">
                   &lt;?php
@@ -139,10 +139,11 @@
 
                      public function all() : IActionResult
                      {
-                        $students = $this->DbManager->Students->toArray();
+                        $students = $this->DbManager->Students;
                         $listNames = "";
 
-                        foreach ($students as $student) {
+                        foreach ($students as $student)
+                        {
                            $listNames .= $student->Name .PHP_EOL;
                         }
 
@@ -151,8 +152,17 @@
                   }
                </code></pre>
                <p>
-                  <b>Note:</b> The EntitySet is an iterable collection, so you can also iterate EntitySet instance using <code>foreach</code> statement, without using <code>toArray()</code> method, but it's not recommended to use it in the view template.
+                  If you want to passe all the entities to the view, it's not recommended to passe EntitySet repository to the view, it's better to convert it to an array using to method <code>toArray()</code> like in the example below.
                </p>
+               <pre><code class="language-php">
+                     public function all() : IActionResult
+                     {
+                        $this->ViewData["Students"] = $this->DbManager->Students->toArray();
+
+                        return $this->view();
+                     }
+                  }
+               </code></pre>
                <h3>Loading a single entity</h3>
                <p>
                   To load a single particular entity, use the method <code>EntitySet::find(int $id)</code> of <code>EntitySet</code> property to select an entity by its Id, like the following example:
@@ -170,8 +180,21 @@
                   }
                </code></pre>
                <p>
-                  <b>Note:</b> otherwise you can use the method <code>EntitySet::first()</code> to load to first entity of the record, or use the <code>EntitySet::last()</code> method to load the last one.
+                  Otherwise you can use the method <code>EntitySet::first()</code> to load to first entity of the record, or use the <code>EntitySet::last()</code> method to load the last one.
                </p>
+               <pre><code class="language-php">
+                  public function profile($id) : IActionResult
+                  {
+                     $students = $this->DbManager->Students;
+                     $firstStudent = $students->first();
+                     $lastStudent = $students->last();
+                     
+                     $report = "The first student is in the list: {$firstStudent->Name}\n";
+                     $report .= "The last student in the list is: {$student->lastStudent}";
+
+                     return $this->content($report);
+                  }
+               </code></pre>
                <h3>Linq Query</h3>
                <p>
                   <code>EntitySet</code> implements <code>IQueryable</code> interface so it can use LINQ (Language-Integrated Query) to query data from the database, which allows you to use programing language to write strongly typed queries, by passing a representation of the LINQ query to the database provider in form of lambda expressions (closure function, arrow function) which can be muti functions chained together, and Database provider in turn translate it to database-specific query language (sqlite, mysql, ...) and return a data.
@@ -198,6 +221,7 @@
                   use Artister\Web\Mvc\Controller;
                   use Artister\Web\Mvc\IActionResult;
                   use Artister\Entity\EntityContext;
+                  use Artister\Entity\IEntity;
                   use Artister\System\Linq;
 
                   class HelloController extends Controller
@@ -209,11 +233,10 @@
                         $this->DbManager = $dbManager;
                      }
 
-                     public function filter() : IActionResult
+                     public function filter() : IEntity
                      {
-                        $student = $this->DbManager->Students
-                                                   ->where(fn($s) => $s->Name == "Alice" && $s->Age > 16)
-                                                   ->first();
+                        $students = $this->DbManager->Students
+                        return $this->students->where(fn($s) => $s->Name == "Alice" && $s->Age > 16)->first();
                      }
                   }
                </code></pre>
@@ -223,12 +246,10 @@
                   <code>"SELECT * FROM Student ORDER BY Name, Age"</code>
                </p>
                <pre><code class="language-php">
-                  public function order() : IActionResult
+                  public function order() : array
                   {
                      $students = $this->DbManager->Students
-                                                 ->orderBy(fn($s) => $s->Name)
-                                                 ->thenBy((fn($s) => $s->Age)
-                                                 ->toArray();
+                     return $students->orderBy(fn($s) => $s->Name)->thenBy((fn($s) => $s->Age)->toArray();
                   }
                </code></pre>
                <h5>Reverse Ordering Data</h5>
@@ -237,12 +258,12 @@
                   <code>"SELECT * FROM Student ORDER BY Name DESC, Age DESC"</code>
                </p>
                <pre><code class="language-php">
-                  public function order() : IActionResult
+                  public function order() : array
                   {
                      $students = $this->DbManager->Students
-                                                 ->orderByDescending(fn($s) => $s->Name)
-                                                 ->thenByDescending((fn($s) => $s->Age)
-                                                 ->toArray();
+                     return $students->orderByDescending(fn($s) => $s->Name)
+                                     ->thenByDescending((fn($s) => $s->Age)
+                                     ->toArray();
                   }
                </code></pre>
                <h5>Limiting Data</h5>
@@ -251,27 +272,42 @@
                   <code>"SELECT * FROM Student LIMIT 5,10"</code>
                </p>
                <pre><code class="language-php">
-                  public function order() : IActionResult
+                  public function limit() : array
                   {
                      $students = $this->DbManager->Students
-                                                 ->skip(5)
-                                                 ->take(10)
-                                                 ->toArray();
+                     return $students->skip(5)->take(10)->toArray();
                   }
                </code></pre>
+               <h6>Pagination Example</h6>
+               <p>
+                  The following example code shows how to create a pagination with the help of <code>skip</code> and <code>take</code> Linq methods, assuming we wante to display <b>10</b> posts per page for the following route pattern : <code>"blog/page/{number}"</code>
+               </p>
+               <pre><code class="language-php">
+                  public function page(int $number) : IActionResult
+                  {
+                     $limit  = 10;
+                     $offset = ($number - 1) * $limit;
+                     $posts = $this->DbManager->Posts
+                     $this->ViewData["Posts"] = $posts->skip($offset)->take($limit)->toArray();
+                     return $this->view("Blog/index");
+                  }
+               </code></pre>
+               <p>
+                  For page number 1 will display the first 10 posts, for the page number 2 will skip the first 10 posts and display the next 10 posts, and for page number 3 will skip 20 posts and display the next 10 posts, and so on...
+               </p>
                <h5>Complex Query</h5>
                <p>
-                  Sometimes a simple query is not enough to solve a complex problem, so you can combine two or more clauses together to make a complex query like in the The following code, which is equivalent to: <br>
+                  Sometimes a simple query is not enough to solve a complex problem, so you can combine two or more clauses together to reache what you need as shown in the The following code, which is equivalent to: <br>
                   <code>"SELECT * FROM Student WHERE Age > 16 ORDER BY Name LIMIT 10"</code>
                </p>
                <pre><code class="language-php">
-                  public function index() : IActionResult
+                  public function resolve() : array
                   {
-                     $student = $this->Entity->Students
-                                             ->where(fn($s) => $s->Age > 16)
-                                             ->orderBy(fn($s) => $s->Name)
-                                             ->take(10)
-                                             ->toArray();
+                     $students = $this->DbManager->Students
+                     return $students->where(fn($s) => $s->Age > 16)
+                                     ->orderBy(fn($s) => $s->Name)
+                                     ->take(10)
+                                     ->toArray();
                   }
                </code></pre>
                <footer>
