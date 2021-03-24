@@ -113,17 +113,17 @@
                <h1>Web Application</h1>
                <hr>
                <p>
-                  To create a Web Application, Open the terminal and navigate to your Devnet project then enter the following command:
+                  To create a MVC Web Application, Open the terminal then enter the following command:
                </p>
                <pre class="terminal rounded"><code>
-devnet new web
+devnet new mvc --project YourProjectName
                </code></pre>
                <h3>Project structure</h3>
                <p>
-                  Devnet SDK command creates a web project with the following structure:
+                  DevNet Cli command will create a mvc web project with the following structure:
                </p>
                <pre><code class="language-html">
-                  devnet-project/
+                  mvc-project/
                   ├─ Controllers/
                   │  ├─ HomeController.php
                   │  └─ AccountController.php
@@ -146,6 +146,7 @@ devnet new web
                   │  └─ Web.config
                   ├─ ...
                   ├─ Program.php
+                  ├─ project.phproj
                   ├─ Startup.php
                   └─ settings.json
                </pre></code>
