@@ -156,9 +156,9 @@ composer global require devnet/entity
 
                   namespace Application\Models;
 
-                  use Artister\Entity\EntityContext;
-                  use Artister\Entity\EntitySet;
-                  use Artister\Entity\EntityOptions;
+                  use DevNet\Entity\EntityContext;
+                  use DevNet\Entity\EntitySet;
+                  use DevNet\Entity\EntityOptions;
 
                   class EntityManager extends EntityContext
                   {
@@ -185,11 +185,11 @@ composer global require devnet/entity
 
                   namespace Application;
                   
-                  use Artister\System\Dependency\IServiceCollection;
-                  use Artister\Web\Dispatcher\IApplicationBuilder;
-                  use Artister\Web\Extensions\ServiceCollectionExtensions;
-                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
-                  use Artister\Entity\Providers\EntityOptionsExtensions;
+                  use DevNet\System\Dependency\IServiceCollection;
+                  use DevNet\Web\Dispatcher\IApplicationBuilder;
+                  use DevNet\Web\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\Entity\Providers\EntityOptionsExtensions;
                   use Application\Models\EntityManager;
 
                   class Startup
@@ -209,7 +209,7 @@ composer global require devnet/entity
                   Entity ORM can access many different databases (Mysql, Sqlite...) through libraries called database providers, with the help of <code>EntityOptions</code>, each supported Database Provider can be added and configured easily using extension methods.
                </p>
                <p>
-                  By defining <code>use Artister\Entity\Providers\EntityOptionsExtensions;</code> in your code, that allows the <code>EntityOptions</code> extends methods and use them to configure a prebuilt Database Providers which are listed in the The following table:
+                  By defining <code>use DevNet\Entity\Providers\EntityOptionsExtensions;</code> in your code, that allows the <code>EntityOptions</code> extends methods and use them to configure a prebuilt Database Providers which are listed in the The following table:
                </p>
                <table class="table">
                   <thead>

@@ -124,13 +124,13 @@
                <pre><code class="language-php">
                   &lt;?php
 
-                  namespace Artister\DevNet\Mvc\Filters;
+                  namespace DevNet\DevNet\Mvc\Filters;
 
-                  use Artister\System\Process\Task;
-                  use Artister\Web\Mvc\IActionFilter;
-                  use Artister\Web\Mvc\ActionExecutionDelegate;
-                  use Artister\Web\Mvc\ActionContext;
-                  use Artister\Web\Http\HttpContext;
+                  use DevNet\System\Async\Task;
+                  use DevNet\Web\Mvc\IActionFilter;
+                  use DevNet\Web\Mvc\ActionExecutionDelegate;
+                  use DevNet\Web\Mvc\ActionContext;
+                  use DevNet\Web\Http\HttpContext;
 
                   class MyActionFilter implements IActionFilter
                   {
@@ -158,8 +158,8 @@
 
                   namespace Application\Controllers;
 
-                  use Artister\Web\Mvc\Controller;
-                  use Artister\Web\Mvc\IActionResult;
+                  use DevNet\Web\Mvc\Controller;
+                  use DevNet\Web\Mvc\IActionResult;
                   use Application\Filters\MyActionFilter;
 
                   class HomeController extends Controller

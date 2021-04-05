@@ -138,10 +138,10 @@
                   
                   namespace Application;
                   
-                  use Artister\System\Dependency\IServiceCollection;
-                  use Artister\Web\Dispatcher\IApplicationBuilder;
-                  use Artister\Web\Extensions\DependencyExtensions;
-                  use Artister\Web\Extensions\HostingExtensions;
+                  use DevNet\System\Dependency\IServiceCollection;
+                  use DevNet\Web\Dispatcher\IApplicationBuilder;
+                  use DevNet\Web\Extensions\DependencyExtensions;
+                  use DevNet\Web\Extensions\HostingExtensions;
                   
                   class Startup
                   {
@@ -176,7 +176,7 @@
                         
                         $app->useEndpoint(function($routes)
                         {
-                              $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                           $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         });
                      }
                   }

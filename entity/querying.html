@@ -124,9 +124,9 @@
 
                   namespace Application\Controllers;
 
-                  use Artister\Web\Mvc\Controller;
-                  use Artister\Web\Mvc\IActionResult;
-                  use Artister\Entity\EntityContext;
+                  use DevNet\Web\Mvc\Controller;
+                  use DevNet\Web\Mvc\IActionResult;
+                  use DevNet\Entity\EntityContext;
 
                   class HelloController extends Controller
                   {
@@ -200,7 +200,7 @@
                   <code>EntitySet</code> implements <code>IQueryable</code> interface so it can use LINQ (Language-Integrated Query) to query data from the database, which allows you to use programing language to write strongly typed queries, by passing a representation of the LINQ query to the database provider in form of lambda expressions (closure function, arrow function) which can be muti functions chained together, and Database provider in turn translate it to database-specific query language (sqlite, mysql, ...) and return a data.
                </p>
                <p>
-                  Linq methods are extension methods so in order to use this feature you have to define the extension namespace <code>Artister\System\Linq;</code> using the key word <code>use</code> in every class, or code use Linq methods on instance of <code>EntitySet</code>. <br>
+                  Linq methods are extension methods so in order to use this feature you have to define the extension namespace <code>DevNet\System\Linq;</code> using the key word <code>use</code> in every class, or code use Linq methods on instance of <code>EntitySet</code>. <br>
                </p>
                <blockquote>
                   <p>
@@ -218,11 +218,11 @@
 
                   namespace Application\Controllers;
 
-                  use Artister\Web\Mvc\Controller;
-                  use Artister\Web\Mvc\IActionResult;
-                  use Artister\Entity\EntityContext;
-                  use Artister\Entity\IEntity;
-                  use Artister\System\Linq;
+                  use DevNet\Web\Mvc\Controller;
+                  use DevNet\Web\Mvc\IActionResult;
+                  use DevNet\Entity\EntityContext;
+                  use DevNet\Entity\IEntity;
+                  use DevNet\System\Linq;
 
                   class HelloController extends Controller
                   {

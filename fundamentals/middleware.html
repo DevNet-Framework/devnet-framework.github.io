@@ -133,10 +133,10 @@
                   
                   namespace Application\Middlewares;
 
-                  use Artister\System\Process\Task;
-                  use Artister\Web\Dispatcher\IMiddleware;
-                  use Artister\Web\Dispatcher\RequestDelegate;
-                  use Artister\Web\Http\HttpContext;
+                  use DevNet\System\Async\Task;
+                  use DevNet\Web\Dispatcher\IMiddleware;
+                  use DevNet\Web\Dispatcher\RequestDelegate;
+                  use DevNet\Web\Http\HttpContext;
 
                   class MyMiddleware implements IMiddleware
                   {
@@ -159,10 +159,10 @@
                <pre><code class="language-php">
                   &lt;?php
                   
-                  use Artister\System\Dependency\IServiceCollection;
-                  use Artister\Web\Dispatcher\IApplicationBuilder;
-                  use Artister\Web\Extensions\ServiceCollectionExtensions;
-                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\System\Dependency\IServiceCollection;
+                  use DevNet\Web\Dispatcher\IApplicationBuilder;
+                  use DevNet\Web\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Web\Extensions\ApplicationBuilderExtensions;
                   use Application\Middlewares\MyMiddleware;
 
                   class Startup
@@ -187,12 +187,12 @@
                <pre><code class="language-php">
                   &lt;?php
                   
-                  use Artister\System\Process\Task;
-                  use Artister\System\Dependency\IServiceCollection;
-                  use Artister\web\Dispatcher\IApplicationBuilder;
-                  use Artister\Web\Extensions\ServiceCollectionExtensions;
-                  use Artister\Web\Extensions\ApplicationBuilderExtensions;
-                  use Artister\Web\Http\HttpContext;
+                  use DevNet\System\Async\Task;
+                  use DevNet\System\Dependency\IServiceCollection;
+                  use DevNet\web\Dispatcher\IApplicationBuilder;
+                  use DevNet\Web\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\Web\Http\HttpContext;
 
                   class Startup
                   {
