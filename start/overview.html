@@ -130,17 +130,26 @@
                   also you can get Composer the PHP Dependency Manager from <a href="https://getcomposer.org/">getcomposer.org</a><br>
                   and you may need Git the distributed version control system from <a href="https://git-scm.com/">git-scm.com</a>
                </p>
-               <h3>Installing DevNet</h3>
+               <h3>Pre-Config</h3>
                <p>
-                  <b>devnet/installer</b> is a metapackage that uses composer dependency manager, to install DevNet libraries globally through command line into your system, with a single runtime library for all the DevNet projects.
+                  In order to install DevNet Globally, and Because DevNet is still in development, we need first to config composer global minimum-stability to development.
                </p>
                <p>
-                  But first we need to config composer global minimum-stability to development, because DevNet is still in development <br>
-                  so in the terminal type the following command:
+                  So in the terminal type the following command:
                </p>
                <pre class="terminal rounded"><code>
 composer global config minimum-stability dev
                </code></pre>
+               <p>
+                  Than force composer to prefer the stable version if that possible, like so:
+               </p>
+               <pre class="terminal rounded"><code>
+composer global config prefer-stable true
+               </code></pre>
+               <h3>Installing DevNet</h3>
+               <p>
+                  <b>devnet/installer</b> is a metapackage that uses composer dependency manager, to install DevNet libraries globally through command line into your system, with a single runtime library for all the DevNet projects.
+               </p>
                <p>
                   To Install DevNet framework globally, run the following command in the terminal:
                </p>
