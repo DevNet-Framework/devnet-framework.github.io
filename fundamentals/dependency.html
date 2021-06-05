@@ -179,7 +179,7 @@
                   Services are defined using the same service type class, parent class or interface that the service is implementing, which will be used later to call the service from the service provider.
                </p>
                <p>
-                  The following code shows an example of registring tow services, <code>MyDependency</code> registred with Transient lifetime, defined by the same service type, and <code>MyService</code> with singleton lifetime defined by <code>IMyService</code> interface:
+                  The following code shows an example of registring two services, <code>MyDependency</code> registred with Transient lifetime, defined by the same service type, and <code>MyService</code> with singleton lifetime defined by <code>IMyService</code> interface:
                </p>
                <pre><code class="language-php">
                   &lt;?php
@@ -208,7 +208,7 @@
                   The services are available within <code>IServiceProvider</code> which can be requested from <code>HttpContext</code>, exposed through the RequestServices property, and only dependencies those are satisfied by the types found in RequestServices can be returned, using the method <code>getService</code>.
                </p>
                <p>
-                  The code below shows an example of requesting tow services registred in the previous example:
+                  The code below shows an example of requesting two services registred in the previous example:
                </p>
                <pre><code class="language-php">
                   ...

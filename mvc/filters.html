@@ -119,7 +119,7 @@
                   Filters can be created to handle cross-cutting concerns, for example configuration, authorization, caching, logging and error handling, and can choose to passe the request to the next filter or the endpoint or short-circuiting the pipeline, by returning the static method <code>Task::completedTask()</code>
                </p>
                <p>
-                  The following code show an example of an action filter class implements the interface <code>IActionFilter</code> which has only one method <code>onActionExecutionAsync</code> with tow parameters <code>ActionContext</code> as a context wrap all the data about the action and <code>ActionExecutionDelegate</code> which represent the execution of next action:
+                  The following code show an example of an action filter class implements the interface <code>IActionFilter</code> which has only one method <code>onActionExecutionAsync</code> with two parameters <code>ActionContext</code> as a context wrap all the data about the action and <code>ActionExecutionDelegate</code> which represent the execution of next action:
                </p>
                <pre><code class="language-php">
                   &lt;?php
@@ -175,10 +175,29 @@
                      }
                   }
                </code></pre>
-               <h5>Built-in filter</h5>
-               <p>
-                  DevNet comes with Built-in filters such as the <b>Authorization</b> filter which prevente a not Authenticated or not authorized user to access to the application resources.
-               </p>
+               <h5>Built-in filters</h5>
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th scope="col">Filter</th>
+                        <th scope="col">Discription</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr>
+                        <td>AuthorizationFilter</td>
+                        <td>Prevente a non authorized user to access to the application resources.</td>
+                     </tr>
+                     <tr>
+                        <td>HttpMethodFilter</td>
+                        <td>Prevente a not allowed Http method request.</td>
+                     </tr>
+                     <tr>
+                        <td>AntiforgeryFilter</td>
+                        <td>Prevent Cross-Site Request Forgery</td>
+                     </tr>
+                  </tbody>
+               </table>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">

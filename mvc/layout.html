@@ -119,7 +119,7 @@
                   By default layouts placed in the folder <samp>/views/layouts</samp> and, an individual views can specify a layout by calling the method <code>layout(string $layoutName)</code>, the string parameter <code>$layoutName</code> define the relative path to the layout file without the extension file <samp>".phtml"</samp> as shown in the following example:
                </p>
                <pre><code class="language-php">
-                  &lt;?= $this->layout('Layouts/layout') ?>
+                  &lt;?= $this->layout('Shared/layout') ?>
 
                   &lt;h1>Hello World!&lt;/h1>
                </code></pre>
@@ -172,7 +172,7 @@
                   &lt;/head>
                   &lt;body>
                      &lt;header>
-                        &lt;?= $this->renderPartial('Layouts/navbar') ?>
+                        &lt;?= $this->renderPartial('Shared/navbar') ?>
                      &lt;/header>
                      &lt;main>
                         &lt;?= $this->renderBody() ?>
@@ -198,7 +198,7 @@
                   To be able to use a section in a layout, we must first define a section in the view, by wrting a block of content between the methods <code>section(string $sectionName)</code> and <code>endSection()</code> and give a ane to the section, which hepl us later to select which section to be rendered in the layout.
                </p>
                <pre><code class="language-php">
-                  &lt;?= $this->layout('Layouts/layout') ?>
+                  &lt;?= $this->layout('Shared/layout') ?>
 
                   &lt;h1>Hello World!&lt;/h1> 
                   
@@ -223,7 +223,7 @@
                   &lt;/head>
                   &lt;body>
                      &lt;header>
-                        &lt;?= $this->renderPartial('Layouts/navbar') ?>
+                        &lt;?= $this->renderPartial('Shared/navbar') ?>
                      &lt;/header>
                      &lt;div class="container">
                         &lt;aside>
