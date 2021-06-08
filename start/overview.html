@@ -132,7 +132,7 @@
                </p>
                <h3>Pre-Config</h3>
                <p>
-                  In order to install DevNet Globally, and Because DevNet is still in development, we need first to config composer global minimum-stability to development.
+                  In order to install DevNet Cli Globally, and Because DevNet is still in development, we need first to config composer global minimum-stability to development.
                </p>
                <p>
                   So in the terminal type the following command:
@@ -148,30 +148,23 @@ composer global config prefer-stable true
                </code></pre>
                <h3>Installing DevNet</h3>
                <p>
-                  <b>devnet/installer</b> is a metapackage that uses composer dependency manager, to install DevNet libraries globally through command line into your system, with a single runtime library for all the DevNet projects.
+                  <b>devnet/cli</b> a command-line Interface tool, that used for creating and running DevNet projects.
                </p>
                <p>
-                  To Install DevNet framework globally, run the following command in the terminal:
+                  To Install DevNet Cli globally, run the following command in the terminal:
                </p>
                <pre class="terminal rounded"><code>
-composer global require devnet/installer
+composer global require devnet/cli
                </code></pre>
                <p>
-                  The installer will install four main DevNet packages:
-                  <ul>
-                     <li><b>devnet/core</b> a basic common library required by all DevNet components.</li>
-                     <li><b>devnet/cli</b> a command line Interpreter that has development tool, for creating and running DevNet projects</li>
-                     <li><b>devnet/web</b> a collection of web components that helps to create a web project in modern way.</li>
-                     <li><b>devnet/entity</b> an object relational mapping system that helps to manipulate database, in object-oriented way.</li>
-                  </ul>
-                  If you don't want the full installation of DevNet framework, you can install only the packages that fit your need, and choose whether to make the installation globally outside your project, or localy inside your project, and you can do the same with the third party libraries.
+                  This will run a minimal installation of DevNet Framework that allows you to create a console app only, but you can add other DevNet packages later, like devnet/web package to be able to create a web app.
                </p>
                <h3>Uninstalling DevNet</h3>
                <p>
-                  To uninstall DevNet Framework globally, run the following command in the terminal:
+                  To uninstall DevNet Cli globally from your system, run the following command in the terminal:
                </p>
                <pre class="terminal rounded"><code>
-composer global remove devnet/installer
+composer global remove devnet/cli
                </code></pre>
                <h3>Using DevNet Command:</h3>
                <p>
