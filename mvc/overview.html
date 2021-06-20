@@ -129,6 +129,58 @@
                <p>
                   User requests are routed to a Controller which is responsible for working with the Model to perform user actions and/or retrieve results of queries. The Controller chooses the View to display to the user, and provides it with any Model data it requires.
                </p>
+               <br>
+               <h3>Create MVC Web Application Project</h3>
+               <p>
+                  To create a MVC Web Application, Open the terminal then enter the following command:
+               </p>
+               <pre class="terminal rounded"><code>
+devnet new mvc --project YourProjectName
+               </code></pre>
+               <p>
+                  Or use composer:
+               </p>
+               <pre class="terminal rounded"><code>
+composer create-project devnet/mvc-project YourProjectName
+               </code></pre>
+               <br>
+               <h3>Project structure</h3>
+               <p>
+                  This command will create a mvc web project with the following structure:
+               </p>
+               <pre><code class="language-html">
+                  mvc-project/
+                  ├─ Controllers/
+                  │  ├─ HomeController.php
+                  │  └─ AccountController.php
+                  ├─ Models/
+                  │  ├─ LoginForm.php
+                  │  ├─ RegisterForm.php
+                  │  └─ User.php
+                  ├─ Views/
+                  │  ├─ account/
+                  │  │  ├─ index.phtml
+                  │  │  ├─ login.phtml
+                  │  │  └─ register.phtml
+                  │  ├─ home/
+                  │  │  └─ index.phtml
+                  │  └─ Shared/
+                  │     ├─ layout.phtml
+                  │     └─ navbar.phtml
+                  ├─ webroot/
+                  │  ├─ css/
+                  │  ├─ js/
+                  │  ├─ lib/
+                  │  ├─ .htaccess
+                  │  ├─ index.php
+                  │  └─ Web.config
+                  ├─ ...
+                  ├─ Program.php
+                  ├─ project.phproj
+                  ├─ Startup.php
+                  └─ settings.json
+               </pre></code>
+               <br>
                <h3>MVC Registraction</h3>
                <p>
                   Befor using MVC components, make sure the service MVC is registered inside the <code>configureServices</code> method of <code>Startup</code> class, by calling the extension method <code>addMvc()</code> of the instance of the type <code>IServiceCollection</code>.
@@ -152,6 +204,7 @@
                       ...
                   }
                </code></pre>
+               <br>
                <h3>Conventional Routing</h3>
                <p>
                   Conventional Routing is the default routing of MVC application, only one generic route template : <code>{controller=Home}/{action=Index}/{id?}</code> which can handle all url requests, by parsing it into 3 segments:<br>
@@ -186,6 +239,31 @@
                      <b>Note:</b> if you add a Literal route with Conventional route make sure to put the conventional route at the buttom of the routes list, because it has a greedy pattern and will catch all the urls.
                   </p>
                </blockquote>
+               <h3 id="2">Development Server</h3>
+               <p>
+                  DevNet framework use PHP Built-in development server, as default server to run the DevNet web application, assuming <code>./webroot/</code> is public accessible directory with <code>index.php</code> file, you can start the development server by running the following command in the terminal:
+               </p>
+               <pre class="terminal rounded"><code>
+devnet run
+               </code></pre>
+               <p>
+                  This will start the development server at <a href="http://localhost:8000">http://localhost:8000</a>
+               </p>
+               <pre class="terminal rounded"><code>
+devnet run
+[Sat Dec 12 15:10:02 2020] PHP 8.0.0 Development Server (http://localhost:8000) started
+               </code></pre>
+               <p>
+                  Otherwize you can also start the Built-in PHP server, by runing the following PHP command line in the terminal:
+               </p>
+               <pre class="terminal rounded"><code>
+php -S localhost:8000 -t webroot
+               </code></pre>
+               <p>
+                  The following image shows the application result in the browser:
+               </p>
+               <img src="../images/welcome.jpg" alt="Web app home page" width="100%" height="auto">
+               <br><br>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
