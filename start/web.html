@@ -116,7 +116,7 @@
                   To create a MVC Web Application, Open the terminal then enter the following command:
                </p>
                <pre class="terminal rounded"><code>
-composer create-project devnet/mvc-project YourProjectName
+composer create-project devnet/mvc YourProjectName
                </code></pre>
                <h3>Project structure</h3>
                <p>
@@ -159,8 +159,8 @@ composer create-project devnet/mvc-project YourProjectName
 
                   namespace Application;
                   
-                  use DevNet\Web\Hosting\WebHost;
-                  use DevNet\Web\Hosting\IWebHostBuilder;
+                  use DevNet\Core\Hosting\WebHost;
+                  use DevNet\Core\Hosting\IWebHostBuilder;
                   
                   class Program
                   {
@@ -190,11 +190,11 @@ composer create-project devnet/mvc-project YourProjectName
 
                   namespace Application;
                   
-                  use DevNet\System\Configuration\IConfiguration;
-                  use DevNet\System\Dependency\IServiceCollection;
-                  use DevNet\Web\Dispatcher\IApplicationBuilder;
-                  use DevNet\Web\Extensions\ServiceCollectionExtensions;
-                  use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\Core\Configuration\IConfiguration;
+                  use DevNet\Core\Dependency\IServiceCollection;
+                  use DevNet\Core\Dispatcher\IApplicationBuilder;
+                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
                   
                   class Startup
                   {

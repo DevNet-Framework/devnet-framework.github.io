@@ -184,10 +184,10 @@
                <pre><code class="language-php">
                   &lt;?php
                   
-                  use DevNet\System\Dependency\IServiceCollection;
-                  use DevNet\Web\Dispatcher\IApplicationBuilder;
-                  use DevNet\Web\Extensions\ServiceCollectionExtensions;
-                  use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\Core\Dependency\IServiceCollection;
+                  use DevNet\Core\Dispatcher\IApplicationBuilder;
+                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
                   use Appplication\Services\IMyService;
                   use Appplication\Services\MyService;
                   use Appplication\Services\MyDependency;
@@ -242,10 +242,10 @@
                <pre><code class="language-php">
                   &lt;?php
                   
-                  use DevNet\System\Dependency\IServiceCollection;
-                  use DevNet\Web\Dispatcher\IApplicationBuilder;
-                  use DevNet\Web\Extensions\ServiceCollectionExtensions;
-                  use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\Core\Dependency\IServiceCollection;
+                  use DevNet\Core\Dispatcher\IApplicationBuilder;
+                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
                   use Appplication\Services\IMyService;
                   use Appplication\Services\MyService;
                   use Appplication\Services\MyDependency;
@@ -271,11 +271,11 @@
                   
                   namespace Application\Controllers;
 
-                  use DevNet\Web\Mvc\Controller;
-                  use DevNet\Web\Mvc\IActionResult;
+                  use DevNet\Core\Controller\AbstractController;
+                  use DevNet\Core\Controller\IActionResult;
                   use Application\Services\IMyService;
 
-                  class HelloController extends Controller
+                  class HelloController extends AbstractController
                   {
                      private IMyService $MyService;
 

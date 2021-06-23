@@ -124,11 +124,11 @@
 
                   namespace Application\Controllers;
 
-                  use DevNet\Web\Mvc\Controller;
-                  use DevNet\Web\Mvc\IActionResult;
+                  use DevNet\Core\Controller\AbstractController;
+                  use DevNet\Core\Controller\IActionResult;
                   use DevNet\Entity\EntityContext;
 
-                  class HelloController extends Controller
+                  class HelloController extends AbstractController
                   {
                      private EntityContext $DbManager;
 
@@ -218,13 +218,13 @@
 
                   namespace Application\Controllers;
 
-                  use DevNet\Web\Mvc\Controller;
-                  use DevNet\Web\Mvc\IActionResult;
+                  use DevNet\Core\Controller\AbstractController;
+                  use DevNet\Core\Controller\IActionResult;
                   use DevNet\Entity\EntityContext;
                   use DevNet\Entity\IEntity;
                   use DevNet\System\Linq;
 
-                  class HelloController extends Controller
+                  class HelloController extends AbstractController
                   {
                      private EntityContext $DbManager;
 
