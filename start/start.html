@@ -49,9 +49,8 @@
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
                      <ul class="sub-menu">
                         <li><a class="nav-link text-dark" href="overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark fw-bold" href="start.html">Get Started</a></li>
                         <li><a class="nav-link text-dark" href="console.html">Console application</a></li>
-                        <li><a class="nav-link text-dark fw-bold" href="web.html">Web application</a></li>
-                        <li><a class="nav-link text-dark" href="#">Configuration</a></li>
                      </ul>
                   </div>
                   <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Fundamentals</a>
@@ -110,202 +109,124 @@
                </nav>
             </aside>
             <article class="flex-grow-1" style="width: 400px;">
-               <h1>Web Application</h1>
+               <h1>Get Started</h1>
                <hr>
                <p>
-                  To create a MVC Web Application, Open the terminal then enter the following command:
+                  In order to install DevNet Cli Globally, and Because DevNet is still in development, we need first to config composer global minimum-stability to development.
+               </p>
+               <p>
+                  So in the terminal type the following command:
                </p>
                <pre class="terminal rounded"><code>
-composer create-project devnet/mvc YourProjectName
+composer global config minimum-stability dev
                </code></pre>
-               <h3>Project structure</h3>
                <p>
-                  This command will create a mvc web project with the following structure:
+                  Then force composer to prefer the stable version if is was available, like so:
                </p>
-               <pre><code class="language-html">
-                  mvc-project/
-                  ├─ Controllers/
-                  │  ├─ HomeController.php
-                  │  └─ AccountController.php
-                  ├─ Views/
-                  │  ├─ account/
-                  │  │  ├─ index.phtml
-                  │  │  ├─ login.phtml
-                  │  │  └─ register.phtml
-                  │  ├─ home/
-                  │  │  └─ index.phtml
-                  │  └─ Shared/
-                  │     ├─ layout.phtml
-                  │     └─ navbar.phtml
-                  ├─ webroot/
-                  │  ├─ css/
-                  │  ├─ js/
-                  │  ├─ lib/
-                  │  ├─ .htaccess
-                  │  ├─ index.php
-                  │  └─ Web.config
-                  ├─ ...
-                  ├─ Program.php
-                  ├─ project.phproj
-                  ├─ Startup.php
-                  └─ settings.json
-               </pre></code>
-               <h3>Main class</h3>
+               <pre class="terminal rounded"><code>
+composer global config prefer-stable true
+               </code></pre>
+               <br>
+               <h3>Installation</h3>
                <p>
-                  The DevNet web template generate <code>Program</code> class with <code>main</code> method calls <code>createWebHostBuilder(array $args)</code> method to create and configure a <code>WebHostBuilder</code> object which use <code>startup</code> class, to configure services and the app's request pipeline, then runs the application, as shown in the code below :
+                  To Install DevNet Cli globally, run the following command in the terminal:
                </p>
-               <pre><code class="language-php">
-                  &lt;?php
+               <pre class="terminal rounded"><code>
+composer global require devnet/cli
+               </code></pre>
+               <p>
+                  This will run a minimal installation of DevNet Framework that allows you to create a console app only, but optionally you can add other DevNet packages later, like Web Components and Entity ORM.
+               </p>
+               <p>
+                  Optionally you can extend DevNet Cli by installing DevNet templates add-ons, to be able to create projects other than console projects like Web API and MVC projects, using the DevNet command-line.
+               </p>
+               <p>
+                  So in your terminal you can add DevNet Templates like this:
+               </p>
+               <pre class="terminal rounded"><code>
+composer global require devnet/templates
+               </code></pre>
+               <br>
+               <h3>Using DevNet Command:</h3>
+               <p>
+                  For the first start you can run the devnet command with the option <code>--version</code> in your terminal, to check the DevNet Cli version and see if it was installed properly, like so:
+               </p>
+               <pre class="terminal rounded"><code>
+devnet --version
+               </code></pre>
+               <h5>Output</h5>
+               <pre class="terminal rounded"><code>
+DevNet command-line interface v1.0.0
+Copyright (c) DevNet
+               </code></pre>
+               <p>
+                  You can run also the devnet command with the option <code>--help</code> in your terminal, to show the help on how to use devent command-line tool, as shown below:
+               </p>
+               <pre class="terminal rounded"><code>
+devnet --help
+               </code></pre>
+               <h5>Output</h5>
+               <pre class="terminal rounded"><code>
+DevNet command-line interface v1.0.0
+Usage: devnet [options]
 
-                  namespace Application;
-                  
-                  use DevNet\Core\Hosting\WebHost;
-                  use DevNet\Core\Hosting\IWebHostBuilder;
-                  
-                  class Program
-                  {
-                      public static function main(array $args = [])
-                      {
-                          self::createWebHostBuilder($args)->build()->run();
-                      }
-                  
-                      public static function createWebHostBuilder(array $args) : IWebHostBuilder
-                      {
-                          return WebHost::createBuilder($args)
-                              ->useStartup(Startup::class);
-                      }
-                  }
-               </code></pre>
-               <h3>Startup class</h3>
-               <p>
-                  As shown in the code below The Startup class includes :
-               </p>
-               <ul>
-                  <li><b>Configuration property :</b> to read configuration data from <samp>"settings.json"</samp> with easy navigation inside the tree.</li>
-                  <li><b>ConfigureServices method :</b> to configure the app's services which are registred in <code>IServiceCollection</code> container and consumed across the app via dependency injection.</li>
-                  <li><b>Configure method :</b> to create the app's request processing pipeline, through a chain of middlewares untile reach the endpoint middleware where the routes are maped then invoke the action of the matched route</li>
-               </ul>
-               <pre><code class="language-php">
-                  &lt;?php
+Options:
+   --help      Show command line help.
+   --version   Show DevNet Cli version.
+   --path      Show DevNet runtime path.
 
-                  namespace Application;
-                  
-                  use DevNet\Core\Configuration\IConfiguration;
-                  use DevNet\Core\Dependency\IServiceCollection;
-                  use DevNet\Core\Dispatcher\IApplicationBuilder;
-                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
-                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
-                  
-                  class Startup
-                  {
-                      private IConfiguration $Configuration;
-                  
-                      public function __construct(IConfiguration $configuration)
-                      {
-                          $this->Configuration = $configuration;
-                      }
-                  
-                      public function configureServices(IServiceCollection $services)
-                      {
-                          $services->addMvc();
-                          
-                          $services->addAuthentication();
-                  
-                          $services->addAuthorisation();
-                      }
-                  
-                      public function configure(IApplicationBuilder $app)
-                      {
-                          $app->UseExceptionHandler();
-                  
-                          $app->useRouter();
-                  
-                          $app->useAuthentication();
-                  
-                          $app->useAuthorization();
-                          
-                          $app->useEndpoint(function($routes) {
-                              $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                          });
-                      }
-                  }
+Usage: devnet [command] [arguments] [options]
+
+commands:
+   new   Create a new project
+   run   Run the DevNet applicaton
+   add   Add a template code file to the project
+
+Run 'devnet [command] --help' for more information on a command.
                </code></pre>
-               <h3>Apache configuration</h3>
                <p>
-                  The index.php and .htaccess files must be in the same public directory: <code>./webroot</code><br>
-                  The .htaccess file should contain the following code:
+                  The Help shows a list of available commands and options that you can use with DevNet Cli.
                </p>
-               <pre><code class="language-php rounded">
-                  RewriteEngine On
-                  RewriteCond %{REQUEST_FILENAME} !-f
-                  RewriteCond %{REQUEST_FILENAME} !-d
-                  RewriteRule ^ index.php [QSA,L]
-               </pre></code>
-               <h3>IIS configuration</h3>
                <p>
-                  The index.php and Web.config files must be in the same public directory: <code>./webroot</code><br>
-                  The Web.config file should contain the following code:
-               </p>
-               <pre><code class="language-php">
-                  &#60;?xml version="1.0" encoding="UTF-8"?>
-                  &#60;configuration>
-                     &#60;system.webServer>
-                        &#60;rewrite>
-                           &#60;rules>
-                              &#60;rule name="slim" patternSyntax="Wildcard">
-                                 &#60;match url="*" />
-                                 &#60;conditions>
-                                    &#60;add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-                                    &#60;add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-                                 &#60;/conditions>
-                                 &#60;action type="Rewrite" url="index.php" />
-                              &#60;/rule>
-                           &#60;/rules>
-                        &#60;/rewrite>
-                     &#60;/system.webServer>
-                  &#60;/configuration>
-               </pre></code>
-               <h3 id="2">Development Server</h3>
-               <p>
-                  DevNet framework use PHP Built-in development server, as default server to run the DevNet web application, assuming <code>./webroot/</code> is public accessible directory with <code>index.php</code> file, you can start the development server by running the following command in the terminal:
+                  For more details about a command that you want to use, you can run it with the option --help like in the following example:
                </p>
                <pre class="terminal rounded"><code>
-devnet run
+devnet new --help
+               </code></pre>
+               <h5>Output</h5>
+               <pre class="terminal rounded"><code>
+Usage: devnet new [template] [arguments] [options]
+
+Options:
+   --help     Displays help for this command.
+   --project  Location to place the generated project.
+
+templates:
+   console    Console Applicatinon project
+   mvc        DevNet MVC Web Application Project
+   web        DevNet Web Application Project
                </code></pre>
                <p>
-                  This will start the development server at <a href="http://localhost:8000">http://localhost:8000</a>
+                  The help shows a usage of the new command followed by the name of the project template that you want to create, and followed by options and arguments, and shows a list of options that you can use with the command and a list of templates that you can choose from to create your project.
+               </p>
+               <br/>
+               <h3>Uninstalling DevNet</h3>
+               <p>
+                  To uninstall DevNet Cli globally from your system, run the following command in the terminal:
                </p>
                <pre class="terminal rounded"><code>
-devnet run
-[Sat Dec 12 15:10:02 2020] PHP 8.0.0 Development Server (http://localhost:8000) started
+composer global remove devnet/cli
                </code></pre>
-               <p>
-                  if you want to start the server with diffrent port, you can add the option <code>--port</code> followed by the port number:
-               </p>
-               <pre class="terminal rounded"><code>
-devnet run --port 5000
-               </code></pre>
-               <p>
-                  Otherwize you can also start the Built-in PHP server, by runing the following PHP command line in the terminal:
-               </p>
-               <pre class="terminal rounded"><code>
-php -S localhost:8000 -t webroot
-               </code></pre>
-               <p>
-                  The following image shows the application result in the browser:
-               </p>
-               <img src="../images/welcome.jpg" alt="Web app home page" width="100%" height="auto">
-               <br><br>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="console.html">
+                           <a class="nav-page-link" href="../overview.html">
                               <i class="chevron left"></i> Previous
                            </a>
                         </li>
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="../fundamentals/middleware.html">
+                           <a class="nav-page-link" href="console.html">
                               Next <i class="chevron right"></i>
                            </a>
                         </li>

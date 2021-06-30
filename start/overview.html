@@ -49,9 +49,8 @@
                   <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordion">
                      <ul class="sub-menu">
                         <li><a class="nav-link text-dark fw-bold" href="overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="start.html">Get Started</a></li>
                         <li><a class="nav-link text-dark" href="console.html">Console application</a></li>
-                        <li><a class="nav-link text-dark" href="web.html">Web application</a></li>
-                        <li><a class="nav-link text-dark" href="#4">Configuration</a></li>
                      </ul>
                   </div>
                   <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Fundamentals</a>
@@ -113,11 +112,15 @@
                <h1>Overview</h1>
                <hr>
                <p>
-                  Devnet framework is free open-source, PHP software and cross-platform, with high-performance, for building console and modern web application, with rapid application development tools.
+                  Devnet framework is free open-source software, and cross-platform, built in PHP with high-performance, for rapid application development, to build APIs, console and modern web application.
+               </p>
+               <h3>DevNet CLI</h3>
+               <p>
+                  DevNet Command-Line Interface is a tool that used for creating and running DevNet projects, built on the top of DevNet System, and can be extensible via plugins and packages.
                </p>
                <h3>Server requirements</h3>
                <p>
-                  Befor installing DevNet Framework, make sure your server meets the following requirements :
+                  Befor installing DevNet CLI, make sure your server meets the following requirements :
                   <ul style="color: #d63384;">
                      <li>PHP 7.4 or higher version</li>
                      <li>PDO PHP Extension</li>
@@ -129,121 +132,12 @@
                   also you can get Composer the PHP Dependency Manager from <a href="https://getcomposer.org/">getcomposer.org</a><br>
                   and you may need Git the distributed version control system from <a href="https://git-scm.com/">git-scm.com</a>
                </p>
-               <br>
-               <h3>Installing DevNet Cli</h3>
-               <p>
-                  <b>devnet/cli</b> is a command-line Interface tool, that used for creating and running DevNet projects.
-               </p>
-               <p>
-                  In order to install DevNet Cli Globally, and Because DevNet is still in development, we need first to config composer global minimum-stability to development.
-               </p>
-               <p>
-                  So in the terminal type the following command:
-               </p>
-               <pre class="terminal rounded"><code>
-composer global config minimum-stability dev
-               </code></pre>
-               <p>
-                  Then force composer to prefer the stable version if is was available, like so:
-               </p>
-               <pre class="terminal rounded"><code>
-composer global config prefer-stable true
-               </code></pre>
-               <p>
-                  To Install DevNet Cli globally, run the following command in the terminal:
-               </p>
-               <pre class="terminal rounded"><code>
-composer global require devnet/cli
-               </code></pre>
-               <p>
-                  This will run a minimal installation of DevNet Framework that allows you to create a console app only, but optionally you can add other DevNet packages later, like Web Components and Entity ORM.
-               </p>
-               <p>
-                  Optionally you can extend DevNet Cli by installing DevNet templates add-ons, to be able to create projects other than console projects like Web API and MVC projects, using the DevNet command-line.
-               </p>
-               <p>
-                  So in your terminal you can add DevNet Templates like this:
-               </p>
-               <pre class="terminal rounded"><code>
-composer global require devnet/templates
-               </code></pre>
-               <br>
-               <h3>Using DevNet Command:</h3>
-               <p>
-                  For the first start you can run the devnet command with the option <code>--version</code> in your terminal, to check the DevNet Cli version and see if it was installed properly, like so:
-               </p>
-               <pre class="terminal rounded"><code>
-devnet --version
-               </code></pre>
-               <h5>Output</h5>
-               <pre class="terminal rounded"><code>
-DevNet command-line interface v1.0.0
-Copyright (c) DevNet
-               </code></pre>
                <blockquote>
                   <p>
-                     <b>Note:</b>  Before using DevNet command make sure that the path of <code>vendor/bin</code> of your composer already added to your Environment Variables System, for example in Linux you must add this line to your system:<br>
+                     <b>Note:</b> Make sure that the path of <code>vendor/bin</code> of your composer already added to your Environment Variables System, for example in Linux you must add this line to your system:<br>
                      <code>export PATH="$PATH:$HOME/.config/composer/vendor/bin"</code>
                   </p>
                </blockquote>
-               <p>
-                  You can run also the devnet command with the option <code>--help</code> in your terminal, to show the help on how to use devent command-line tool, as shown below:
-               </p>
-               <pre class="terminal rounded"><code>
-devnet --help
-               </code></pre>
-               <h5>Output</h5>
-               <pre class="terminal rounded"><code>
-DevNet command-line interface v1.0.0
-Usage: devnet [options]
-
-Options:
-   --help      Show command line help.
-   --version   Show DevNet Cli version.
-   --path      Show DevNet runtime path.
-
-Usage: devnet [command] [arguments] [options]
-
-commands:
-   new   Create a new project
-   run   Run the DevNet applicaton
-   add   Add a template code file to the project
-
-Run 'devnet [command] --help' for more information on a command.
-               </code></pre>
-               <p>
-                  The Help shows a list of available commands and options that you can use with DevNet Cli.
-               </p>
-               <p>
-                  For more details about a command that you want to use, you can run it with the option --help like in the following example:
-               </p>
-               <pre class="terminal rounded"><code>
-devnet new --help
-               </code></pre>
-               <h5>Output</h5>
-               <pre class="terminal rounded"><code>
-Usage: devnet new [template] [arguments] [options]
-
-Options:
-   --help     Displays help for this command.
-   --project  Location to place the generated project.
-
-templates:
-   console    Console Applicatinon project
-   mvc        DevNet MVC Web Application Project
-   web        DevNet Web Application Project
-               </code></pre>
-               <p>
-                  The help shows a usage of the new command followed by the name of the project template that you want to create, and followed by options and arguments, and shows a list of options that you can use with the command and a list of templates that you can choose from to create your project.
-               </p>
-               <br/>
-               <h3>Uninstalling DevNet</h3>
-               <p>
-                  To uninstall DevNet Cli globally from your system, run the following command in the terminal:
-               </p>
-               <pre class="terminal rounded"><code>
-composer global remove devnet/cli
-               </code></pre>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
@@ -253,7 +147,7 @@ composer global remove devnet/cli
                            </a>
                         </li>
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="console.html">
+                           <a class="nav-page-link" href="start.html">
                               Next <i class="chevron right"></i>
                            </a>
                         </li>
