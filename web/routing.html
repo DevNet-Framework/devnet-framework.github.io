@@ -48,19 +48,20 @@
                   <a href="" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><span class="arrow"></span>Get Started</a>
                   <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark" href="../start/overview.html">Overview</a></li>
-                        <li><a class="nav-link text-dark" href="../start/console.html">Console application</a></li>
-                        <li><a class="nav-link text-dark" href="../start/web.html">Web application</a></li>
-                        <li><a class="nav-link text-dark" href="#">Configuration</a></li>
+                        <li><a class="nav-link text-dark" href="../cli/overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="../cli/start.html">Web application</a></li>
+                        <li><a class="nav-link text-dark" href="../cli/console.html">Console application</a></li>
                      </ul>
                   </div>
-                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Fundamentals</a>
+                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Web</a>
                   <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordion">
                      <ul class="sub-menu">
+                        <li><a class="nav-link text-dark" href="overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="start.html">Get Started</a></li>
                         <li><a class="nav-link text-dark" href="middleware.html">Middleware</a></li>
-                        <li><a class="nav-link text-dark" href="routing.html">Routing</a></li>
+                        <li><a class="nav-link text-dark fw-bold" href="routing.html">Routing</a></li>
                         <li><a class="nav-link text-dark" href="dependency.html">Dependency injection</a></li>
-                        <li><a class="nav-link text-dark fw-bold" href="exception.html">Error Handling</a></li>
+                        <li><a class="nav-link text-dark" href="exception.html">Error Handling</a></li>
                         <li><a class="nav-link text-dark" href="#">Http message</a></li>
                         <li><a class="nav-link text-dark" href="#">Security</a></li>
                      </ul>
@@ -110,35 +111,30 @@
                </nav>
             </aside>
             <article class="flex-grow-1" style="width: 400px;">
-               <h1>Error Handling</h1>
+               <h1>Routing</h1>
                <hr>
                <p>
-                  Exception Handler is enabled through the <code>configure</code> method by calling the extension method <code>useExceptionHandler</code> of the Appliction builder, which adds the pre-built <code>ExceptionHandlerMiddleware</code> to the request pipeline, and must be in the top order of all other middlewares as shown in code below:
+                  Router is a component responsible for matching incoming HTTP requests and dispatching those requests to the app's executable endpoints, which are executable actions responsible of request-handling, defined and configured in the application startup, and selected and executed when request URL matched a defined URL Pattern called Route Template.<br>
+                  The endpoint matching process can also filter HTTP request by allowing restraint HTTP Verbs and can extract values from the request's URL and provide those values for request processing.<br>
+                  Routing is also able to generate URLs that map to endpoints.
                </p>
-               <pre><code class="language-php">
-                  &lt;?php
-
-                  namespace Application;
-                  
-                  use DevNet\System\Async\Task;
-                  use DevNet\Core\Dependency\IServiceCollection;
-                  use DevNet\Core\Dispatcher\IApplicationBuilder;
-                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
-                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
-
-                  class Startup
-                  {
-                     ...
-                     public function configure(IApplicationBuilder $app)
-                     {
-                        $app->useExceptionHandler();
-
-                        // middlewars here
-
-                     }
-                  }
-               </code></pre>
-               <h3>Custom Error Handling</h3>
+               <h3>Routing basics</h3>
+               <p>
+                  Router is registered in the middleware pipeline in <code>Configure</code> method of <code>Startup</code> class.<br>
+                  by using a pair of middleware, defined by <code>useRouter()</code> and <code>useEndpoint(RouteCollection $routes)</code> methods:
+                  <ul>
+                     <li>
+                        UseRouter adds route matching middleware to the middleware pipeline, and this middleware looks at the set of endpoints defined in the app, and selects the best match based on the request.
+                     </li>
+                     <li>
+                        UseEndpoint adds endpoint execution middleware to the middleware pipeline, which this one runs the request delegate associated with the selected endpoint.
+                     </li>
+                  </ul>
+               </p>
+               <p>
+                  The following code below shows a basic routing example, write <code>"Hello World!"</code> to the HTTP response, when an HTTP GET request is sent to the root URL <code>"/"</code>, which is By default is <code>https://localhost:8000/</code><br>
+                  else If the request doesn't matche any route, an HTTP 404 page not found is returned.
+               </p>
                <pre><code class="language-php">
                   &lt;?php
 
@@ -156,37 +152,119 @@
                      ...
                      public function configure(IApplicationBuilder $app)
                      {
-                        $app->useExceptionHandler("/error");
-
                         $app->useRouter();
 
                         // middlewars here
 
-                        $app->useEndpoint(function($routes)
-                        {
-                           $routes->mapGet("/error", function(HttpContext $context) : Task
+                        $app->useEndpoint(function($routes) {
+                           $routes->mapGet("/", function(HttpContext $context) : Task
                            {
-                              $error = $context->Error;
-
-                              switch ($error->getCode())
-                              {
-                                 case 404:
-                                    $context->Response->Body->write("&lt;h1>404 : Page not found&lt;/h1>");
-                                    break;
-                                 case 403:
-                                    $context->Response->Body->write("&lt;h1>403 : Forbidden Access&lt;/h1>");
-                                    break;
-                                 default:
-                                    $context->Response->Body->write("&lt;h1>500 : Unexpected Error&lt;/h1>");
-                                    break;
-                              }
-
+                              $context->Response->Body->write("Hello World!");
                               return Task::completedTask();
                            });
-                        }
+                        });
                      }
                   }
                </code></pre>
+               <p>
+                  The following table shows the avalible routing methods and their discriptions.
+               </p>
+               <table class="table">
+                  <thead>
+                  <tr>
+                     <th scope="col">Method</th>
+                     <th scope="col">Parameters</th>
+                     <th scope="col">Discription</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                     <td>mapGet</td>
+                     <td>(string $routeTemplate, closure $requestDelegate)</td>
+                     <td>Accept only HTTP GET verb</td>
+                  </tr>
+                  <tr>
+                     <td>mapPost</td>
+                     <td>(string $routeTemplate, closure $requestDelegate)</td>
+                     <td>Accept only HTTP POST verb</td>
+                  </tr>
+                  <tr>
+                     <td>mapPut</td>
+                     <td>(string $routeTemplate, closure $requestDelegate)</td>
+                     <td>Accept only HTTP PUT verb</td>
+                  </tr>
+                  <tr>
+                     <td>mapDelete</td>
+                     <td>(string $routeTemplate, closure $requestDelegate)</td>
+                     <td>Accept only HTTP DELETE verb</td>
+                  </tr>
+                  <tr>
+                     <td>mapVerb</td>
+                     <td>(string $verb, string $routeTemplate, closure $requestDelegate)</td>
+                     <td>Accept defined HTTP verb</td>
+                  </tr>
+                  <tr>
+                     <td>mapRoute</td>
+                     <td>(string $routeName, string $routeTemplate, closure $requestDelegate)</td>
+                     <td>Accept any HTTP verb</td>
+                  </tr>
+                  </tbody>
+               </table>
+               <h3>Route Template</h3>
+               <p>
+                  A route template is a string pattern composed of segments, separated by slash <code>"/"</code> used to define how the endpoint matches the URL Path, by splitting the URL path into segments and matching each segment with the route pattern segment in the same corresponding order.
+               </p>
+               <p>
+                  the segment pattern can be literal or parameter enclosed in curly brackets <code>"{ }"</code> to hold a potential value of its corresponding mached URL segment, and this parameter can be mandatory or optionally by adding interrogation point <code>"?"</code> or it can have a default value using equal sign <code>"="</code> after the route parameter name followed by a value.
+               </p>
+               <p>
+                  The following code example, shows a simple get route with a simple request handler in form callback function, when the router matches the route <code>/hello/{name}</code> the handler retrieve the value of the parameter <code>{name}</code> from <code>HttpContext</code> and write it to the response:
+               </p>
+               <pre><code class="language-php">
+                  ...
+                  $app->useEndpoint(function($routes) {
+                     $routes->mapGet("/hello/{name}", function(HttpContext $context) : Task
+                     {
+                        $name = $context->RouteValues["name"];
+                        $context->Response->Body->write("Hello {$name}!");
+                        return Task::completedTask();
+                     });
+                  });
+               </code></pre>
+               <p>
+                  The following table demonstrates a list of route templates examples and their behaviors:
+               </p>
+               <table class="table">
+                  <thead>
+                  <tr>
+                     <th scope="col" class="col-3">Route Template</th>
+                     <th scope="col" class="col-3">URI Matching</th>
+                     <th scope="col" class="col-6">Discription</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                     <td>/contact</td>
+                     <td>/contact</td>
+                     <td>Matches only the literal path /contact.</td>
+                  </tr>
+                  <tr>
+                     <td>/{page}</td>
+                     <td>/about</td>
+                     <td>Mandatory matches and sets {page} to the matched segment "about"</td>
+                  </tr>
+                  <tr>
+                     <td>/{page?}</td>
+                     <td>/</td>
+                     <td>Optionally matches and sets {page} to the matched segment, else set to null</td>
+                  </tr>
+                  <tr>
+                     <td>/{page=Home}</td>
+                     <td>/</td>
+                     <td>Optionally matches and sets {page} to the matched segment, else set to default value "Home"</td>
+                  </tr>
+                  </tbody>
+               </table>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
@@ -196,7 +274,7 @@
                            </a>
                         </li>
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="../mvc/overview.html">
+                           <a class="nav-page-link" href="dependency.html">
                               Next <i class="chevron right"></i>
                            </a>
                         </li>

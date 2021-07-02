@@ -40,29 +40,28 @@
       </nav>
    </header>
    <main role="main" class="pb-3 bg-white">
-      <br>
       <div class="container">
+         <br>
          <div class="row">
             <aside style="width: 260px;">
                <nav id="accordion">
-                  <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><span class="arrow"></span>Get Started</a>
+                  <a href="" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><span class="arrow"></span>Get Started</a>
                   <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark" href="overview.html">Overview</a></li>
-                        <li><a class="nav-link text-dark" href="console.html">Console application</a></li>
-                        <li><a class="nav-link text-dark" href="web.html">Web application</a></li>
-                        <li><a class="nav-link text-dark" href="#">Configuration</a></li>
+                        <li><a class="nav-link text-dark" href="../cli/overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="../cli/start.html">Web application</a></li>
+                        <li><a class="nav-link text-dark" href="../cli/console.html">Console application</a></li>
                      </ul>
                   </div>
-                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Fundamentals</a>
+                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><span class="arrow"></span>Web</a>
                   <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark fw-bold" href="../fundamentals/overview.html">Overview</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/start.html">Get Started</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/middleware.html">Middleware</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/routing.html">Routing</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/dependency.html">Dependency injection</a></li>
-                        <li><a class="nav-link text-dark" href="../fundamentals/exception.html">Error Handling</a></li>
+                        <li><a class="nav-link text-dark" href="overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="start.html">Get Started</a></li>
+                        <li><a class="nav-link text-dark fw-bold" href="middleware.html">Middleware</a></li>
+                        <li><a class="nav-link text-dark" href="routing.html">Routing</a></li>
+                        <li><a class="nav-link text-dark" href="dependency.html">Dependency injection</a></li>
+                        <li><a class="nav-link text-dark" href="exception.html">Error Handling</a></li>
                         <li><a class="nav-link text-dark" href="#">Http message</a></li>
                         <li><a class="nav-link text-dark" href="#">Security</a></li>
                      </ul>
@@ -112,27 +111,152 @@
                </nav>
             </aside>
             <article class="flex-grow-1" style="width: 400px;">
-               <h1>Overview</h1>
+               <h1>Middleware</h1>
                <hr>
+               <h3>Registering middleware</h3>
                <p>
-                  DevNet Core is the heart of the DevNet framework, it's a collection of web components that helps you quickly write powerful web applications and APIs. it has in its core architecture a Middleware dispatcher that receives an HTTP request through a chain of middlewares till reaches the Endpoint and invokes an appropriate Request handler that returns an HTTP response.
+                  Middlewares are configured using <code>use</code> methods on the IApplicationBuilder type that is passed into the <code>configure(IApplicationBuilder $app)</code> method in the <code>startup</code> class. 
                </p>
                <p>
-                  <b>Middlewares:</b> are software components that are chained into the application pipeline to handle Http requests and responses, Each middleware component in the request pipeline is responsible for invoking the next component called Request Delegate, till reach the endpoint of the application, and can perform work before and after the next component in the pipeline or short-circuiting the chain in case of filtring not allowed requests.
+                  A middleware can be specified in-line as an anonymous method, or it can be defined in a reusable class implement <code>IMiddleware</code> interface, these reusable classes are middlewares, or middleware components,
+                  and each middleware component in the request pipeline is responsible for invoking the next component in the pipeline, or short-circuiting the chain if appropriate.
                </p>
-               <br>
-               <img src="../images/middleware1.svg" alt="Web app home page" width="100%" height="auto">
-               <br><br>
+               <p>
+                  The following example class <code>MyMiddleware</code> is an implemention of <code>IMiddleware</code> interface.
+               </p>
+               <pre><code class="language-php">
+                  &lt;?php
+                  
+                  namespace Application\Middlewares;
+
+                  use DevNet\System\Async\Task;
+                  use DevNet\Core\Dispatcher\IMiddleware;
+                  use DevNet\Core\Dispatcher\RequestDelegate;
+                  use DevNet\Core\Http\HttpContext;
+
+                  class MyMiddleware implements IMiddleware
+                  {
+                     public function __invoke(HttpContext $context, RequestDelegate $next) : Task
+                     {
+                        // can short-circuiting the pipeline if does not fulfil the condition.
+                        if (!$context->User)
+                        {
+                           return Task::completedTask();
+                        }
+                        // can do some work befor the next delegate.
+                        $next($context);
+                        // can do some work after the next delegate.
+                     }
+                  }
+               </code></pre>
+               <p>
+                  Using the <code>MyMiddleware</code> in the configuration:
+               </p>
+               <pre><code class="language-php">
+                  &lt;?php
+                  
+                  use DevNet\Core\Dependency\IServiceCollection;
+                  use DevNet\Core\Dispatcher\IApplicationBuilder;
+                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+                  use Application\Middlewares\MyMiddleware;
+
+                  class Startup
+                  {
+                     ...
+                     public function configure(IApplicationBuilder $app)
+                     {
+                        $app->useRouter();
+
+                        $app->use(MyMiddleware::class);
+
+                        $app->useEndpoint(function($routes)
+                        {
+                           $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                        });
+                     }
+                  }
+               </code></pre>
+               <p>
+                  You can also use middleware as anonymous function directley into the application:
+               </p>
+               <pre><code class="language-php">
+                  &lt;?php
+                  
+                  use DevNet\System\Async\Task;
+                  use DevNet\Core\Dependency\IServiceCollection;
+                  use DevNet\Core\Dispatcher\IApplicationBuilder;
+                  use DevNet\Core\Extensions\ServiceCollectionExtensions;
+                  use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+                  use DevNet\Core\Http\HttpContext;
+
+                  class Startup
+                  {
+                     ...
+                     public function configure(IApplicationBuilder $app)
+                     {
+                        $app->useRouter();
+
+                        $app->use(function(HttpContext $context, RequestDelegate $next) : Task {
+                           
+                           // can short-circuiting the pipeline if does not fulfil the condition.
+                           if (!$context->User)
+                           {
+                              return Task::completedTask();
+                           }
+                           // can do some work befor the next delegate.
+                           $next($context);
+                           // can do some work after the next delegate.
+                        });
+
+                        $app->useEndpoint(function($routes) {
+                           $routes->mapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                       });
+                     }
+                  }
+               </code></pre>
+               
+               <h3>Built-in middleware</h3>
+               <table class="table">
+                  <thead>
+                  <tr>
+                     <th scope="col">Middleware</th>
+                     <th scope="col">Discription</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                     <td>UseExceptionHandler</td>
+                     <td>add ExceptionHandler middleware to the pipeline</td>
+                  </tr>
+                  <tr>
+                     <td>useRouter</td>
+                     <td>add Router matcher middleware to the pipeline</td>
+                  </tr>
+                  <tr>
+                     <td>useAuthentication</td>
+                     <td>add Authentication middleware to the pipeline</td>
+                  </tr>
+                  <tr>
+                     <td>useAuthorization</td>
+                     <td>add Authorization middleware to the pipeline</td>
+                  </tr>
+                  <tr>
+                     <td>UseEndpoint</td>
+                     <td>add Endpoint dispatcher middleware to the pipeline</td>
+                  </tr>
+                  </tbody>
+               </table>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="../start/console.html">
+                           <a class="nav-page-link" href="start.html">
                               <i class="chevron left"></i> Previous
                            </a>
                         </li>
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="start.html">
+                           <a class="nav-page-link" href="routing.html">
                               Next <i class="chevron right"></i>
                            </a>
                         </li>
