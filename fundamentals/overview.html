@@ -53,10 +53,10 @@
                         <li><a class="nav-link text-dark" href="../cli/console.html">Console application</a></li>
                      </ul>
                   </div>
-                  <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix"><span class="arrow"></span>Fundamentals</a>
-                  <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-bs-parent="#accordion">
+                  <a href="#" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix"><span class="arrow"></span>Fundamentals</a>
+                  <div id="collapseSix" class="collapse show" aria-labelledby="headingSix" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark" href="../fundamentals/overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark fw-bold" href="overview.html">Overview</a></li>
                         <li><a class="nav-link text-dark" href="#">Generic Collections</a></li>
                         <li><a class="nav-link text-dark" href="#">Event Delegat</a></li>
                         <li><a class="nav-link text-dark" href="#">Async Tasks</a></li>
@@ -89,14 +89,14 @@
                         <li><a class="nav-link text-dark" href="../mvc/filters.html">Filters</a></li>
                      </ul>
                   </div>
-                  <a href="" class="menu" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><span class="arrow"></span>Entity ORM</a>
-                  <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-bs-parent="#accordion">
+                  <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><span class="arrow"></span>Entity ORM</a>
+                  <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-bs-parent="#accordion">
                      <ul class="sub-menu">
-                        <li><a class="nav-link text-dark" href="overview.html">Overview</a></li>
-                        <li><a class="nav-link text-dark" href="model.html">Model</a></li>
-                        <li><a class="nav-link text-dark" href="querying.html">Querying Data</a></li>
-                        <li><a class="nav-link text-dark fw-bold" href="saving.html#4">Saving Data</a></li>
-                        <li><a class="nav-link text-dark" href="relationships.html">Relationships</a></li>
+                        <li><a class="nav-link text-dark" href="../entity/overview.html">Overview</a></li>
+                        <li><a class="nav-link text-dark" href="../entity/model.html">Model</a></li>
+                        <li><a class="nav-link text-dark" href="../entity/querying.html">Querying Data</a></li>
+                        <li><a class="nav-link text-dark" href="../entity/saving.html#4">Saving Data</a></li>
+                        <li><a class="nav-link text-dark" href="../entity/relationships.html">Relationships</a></li>
                      </ul>
                   </div>
                   <a href="#" class="menu collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive"><span class="arrow"></span>Identity Manager</a>
@@ -111,82 +111,47 @@
                </nav>
             </aside>
             <article class="flex-grow-1" style="width: 400px;">
-               <h1>Saving Data</h1>
+               <h1>Overview</h1>
                <hr>
                <p>
-                  Each <code>Entitycontext</code> instance has a change tracker that is responsible for keeping track of changes that need to be written to the database. As you make changes to instances of your entity classes, these changes are recorded in the <code>EntityStateManager</code> and then written to the database when you call the <code>Save()</code> method, The database provider is responsible for translating the changes into database-specific operations (for example, INSERT, UPDATE, and DELETE commands for a relational database).
+                  DevNet System library is the fundamental infrastructure of DevNet Framework, which includes the following components:
                </p>
-               <h3>Adding Data</h3>
                <p>
-                  Use the method <code>EntitySet::add(IEntity $entity)</code> to add new instances of your entity classes, and the data will be inserted in the database when you call the method <code>EntityContext::save()</code>.
+                  <ul>
+                     <li>Generic Collection</li>
+                     <li>Evnet Delegate</li>
+                     <li>Async Task</li>
+                     <li>Extension Method</li>
+                     <li>Linq Method</li>
+                     <li>Database Connector</li>
+                     <li>Generic Compiler</li>
+                  </ul>
                </p>
-               <pre><code class="language-php">
-                  &lt;?php
-
-                  namespace Application\Controllers;
-
-                  use DevNet\Core\Controller\AbstractController;
-                  use DevNet\Core\Controller\IActionResult;
-                  use DevNet\Entity\EntityContext;
-
-                  class StudentController extends AbstractController
-                  {
-                     private EntityContext $DbManager;
-
-                     public function __construct(EntityContext $dbManager)
-                     {
-                        $this->DbManager = $dbManager;
-                     }
-                     
-                     public function create($name) : IActionResult
-                     {
-                        $student = new student();
-                        $student->Name = $name;
-
-                        $students = $this->DbManager->Students;
-                        $students->add($student);
-                        $this->DbManager->save();
-                     }
-                  }
-               </code></pre>
-               <h3>Updating Data</h3>
+               <h3>Requirements</h3>
                <p>
-                  To update to the databaase, simply modify the values assigned to properties of a particular entity and then call the method <code>EntityContext::save()</code>, Entity ORM will automatically detect the changes made to an existing entity that is tracked by the context, this includes entities that you load from the database and entities that were previously added and saved to the database.
+                  <ul style="color: #d63384;">
+                     <li>PHP 7.4 or higher version</li>
+                     <li>Composer Dependency Manager</li>
+                  </ul>
                </p>
-               <pre><code class="language-php">
-                  ...
-                  public function update() : IActionResult
-                  {
-                     $students = $this->Entity->set(student::class);
-                     $student = $students->find(1);
-                     $student->Name = "Ted";
-                     $this->Entity->save();
-                  }
-               </code></pre>
-               <h3>Deleteing Data</h3>
+               <h3>installation</h3>
                <p>
-                  Use the method <code>EntitySet::remove(IEntity $entity)</code> to delete instances of your entity classes, If the entity already exists in the database, it will be deleted during saving the Changes, if the entity has not yet been saved to the database, then it will be removed from the context and will not be inserted when the method <code>EntityContext::save()</code> is called.
+                  If you already installed DevNet CLI or created an DevNet Project, you have already the System Library included in your project, but you can install DevNet System as a third-party library for any framework project, by running the following command in the terminal:
                </p>
-               <pre><code class="language-php">
-                  ...
-                  public function delete() : IActionResult
-                  {
-                     $students = $this->Entity->set(student::class);
-                     $student = $students->find(1);
-                     $students->delete($student);
-                     $this->Entity->save();
-                  }
+               <pre class="terminal rounded"><code>
+composer require devnet/system
                </code></pre>
+               <br>
                <footer>
                   <nav class="no-print" aria-label="Page navigation">
                      <ul class="nav-page">
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="querying.html">
+                           <a class="nav-page-link" href="../index.html">
                               <i class="chevron left"></i> Previous
                            </a>
                         </li>
                         <li class="nav-page-item">
-                           <a class="nav-page-link" href="relationships.html">
+                           <a class="nav-page-link" href="start.html">
                               Next <i class="chevron right"></i>
                            </a>
                         </li>
