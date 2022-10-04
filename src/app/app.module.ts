@@ -7,6 +7,7 @@ import { StartModule } from './start/start.module';
 import { CoreModule } from './core/core.module';
 import { ConsoleModule } from './console/console.module';
 import { WebModule } from './web/web.module';
+import { EntityModule } from './entity/entity.module';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -26,6 +27,7 @@ import { DocsComponent } from './docs/docs.component';
     CoreModule,
     ConsoleModule,
     WebModule,
+    EntityModule,
     AppRoutingModule,
     SharedModule
   ],
