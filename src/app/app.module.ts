@@ -6,6 +6,7 @@ import { SharedModule } from './shared/shared.module';
 import { StartModule } from './start/start.module';
 import { CoreModule } from './core/core.module';
 import { ConsoleModule } from './console/console.module';
+import { WebModule } from './web/web.module';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -24,6 +25,7 @@ import { DocsComponent } from './docs/docs.component';
     StartModule,
     CoreModule,
     ConsoleModule,
+    WebModule,
     AppRoutingModule,
     SharedModule
   ],
