@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
+import { StartModule } from './start/start.module';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -18,6 +19,7 @@ import { DocsComponent } from './docs/docs.component';
   ],
   imports: [
     BrowserModule,
+    StartModule,
     AppRoutingModule,
     SharedModule
   ],
