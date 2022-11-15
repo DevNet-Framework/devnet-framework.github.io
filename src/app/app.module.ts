@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { StartModule } from './start/start.module';
+import { SetupModule } from './setup/setup.module';
 import { CoreModule } from './core/core.module';
 import { ConsoleModule } from './console/console.module';
 import { WebModule } from './web/web.module';
@@ -24,7 +24,7 @@ import { DocsComponent } from './docs/docs.component';
   ],
   imports: [
     BrowserModule,
-    StartModule,
+    SetupModule,
     CoreModule,
     ConsoleModule,
     WebModule,
