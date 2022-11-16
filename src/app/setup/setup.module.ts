@@ -4,11 +4,13 @@ import { SetupRoutingModule } from './setup-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { OverviewComponent } from './overview/overview.component';
 import { InstallationComponent } from './installation/installation.component';
+import { DeploymentComponent } from './deployment/deployment.component';
 
 @NgModule({
   declarations: [
     OverviewComponent,
-    InstallationComponent
+    InstallationComponent,
+    DeploymentComponent
   ],
   imports: [
     CommonModule,
