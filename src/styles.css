@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.nav-page {
+  display: table;
+  list-style: none;
+  width: 100%;
+  margin: 20px 0px;
+  padding: 20px 5px;
+}
+
+.nav-page-item {
+  display: table-cell;
+}
+
+.nav-page-item:last-child {
+  text-align: right;
+}
+
+.nav-page-link {
+  border: none;
+  text-decoration: none;
+  color: #595959;
+}
+
+.nav-page-link:hover {
+  color: #17a2b8 !important;
+}
+
+.chevron {
+  padding: 3px;
+  display: inline-block;
+  border: solid #7f7f7f;
+  border-width: 0 3px 3px 0;
+}
+
+.chevron.right {
+  transform: rotate(-45deg) translate(1px, -1px);
+  -webkit-transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.chevron.left {
+  transform: rotate(135deg) translate(-1px, 1px);
+  -webkit-transform: rotate(135deg) translate(-1px, 1px);
+}
