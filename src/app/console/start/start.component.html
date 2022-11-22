@@ -1,0 +1,76 @@
+<div class="container pt-3">
+  <div class="row">
+    <div id="sidebar" style="width: 260px;">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div id="content" class="flex-grow-1" style="width: 400px;">
+      <article>
+        <h1>Console Application</h1>
+        <hr>
+        <p>
+          This chapter shows how to create and run a DevNet console application.
+        </p>
+        <h3>Create Console Project</h3>
+        <p>
+          To create a DevNet console project, enter the command below in the Terminal, where the argument <code>project-name</code> is any name you give to your project:
+        </p>
+        <pre><code class="language-shell">devnet new console --output project-name</code></pre>
+        <h4>Project Structure</h4>
+        <p>
+          DevNet CLI will create a simple console template with the following project structure:
+        </p>
+        <pre><code class="language-shell">console-project/
+├── bin/
+|   ├── apphost
+|   ├── run.bat
+|   └── run
+├── vendor/
+├── devnet.proj
+└── Program.php</code></pre>
+        <h4>Entry Point</h4>
+        <p>
+          By default, the entry point is the static method <code>Application\Program::main(array $args)</code>, but you can change that in the project file <code>devnet.proj</code>
+        </p>
+        <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+
+class Program
+&lcub;
+    public static function main(array $args = [])
+    &lcub;
+        Console::writeLine("Hello World!");
+    }
+}</code></pre>
+        <br>
+        <h3>Run The Application</h3>
+        <p>
+          To run the console application, run the following command in the Terminal :
+        </p>
+        <pre><code class="language-shell">devnet run</code></pre>
+        <p>
+          The program displays a <samp>"Hello World!"</samp> message in the console and ends.
+        </p>
+        <pre><code class="language-shell">Hello World!</code></pre>
+        <footer>
+          <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+              <li class="nav-page-item">
+                <a class="nav-page-link" routerLink="/docs/setup/deployment">
+                  <i class="chevron left"></i> Previous
+                </a>
+              </li>
+              <li class="nav-page-item">
+                <a class="nav-page-link" routerLink="/docs/console/output">
+                  Next <i class="chevron right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+      </article>
+    </div>
+  </div>
+</div>
