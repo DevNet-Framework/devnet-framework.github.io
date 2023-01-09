@@ -6,13 +6,15 @@ import { StartComponent } from './start/start.component';
 import { HttpComponent } from './http/http.component';
 import { RoutingComponent } from './routing/routing.component';
 import { ControllerComponent } from './controller/controller.component';
+import { ViewComponent } from './view/view.component';
 
 @NgModule({
   declarations: [
     StartComponent,
     HttpComponent,
     RoutingComponent,
-    ControllerComponent
+    ControllerComponent,
+    ViewComponent
   ],
   imports: [
     CommonModule,
