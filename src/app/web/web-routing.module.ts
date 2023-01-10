@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ControllerComponent } from './controller/controller.component';
 import { HttpComponent } from './http/http.component';
+import { LayoutComponent } from './layout/layout.component';
 import { RoutingComponent } from './routing/routing.component';
 import { StartComponent } from './start/start.component';
 import { ViewComponent } from './view/view.component';
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'docs/web/routing', component: RoutingComponent },
   { path: 'docs/web/controller', component: ControllerComponent },
   { path: 'docs/web/view', component: ViewComponent },
+  { path: 'docs/web/layout', component: LayoutComponent },
   { path: 'docs/web', redirectTo: 'docs/web/start', pathMatch: 'full' }
 ];
 

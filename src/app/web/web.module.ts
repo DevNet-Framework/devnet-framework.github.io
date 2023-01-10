@@ -7,6 +7,7 @@ import { HttpComponent } from './http/http.component';
 import { RoutingComponent } from './routing/routing.component';
 import { ControllerComponent } from './controller/controller.component';
 import { ViewComponent } from './view/view.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ViewComponent } from './view/view.component';
     HttpComponent,
     RoutingComponent,
     ControllerComponent,
-    ViewComponent
+    ViewComponent,
+    LayoutComponent
   ],
   imports: [
     CommonModule,
