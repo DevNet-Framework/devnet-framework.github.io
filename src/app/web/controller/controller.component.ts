@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'app-controller',
+  selector: 'web-controller',
   templateUrl: './controller.component.html',
   styleUrls: ['./controller.component.css']
 })

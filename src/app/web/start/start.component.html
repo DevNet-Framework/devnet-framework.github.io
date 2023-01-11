@@ -55,34 +55,34 @@
         </p>
         <pre><code class="language-php">&lt;?php
   
-  namespace Application;
-  
-  use DevNet\System\IO\Console;
-  
-  class Program
-  &lcub;
-      public static function main(array $args = [])
-      &lcub;
-          $builder = WebHost::createDefaultBuilder($args);
-          $configuration = $builder->ConfigBuilder->build();
-  
-          $builder->configureServices(function ($services) use ($configuration) &lcub;
-              // services
-          });
-  
-          $host = $builder->build();
-  
-          $host->start(function ($app) &lcub;
-              // middlewares
-              $app->UseExceptionHandler();
-              $app->useRouter();
-              $app->useEndpoint(function ($routes) &lcub;
-                  // routes
-                  $routes->mapGet("/", fn ($context) => $context->Response->writeAsync("Hello World!"));
-              });
-          });
-      }
-  }</code></pre>
+namespace Application;
+
+use DevNet\System\IO\Console;
+
+class Program
+&lcub;
+    public static function main(array $args = [])
+    &lcub;
+        $builder = WebHost::createDefaultBuilder($args);
+        $configuration = $builder->ConfigBuilder->build();
+
+        $builder->configureServices(function ($services) use ($configuration) &lcub;
+            // services
+        });
+
+        $host = $builder->build();
+
+        $host->start(function ($app) &lcub;
+            // middlewares
+            $app->UseExceptionHandler();
+            $app->useRouter();
+            $app->useEndpoint(function ($routes) &lcub;
+                // routes
+                $routes->mapGet("/", fn ($context) => $context->Response->writeAsync("Hello World!"));
+            });
+        });
+    }
+}</code></pre>
         <br>
         <h3>Run The Application</h3>
         <p>
