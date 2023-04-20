@@ -33,8 +33,6 @@
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
 use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Http\HttpContext;
-use DevNet\System\Async\Tasks\Task;
 ...
 
 $host->start(function ($app) &lcub;
@@ -43,7 +41,7 @@ $host->start(function ($app) &lcub;
   // additional middlewares here
   $app->useEndpoint(function ($routes) &lcub;
       // routes
-      $routes->mapGet("/", fn ($context) => $context->Response->writeAsync("Hello World!"));
+      $routes->mapGet("/", fn () => "Hello World!");
   });
 });</code></pre>
         <p>
@@ -58,23 +56,23 @@ $host->start(function ($app) &lcub;
           </thead>
           <tbody>
             <tr>
-              <td><code>mapGet(string $pattern Closure $handler)</code></td>
+              <td><code>mapGet(string $pattern callable $handler)</code></td>
               <td>Accept only HTTP GET verb</td>
             </tr>
             <tr>
-              <td><code>mapPost(string $pattern, Closure $handler)</code></td>
+              <td><code>mapPost(string $pattern, callable $handler)</code></td>
               <td>Accept only HTTP POST verb</td>
             </tr>
             <tr>
-              <td><code>mapPut(string $pattern, Closure $handler)</code></td>
+              <td><code>mapPut(string $pattern, callable $handler)</code></td>
               <td>Accept only HTTP PUT verb</td>
             </tr>
             <tr>
-              <td><code>mapDelete(string $pattern, Closure $handler)</code></td>
+              <td><code>mapDelete(string $pattern, callable $handler)</code></td>
               <td>Accept only HTTP DELETE verb</td>
             </tr>
             <tr>
-              <td><code>mapVerb(string $verb, string $pattern, Closure $handler)</code></td>
+              <td><code>mapVerb(string $verb, string $pattern, callable $handler)</code></td>
               <td>Accept defined HTTP verb</td>
             </tr>
             <tr>
@@ -83,6 +81,28 @@ $host->start(function ($app) &lcub;
             </tr>
           </tbody>
         </table>
+        <br>
+        <h3>Async Handler</h3>
+        <p>
+          DevNet route can accept the Request Handler as an async function to handle the HTTP request asynchronously, like in the following example:
+        </p>
+        <pre><code class="language-php">&lt;?php
+
+use DevNet\Web\Http\Client\HttpClient;
+use DevNet\Web\Http\HttpContext;
+
+use function Devnet\System\async;
+use function Devnet\System\await;
+...
+
+$app->useEndpoint(function($routes) &lcub;
+    $routes->mapGet("/", async(function(HttpContext $context)
+    &lcub;
+        $client  = new HttpClient();
+        $content = await($client->getStringAsync('www.example.com'));
+        await($context->Response->writeAsync($content));
+    }));
+});</code></pre>
         <br>
         <h3>Route Template</h3>
         <p>
@@ -171,7 +191,7 @@ $app->useEndpoint(function($routes) &lcub;
           <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">
               <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/http">
+                <a class="nav-page-link" routerLink="/docs/web/middleware">
                   <i class="chevron left"></i> Previous
                 </a>
               </li>

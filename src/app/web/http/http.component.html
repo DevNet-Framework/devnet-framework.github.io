@@ -85,20 +85,23 @@ $task = $httpContext->Response->writeJsonAsync($object);</code></pre>
           
 use DevNet\Web\Http\Client\HttpClient;
 
-...
-$app->useEndpoint(function($routes) &lcub;
-    $routes->mapGet("/example", function($context) &lcub;
-      $client = new HttpClient();
-      $response = yield $client->requestAsync('GET', 'www.example.com');
-      $content = $response->Boby->read();
-      yield $context->Response->writeAsync($content);
-    });
-});</code></pre>
+use function Devnet\System\async;
+use function Devnet\System\await;
+
+$action = async(function(): string &lcub;
+    $client   = new HttpClient();
+    $task     = $client->requestAsync('GET', 'www.example.com');
+    $response = await($task);
+    $content  = $response->Boby->read();
+    return $content;
+});
+
+$task = $action();</code></pre>
         <br>
         <h6>Send request content</h6>
-        <pre><code class="language-php">$formData = "Username=john_doe&Password=123456";
-$requestContent = new HttpRequestContent('application/x-www-form-urlencoded', $formData);
-$task = $client->requestAsync('POST', 'www.example.com', $requestContent);</code></pre>
+        <pre><code class="language-php">$form    = "Username=john_doe&Password=123456";
+$content = new HttpRequestContent('application/x-www-form-urlencoded', $form);
+$task    = $client->requestAsync('POST', 'www.example.com', $content);</code></pre>
         <br>
         <h6>Send HTTP method request using short calls</h6>
         <pre><code class="language-php">$task = $client->getRequestAsync('www.example.com', $requestContent);
@@ -117,7 +120,7 @@ $task = $client->deleteRequestAsync('www.example.com', $requestContent);</code><
                 </a>
               </li>
               <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/routing">
+                <a class="nav-page-link" routerLink="/docs/web/middleware">
                   Next <i class="chevron right"></i>
                 </a>
               </li>

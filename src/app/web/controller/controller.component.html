@@ -103,6 +103,34 @@ class HelloController extends AbstractController
           </tbody>
         </table>
         <br>
+        <h3>Async Action</h3>
+        <p>
+          DevNet Controller can use async method to handle the HTTP request asynchronously.
+        </p>
+        <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\System\Async\Task;
+use DevNet\Web\Controller\AbstractController;
+use DevNet\Web\Controller\IActionResult;
+
+use function Devnet\System\await;
+
+class HelloController extends AbstractController
+&lcub;
+    public function async_index(): IActionResult
+    &lcub;
+      $task = Task::run(function () &lcub;
+          return "Hello World!";
+      });
+
+      $content = await($task);
+
+      return $this->content($content);
+    }
+}</code></pre>
+        <br>
         <h3>Action Method Parameters</h3>
         <p>
           Every action methods can have parameters as input data and can be primitive data type or complex type parameters, and

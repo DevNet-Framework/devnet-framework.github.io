@@ -78,7 +78,7 @@ class Program
             $app->useRouter();
             $app->useEndpoint(function ($routes) &lcub;
                 // routes
-                $routes->mapGet("/", fn ($context) => $context->Response->writeAsync("Hello World!"));
+                $routes->mapGet("/", fn () => "Hello World!");
             });
         });
     }
