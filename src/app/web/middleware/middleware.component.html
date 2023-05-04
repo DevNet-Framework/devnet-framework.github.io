@@ -1,0 +1,143 @@
+<div class="container pt-3">
+  <div class="row">
+    <div id="sidebar" style="width: 260px;">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div id="content" class="flex-grow-1" style="width: 400px;">
+      <article>
+        <h1>Middleware</h1>
+        <hr>
+        <p>
+          Middlewares are software components that are chained into the application pipeline to handle HTTP requests and responses, Each middleware component in the request pipeline is responsible for invoking the next component called Request Delegate, till reaching the endpoint of the application, and can perform work before and after the next component in the pipeline or short-circuiting the chain to prevent the next middlewares from processing the request.
+        </p>
+        <p>
+          The following diagram represents the DevNet request pipeline, which consists of a sequence of request delegates, called one after the other.
+        </p>
+        <br>
+        <img src="assets/images/middleware.svg" alt="Web app home page" width="100%" height="auto">
+        <br><br>
+        <br>
+        <p>
+          The following code represents an example of a middleware class called <code>RedirectMiddleware::class</code>, it redirects the old URL requested that has been changed permanently to the new URL before the request gets to the Router middleware.
+        </p>
+        <pre><code class="language-php">&lt;?php
+                  
+namespace Application\Middlewares;
+
+use DevNet\System\MethodTrait;
+use DevNet\Web\Http\HttpContext;
+use DevNet\Web\Middleware\IMiddleware;
+use DevNet\Web\Middleware\RequestDelegate;
+
+use function Devnet\System\await;
+
+class RedirectMiddleware implements IMiddleware
+&lcub;
+    use MethodTrait;
+    
+    public function async_invoke(HttpContext $context, RequestDelegate $next): void
+    &lcub;
+        // short-circuiting the pipeline if the condition is fulfilled.
+        if ($context->Request->Uri->Path == "/old/path") &lcub;
+            $context->Response->setStatusCode(301);
+            $context->Response->redirect("/new/path");
+            return;
+        }
+        // await next request delegate to chain the pipline to the next middleware or endpoint.
+        await($next($context));
+        // logging or other works can be done here after calling the next request delegate.
+    }
+}</code></pre>
+        <br>
+        <h3>Registring Middlewares</h3>
+        <p>
+          Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Web\Middleware\IMiddleware::class</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
+        </p>
+        <ul>
+          <li><code>ApplicationBuilder::use(callable $middelware)</code></li>
+          <li><code>ApplicationBuilderExtensions::useMiddleware(string $middelware, ...$args)</code></li>
+        </ul>
+        <pre><code class="language-php">&lt;?php
+
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Hosting\WebHost;
+use Application\Middlewares\MyMiddleware;
+
+use function Devnet\System\async;
+use function Devnet\System\await;
+...
+
+$host->start(function ($app) use ($configuration) &lcub;
+    //;
+    $app->UseExceptionHandler();
+
+    // using middleware class
+    $app->useMiddleware(RedirectMiddleware::class);
+    $app->useRouter();
+
+    // using in-line middleware
+    $app->use(async(function($context, $next) &lcub; //;
+        // some works can be done here befor calling the next request delegate.
+        await($next($context));
+        // other works can be done here after calling the next request delegate.
+    }));
+
+    // other middlewares can be used here.
+
+    $app->useEndpoint(function($routes) &lcub;
+      // routing
+    });
+});</code></pre>
+        <br>
+        <h3>Built-in middlewares</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Method</th>
+              <th scope="col">Discription</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ApplicationBuilder::UseExceptionHandler()</code></td>
+              <td>add ExceptionHandler middleware to the pipeline</td>
+            </tr>
+            <tr>
+              <td><code>ApplicationBuilder::useRouter()</code></td>
+              <td>add Router matcher middleware to the pipeline</td>
+            </tr>
+            <tr>
+              <td><code>ApplicationBuilder::useAuthentication()</code></td>
+              <td>add Authentication middleware to the pipeline</td>
+            </tr>
+            <tr>
+              <td><code>ApplicationBuilder::useAuthorization()</code></td>
+              <td>add Authorization middleware to the pipeline</td>
+            </tr>
+            <tr>
+              <td><code>ApplicationBuilder::UseEndpoint()</code></td>
+              <td>add Endpoint dispatcher middleware to the pipeline</td>
+            </tr>
+          </tbody>
+        </table>
+        <footer>
+          <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+              <li class="nav-page-item">
+                <a class="nav-page-link" routerLink="/docs/core/http">
+                  <i class="chevron left"></i> Previous
+                </a>
+              </li>
+              <li class="nav-page-item">
+                <a class="nav-page-link" routerLink="/docs/web/routing">
+                  Next <i class="chevron right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+      </article>
+    </div>
+  </div>
+</div>
