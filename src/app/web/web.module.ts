@@ -9,6 +9,7 @@ import { RoutingComponent } from './routing/routing.component';
 import { ControllerComponent } from './controller/controller.component';
 import { ViewComponent } from './view/view.component';
 import { LayoutComponent } from './layout/layout.component';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LayoutComponent } from './layout/layout.component';
     RoutingComponent,
     ControllerComponent,
     ViewComponent,
-    LayoutComponent
+    LayoutComponent,
+    FilterComponent
   ],
   imports: [
     CommonModule,
