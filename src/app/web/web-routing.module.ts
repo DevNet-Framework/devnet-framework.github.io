@@ -8,6 +8,7 @@ import { ControllerComponent } from './controller/controller.component';
 import { ViewComponent } from './view/view.component';
 import { LayoutComponent } from './layout/layout.component';
 import { FilterComponent } from './filter/filter.component';
+import { DependencyComponent } from './dependency/dependency.component';
 
 const routes: Routes = [
   { path: 'docs/web/start', component: StartComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'docs/web/view', component: ViewComponent },
   { path: 'docs/web/layout', component: LayoutComponent },
   { path: 'docs/web/filter', component: FilterComponent },
+  { path: 'docs/web/dependency', component: DependencyComponent },
   { path: 'docs/web', redirectTo: 'docs/web/start', pathMatch: 'full' }
 ];
 

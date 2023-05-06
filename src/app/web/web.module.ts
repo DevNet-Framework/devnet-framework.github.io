@@ -10,6 +10,7 @@ import { ControllerComponent } from './controller/controller.component';
 import { ViewComponent } from './view/view.component';
 import { LayoutComponent } from './layout/layout.component';
 import { FilterComponent } from './filter/filter.component';
+import { DependencyComponent } from './dependency/dependency.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FilterComponent } from './filter/filter.component';
     ControllerComponent,
     ViewComponent,
     LayoutComponent,
-    FilterComponent
+    FilterComponent,
+    DependencyComponent
   ],
   imports: [
     CommonModule,
