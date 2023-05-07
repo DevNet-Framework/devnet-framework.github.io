@@ -11,6 +11,7 @@ import { ViewComponent } from './view/view.component';
 import { LayoutComponent } from './layout/layout.component';
 import { FilterComponent } from './filter/filter.component';
 import { DependencyComponent } from './dependency/dependency.component';
+import { ExceptionComponent } from './exception/exception.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { DependencyComponent } from './dependency/dependency.component';
     ViewComponent,
     LayoutComponent,
     FilterComponent,
-    DependencyComponent
+    DependencyComponent,
+    ExceptionComponent
   ],
   imports: [
     CommonModule,

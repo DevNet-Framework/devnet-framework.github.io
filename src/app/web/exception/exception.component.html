@@ -1,0 +1,92 @@
+<div class="container pt-3">
+  <div class="row">
+    <div id="sidebar" style="width: 260px;">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div id="content" class="flex-grow-1" style="width: 400px;">
+      <article>
+        <h1>Exception Handler</h1>
+        <hr>
+        <p>
+          The exception handler is a middleware that displays detailed information about unhandled request exceptions, it's the first middleware that runs in the request pipeline so that it can catch all the unhandled exceptions thrown in the middleware that follows.
+        </p>
+        <h3>Registring the Exception Handler</h3>
+        <p>
+          Exception Handler is enabled through the method <code>WebHost::start(Closure $configure)</code> by calling the extension method <code>ApplicationBuilderExtensions::useExceptionHandler()</code> of the Application builder, which adds the pre-built middleware <code>ExceptionHandlerMiddleware</code> to the request pipeline, and must be in the top order of all middlewares.
+        </p>
+        <pre><code class="language-php">&lt;?php
+
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Hosting\WebHost;
+use DevNet\Web\Http\HttpContext;
+use DevNet\System\Async\Tasks\Task;
+...
+
+$host->start(function ($app) &lcub;
+    // registering the exception handler in the top order
+    $app->useExceptionHandler();
+    // some middlewars here
+});
+</code></pre>
+        <br>
+        <h3>Custom error handling</h3>
+        <p>
+          The exception handler is very useful for debugging, but when the application runs in a production environment, it shouldn't display detailed exception information publicly, so you need to handle the errors differently with a custom error handler, e.g. log the erros and return only the status code.
+        </p>
+        <p>
+          The following example shows how to register an exception handler that redirects the errors to a custom route, then the endpoint handler of that custom route handles the errors.
+        </p>
+        <pre><code class="language-php">&lt;?php
+
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Hosting\WebHost;
+...
+
+$host->start(function ($app) &lcub;
+    // registering the exception handler with a custom route handler
+    $app->useExceptionHandler("/error");
+    $app->useRouter();
+    $app->useEndpoint(function ($routes) &lcub;
+        // handle the erros in RESTfull way
+        $routes->mapGet("/error", function ($context) &lcub;
+            $code = $context->Error ? $context->Error->getCode() : 404;
+            switch ($code) &lcub;
+                case 401:
+                    $context->Response->setStatusCode(401);
+                    break;
+                case 403:
+                    $context->Response->setStatusCode(403);
+                    break;
+                case 404:
+                    $context->Response->setStatusCode(404);
+                    break;
+                default:
+                    $context->Response->setStatusCode(500);
+                    break;
+            }
+        });
+    });
+});
+</code></pre>
+        <footer>
+          <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+              <li class="nav-page-item">
+                <a class="nav-page-link" routerLink="/docs/web/dependency">
+                  <i class="chevron left"></i> Previous
+                </a>
+              </li>
+              <li class="nav-page-item">
+                <a class="nav-page-link" routerLink="/docs/entity/overview">
+                  Next <i class="chevron right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+      </article>
+    </div>
+  </div>
+</div>

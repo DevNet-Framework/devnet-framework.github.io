@@ -9,6 +9,7 @@ import { ViewComponent } from './view/view.component';
 import { LayoutComponent } from './layout/layout.component';
 import { FilterComponent } from './filter/filter.component';
 import { DependencyComponent } from './dependency/dependency.component';
+import { ExceptionComponent } from './exception/exception.component';
 
 const routes: Routes = [
   { path: 'docs/web/start', component: StartComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'docs/web/layout', component: LayoutComponent },
   { path: 'docs/web/filter', component: FilterComponent },
   { path: 'docs/web/dependency', component: DependencyComponent },
+  { path: 'docs/web/exception', component: ExceptionComponent },
   { path: 'docs/web', redirectTo: 'docs/web/start', pathMatch: 'full' }
 ];
 
