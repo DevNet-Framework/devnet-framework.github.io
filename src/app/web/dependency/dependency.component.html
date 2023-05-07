@@ -40,7 +40,7 @@ class MyService implement IService
         </p>
         <h2>Registring services</h2>
         <p>
-          Typically the method <code>WebHostBuilder::configureServices(IServiceCollection $services)</code> is responsible for defining the services that will be used throw your application without hard coding, and you can add services to the container with complex dependencies by using one of the following methods:
+          Typically the method <code>WebHostBuilder::register(IServiceCollection $services)</code> is responsible for defining the services that will be used throw your application without hard coding, and you can add services to the container with complex dependencies by using one of the following methods:
         </p>
         <ul>
           <li>
@@ -70,9 +70,9 @@ class Program
     public static function main(array $args = [])
     &lcub;
       $builder = WebHost::createDefaultBuilder($args);
-      $configuration = $builder->ConfigBuilder->build();
+      $configuration = $builder->Configuration;
 
-      $builder->configureServices(function ($services) &lcub;
+      $builder->register(function ($services) &lcub;
           // adding services
           services->addTransient(MyDependency::class);
           services->addSingleton(IMyService::class, MyService::class);
@@ -102,9 +102,9 @@ class Program
     public static function main(array $args = [])
     &lcub;
       $builder = WebHost::createDefaultBuilder($args);
-      $configuration = $builder->ConfigBuilder->build();
+      $configuration = $builder->Configuration;
 
-      $builder->configureServices(function ($services) &lcub;
+      $builder->register(function ($services) &lcub;
           
           services->addSingleton(IService::class,
               fn($provider) => new MyService($provider->getService(MyDependency::class)));
@@ -141,11 +141,11 @@ $app->useEndpoint(function($routes) &lcub;
                   
 namespace Application\Controllers;
 
-use DevNet\Web\Controller\ActionController;
-use DevNet\Web\Controller\IActionResult;
+use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Controller\AbstractController;
 use Application\Services\IMyService;
 
-class HelloController extends ActionController
+class HelloController extends AbstractController
 &lcub;
     private IMyService $MyService;
 

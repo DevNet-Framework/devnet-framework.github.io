@@ -14,7 +14,7 @@
         <br><br>
         <h3>Registring MVC Service</h3>
         <p>
-          Before using the controller component, we need first to register the MVC service inside the method <code>WebHostBuilder::configureServices()</code> by calling the extension method <code>ServiceCollectionExtensions::addMvc()</code> which is attached to the instance of type IServiceCollection, as shown in the following code example.
+          Before using the controller component, we need first to register the MVC service inside the method <code>WebHostBuilder::register()</code> by calling the extension method <code>ServiceCollectionExtensions::addMvc()</code> which is attached to the instance of type IServiceCollection, as shown in the following code example.
         </p>
         <pre><code class="language-php">&lt;?php
     
@@ -27,7 +27,7 @@ use DevNet\Web\Hosting\WebHost;
 public static function main(array $args = [])
 &lcub;
     $builder = WebHost::createDefaultBuilder($args);
-    $builder->configureServices(function ($services) &lcub;
+    $builder->register(function ($services) &lcub;
         // adding mvc service
         $services->addMvc();
     });
@@ -37,7 +37,7 @@ public static function main(array $args = [])
         $app->useRouter();
         $app->useEndpoint(function ($routes) &lcub;
             // mapping routes to controllers
-            $routes->mapRoute("&lcub;controller=home}/&lcub;action=index}/&lcub;id?}");
+            $routes->map("&lcub;controller=home}/&lcub;action=index}/&lcub;id?}");
         });
     });
 }</code></pre>
@@ -54,8 +54,8 @@ public static function main(array $args = [])
   
 namespace Application\Controllers;
 
+use DevNet\Web\Action\IActionResult;
 use DevNet\Web\Controller\AbstractController;
-use DevNet\Web\Controller\IActionResult;
 
 class HelloController extends AbstractController
 &lcub;
@@ -112,8 +112,8 @@ class HelloController extends AbstractController
 namespace Application\Controllers;
 
 use DevNet\System\Async\Task;
+use DevNet\Web\Action\IActionResult;
 use DevNet\Web\Controller\AbstractController;
-use DevNet\Web\Controller\IActionResult;
 
 use function Devnet\System\await;
 
@@ -140,8 +140,8 @@ class HelloController extends AbstractController
   
 namespace Application\Controllers;
 
+use DevNet\Web\Action\IActionResult;
 use DevNet\Web\Controller\AbstractController;
-use DevNet\Web\Controller\IActionResult;
 
 class StudentController extends AbstractController
 &lcub;

@@ -20,7 +20,7 @@ use DevNet\Web\Http\HttpContextFactory;
   
 $httpContext = HttpContextFactory::create();</code></pre>
         <br>
-        <h5>Http Request</h5>
+        <h4>Http Request</h4>
         <p class="text-justify">
           You can access the <code>HttpRequest</code> property from the <code>HttpContext</code> and inspect the HTTP request information as shown below
         </p>
@@ -53,7 +53,7 @@ $value   = $values[0];</code></pre>
         <pre><code class="language-php">$cookies = $httpContext->Resquest->Cookies;
 $value   = $cookies->getValue('name');</code></pre>
         <br>
-        <h5>Http Response</h5>
+        <h4>Http Response</h4>
         <p class="text-justify">
           You can access the <code>HttpResponse</code> property from the <code>HttpContext</code> and set the HTTP response data as shown below.
         </p>
@@ -77,7 +77,7 @@ $task = $httpContext->Response->writeJsonAsync($object);</code></pre>
         <h6>Set Response Status Code</h6>
         <pre><code class="language-php">$httpContext->Response->setStatusCode(403);</code></pre>
         <br>
-        <h3>Http Client</h3>
+        <h4>Http Client</h4>
         <p class="text-justify">
           DevNet Provides a <code>HttpClient</code> class for sending HTTP requests to a web API server and receiving back HTTP responses.
         </p>

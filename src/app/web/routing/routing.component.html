@@ -56,6 +56,10 @@ $host->start(function ($app) &lcub;
           </thead>
           <tbody>
             <tr>
+              <td><code>map(string $pattern, string|callable $handler)</code></td>
+              <td>Accept any HTTP verb</td>
+            </tr>
+            <tr>
               <td><code>mapGet(string $pattern callable $handler)</code></td>
               <td>Accept only HTTP GET verb</td>
             </tr>
@@ -74,10 +78,6 @@ $host->start(function ($app) &lcub;
             <tr>
               <td><code>mapVerb(string $verb, string $pattern, callable $handler)</code></td>
               <td>Accept defined HTTP verb</td>
-            </tr>
-            <tr>
-              <td><code>mapRoute(string $pattern, string|callable $handler)</code></td>
-              <td>Accept any HTTP verb</td>
             </tr>
           </tbody>
         </table>
@@ -175,14 +175,14 @@ $app->useEndpoint(function($routes) &lcub;
         </p>
         <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-    $routes->mapRoute("&lcub;controller=Home}/&lcub;action=Index}/&lcub;id?}");
+    $routes->map("&lcub;controller=Home}/&lcub;action=Index}/&lcub;id?}");
 });</code></pre>
         <p>
           You can also map a conventional route to a particular controller like the following example:
         </p>
         <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-    $routes->mapRoute("/admin/&lcub;action=Index}/&lcub;id?}", AdminController::class);
+    $routes->map("/admin/&lcub;action=Index}/&lcub;id?}", AdminController::class);
 });</code></pre>
         <blockquote class="alert alert-info">
           <b>Note:</b> You need to register the MVC service in order to use the conventional routing, which will be discussed in the next section.

@@ -13,12 +13,13 @@
           Model-View-Controller architectural pattern which is available as an action dispatcher with a
           template engine that can be integrated into the services and invoked in the middleware endpoint.
         </p>
-        <h3>Create Web Project</h3>
+        <h3>Create a web project</h3>
         <p>
           To create a DevNet web project, enter the command below in the Terminal, where the argument
           <code>project-name</code> is any name you give to your web project:
         </p>
         <pre><code class="language-shell">devnet new web --output project-name</code></pre>
+        <br>
         <h4>Project Structure</h4>
         <p>
           DevNet CLI will create a simple web template with the following project structure:
@@ -39,6 +40,7 @@
   ├── devnet.proj
   ├── Program.php
   └── settings.json</code></pre>
+        <br>
         <h4>Entry Point</h4>
         <p>
           Like the console project, the entry point by default is the static method
@@ -48,7 +50,7 @@
         <p>
           The entry point method calls the static method
           <code>WebHost::createDefaultBuilder(array $args)</code> to create a <code>WebHostBuilder</code>
-          instance which can configure services through the method <code>configureServices()</code>, and
+          instance which can configure services through the method <code>register()</code>, and
           builds a <code>WebHost</code> instance which calls the <code>start()</code> method to configure the
           app's request pipeline, then runs the application as shown in the code below, and we will discuss
           how to register services, middlewares and routes in details in the upcoming sections.
@@ -57,16 +59,18 @@
   
 namespace Application;
 
-use DevNet\System\IO\Console;
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Hosting\WebHost;
 
 class Program
 &lcub;
     public static function main(array $args = [])
     &lcub;
         $builder = WebHost::createDefaultBuilder($args);
-        $configuration = $builder->ConfigBuilder->build();
+        $configuration = $builder->Configuration;
 
-        $builder->configureServices(function ($services) use ($configuration) &lcub;
+        $builder->register(function ($services) use ($configuration) &lcub;
             // services
         });
 
@@ -84,7 +88,7 @@ class Program
     }
 }</code></pre>
         <br>
-        <h3>Run The Application</h3>
+        <h3>Run the application</h3>
         <p>
           To run the web application, run the following command in the Terminal :
         </p>
