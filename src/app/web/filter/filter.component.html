@@ -1,19 +1,19 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>Action Filter</h1>
-        <hr>
-        <p>
-          Action Filters are similar to Middlewars, they allow code to be run before or after specific stages in the request processing pipeline and can choose to short-circuit the pipeline or pass the request to the next filter or the endpoint action, but the difference is that the action filters are invoked after the dispatcher selects the action to execute, just before and after the execution of the action.
-        </p>
-        <p>
-          The following code example represents an action filter class called <code>AuthenticationFilter::class</code> that prevents accessing the requested resources if the user is not authenticated.
-        </p>
-        <pre><code class="language-php">&lt;?php
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Action Filter</h1>
+            <hr>
+            <p>
+               Action Filters are similar to Middlewars, they allow code to be run before or after specific stages in the request processing pipeline and can choose to short-circuit the pipeline or pass the request to the next filter or the endpoint action, but the difference is that the action filters are invoked after the dispatcher selects the action to execute, just before and after the execution of the action.
+            </p>
+            <p>
+               The following code example represents an action filter class called <code>AuthenticationFilter::class</code> that prevents accessing the requested resources if the user is not authenticated.
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 namespace Application\Filters;
 
@@ -43,15 +43,15 @@ class AuthenticationFilter implements IActionFilter
     }
 }
 </code></pre>
-        <br>
-        <h3>Apply Filters</h3>
-        <p>
-          Any action filter that implements the interface <code>DevNet\Web\Action\IActionFilter::class</code> can be applied to the route endpoint handler or to the controller, but to apply an action filter to a controller, the action filter class must be declared as an attribute because the controller accepts only action filters as attributes, and if the action filter attribute is applied to the class of controller it will be applied to all the action methods of the controller, and if it is applied only to a specific action method of a controller it will be applied only to that specific action method.
-        </p>
-        <p>
-          The following code represents an example of applying action filters to a controller as attributes.
-        </p>
-        <pre><code class="language-php">&lt;?php
+            <br>
+            <h3>Apply Filters</h3>
+            <p>
+               Any action filter that implements the interface <code>DevNet\Web\Action\IActionFilter::class</code> can be applied to the route endpoint handler or to the controller, but to apply an action filter to a controller, the action filter class must be declared as an attribute because the controller accepts only action filters as attributes, and if the action filter attribute is applied to the class of controller it will be applied to all the action methods of the controller, and if it is applied only to a specific action method of a controller it will be applied only to that specific action method.
+            </p>
+            <p>
+               The following code represents an example of applying action filters to a controller as attributes.
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 namespace Application\Controllers;
 
@@ -62,29 +62,29 @@ use DevNet\Web\Controller\AbstractController;
 use Application\Filters\AuthenticationFilter;
 use Application\Models\Profile;
 
-// this filter will be applied to all controller methods.
+// this filter will be applied to all controller's methods.
 #[AuthenticationFilter]
 class UserController extends AbstractController
 &lcub;
-    public function index(): IActionResult
-    &lcub;
-        return $this->view();
-    }
+   public function index(): IActionResult
+   &lcub;
+      return $this->view();
+   }
 
-    // this filters will be applied only to this action method.
-    #[Antiforgery]
-    #[HttpMethod('post')]
-    public function edit(Profile $form): IActionResult
-    &lcub;
+   // this filters will be applied only to this action method.
+   #[Antiforgery]
+   #[HttpMethod('post')]
+   public function edit(Profile $form): IActionResult
+   &lcub;
       // code...
-    }
+   }
 }
 </code></pre>
-        <br>
-        <p>
-          The next code example shows how to add action filters to the route endpoint handler, as class or as an anonymous async function, with the help of the method <code>RouteHandler::addFilter(callable|string $filter, ...$args)</code>
-        </p>
-<pre><code class="language-php">&lt;?php
+            <br>
+            <p>
+               The next code example shows how to add action filters to the route endpoint handler, as class or as an anonymous async function, with the help of the method <code>RouteHandler::addFilter(callable|string $filter, ...$args)</code>
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
@@ -96,67 +96,67 @@ use function Devnet\System\await;
 ...
 
 $host->start(function ($app) &lcub;
-    // middlewares
-    $app->UseExceptionHandler();
-    $app->useRouter();
-    $app->useEndpoint(function ($routes) &lcub;
-        $routes->mapGet("/users", function ($httpContext) &lcub;
-            // code...
-        })
-        // adding action filter class.
-        ->addFilter(AuthenticationFilter::class)
+   // middlewares
+   $app->UseExceptionHandler();
+   $app->useRouter();
+   $app->useEndpoint(function ($routes) &lcub;
+      $routes->mapGet("/users", function ($httpContext) &lcub;
+         // code...
+      })
+      // adding action filter class.
+      ->addFilter(AuthenticationFilter::class)
 
-        // adding in-line action filter as anonymous async function.
-        ->addFilter(async(function ($actionContext, $next)) &lcub;
-            // some works can be done here befor executing the action.
-            await($next);
-            // other works can be done here after executing the action.
-        }));
+      // adding in-line action filter as anonymous async function.
+      ->addFilter(async(function ($actionContext, $next)) &lcub;
+         // some works can be done here befor executing the action.
+         await($next);
+         // other works can be done here after executing the action.
+      }));
 
-        // other routes.
-    });
+      // other routes.
+   });
 });</code></pre>
-        <br>
-        <h3>Built-in filters</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Filter</th>
-              <th scope="col">Discription</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>DevNet\Web\Action\Filters\Authorize::class</code></td>
-              <td>Prevent a non-authorized user from accessing the resources.</td>
-            </tr>
-            <tr>
-              <td><code>DevNet\Web\Action\Filters\HttpMethod::class</code></td>
-              <td>Prevent a not-allowed Http method request.</td>
-            </tr>
-            <tr>
-              <td><code>DevNet\Web\Action\Filters\Antiforgery::class</code></td>
-              <td>Prevent Cross-Site Request Forgery</td>
-            </tr>
-          </tbody>
-        </table>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/layout">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/dependency">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <br>
+            <h3>Built-in filters</h3>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Filter</th>
+                     <th scope="col">Discription</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td><code>DevNet\Web\Action\Filters\Authorize::class</code></td>
+                     <td>Prevent a non-authorized user from accessing the resources.</td>
+                  </tr>
+                  <tr>
+                     <td><code>DevNet\Web\Action\Filters\HttpMethod::class</code></td>
+                     <td>Prevent a not-allowed Http method request.</td>
+                  </tr>
+                  <tr>
+                     <td><code>DevNet\Web\Action\Filters\Antiforgery::class</code></td>
+                     <td>Prevent Cross-Site Request Forgery</td>
+                  </tr>
+               </tbody>
+            </table>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/layout">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/dependency">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>

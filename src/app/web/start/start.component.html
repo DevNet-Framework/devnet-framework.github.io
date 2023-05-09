@@ -1,61 +1,61 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>Web Application</h1>
-        <hr>
-        <p>
-          DevNet web application is based on Middleware architecture with Action-Domain-Responder
-          architectural pattern, which is suitable for creating a minimal web APIs, but it supports also
-          Model-View-Controller architectural pattern which is available as an action dispatcher with a
-          template engine that can be integrated into the services and invoked in the middleware endpoint.
-        </p>
-        <h3>Create a web project</h3>
-        <p>
-          To create a DevNet web project, enter the command below in the Terminal, where the argument
-          <code>project-name</code> is any name you give to your web project:
-        </p>
-        <pre><code class="language-shell">devnet new web --output project-name</code></pre>
-        <br>
-        <h4>Project Structure</h4>
-        <p>
-          DevNet CLI will create a simple web template with the following project structure:
-        </p>
-        <pre><code class="language-shell">web-project/
-  ├── bin/
-  |   ├── apphost
-  |   ├── run.bat
-  |   └── run
-  ├── webroot/
-  |   ├── css/
-  |   ├── js/
-  |   ├── lib/
-  |   ├── .htaccess
-  |   ├── index.php
-  |   └── web.config
-  ├── vendor/
-  ├── devnet.proj
-  ├── Program.php
-  └── settings.json</code></pre>
-        <br>
-        <h4>Entry Point</h4>
-        <p>
-          Like the console project, the entry point by default is the static method
-          <code>Application\Program::main(array $args)</code>, and you can change that in the project file
-          <code>devnet.proj</code>
-        </p>
-        <p>
-          The entry point method calls the static method
-          <code>WebHost::createDefaultBuilder(array $args)</code> to create a <code>WebHostBuilder</code>
-          instance which can configure services through the method <code>register()</code>, and
-          builds a <code>WebHost</code> instance which calls the <code>start()</code> method to configure the
-          app's request pipeline, then runs the application as shown in the code below, and we will discuss
-          how to register services, middlewares and routes in details in the upcoming sections.
-        </p>
-        <pre><code class="language-php">&lt;?php
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Web Application</h1>
+            <hr>
+            <p>
+               DevNet web application is based on Middleware architecture with Action-Domain-Responder
+               architectural pattern, which is suitable for creating a minimal web APIs, but it supports also
+               Model-View-Controller architectural pattern which is available as an action dispatcher with a
+               template engine that can be integrated into the services and invoked in the middleware endpoint.
+            </p>
+            <h3>Create a web project</h3>
+            <p>
+               To create a DevNet web project, enter the command below in the Terminal, where the argument
+               <code>project-name</code> is any name you give to your web project:
+            </p>
+            <pre><code class="language-shell">devnet new web --output project-name</code></pre>
+            <br>
+            <h4>Project Structure</h4>
+            <p>
+               DevNet CLI will create a simple web template with the following project structure:
+            </p>
+            <pre><code class="language-shell">web-project/
+├── bin/
+|   ├── apphost
+|   ├── run.bat
+|   └── run
+├── webroot/
+|   ├── css/
+|   ├── js/
+|   ├── lib/
+|   ├── .htaccess
+|   ├── index.php
+|   └── web.config
+├── vendor/
+├── devnet.proj
+├── Program.php
+└── settings.json</code></pre>
+            <br>
+            <h4>Entry Point</h4>
+            <p>
+               Like the console project, the entry point by default is the static method
+               <code>Application\Program::main(array $args)</code>, and you can change that in the project file
+               <code>devnet.proj</code>
+            </p>
+            <p>
+               The entry point method calls the static method
+               <code>WebHost::createDefaultBuilder(array $args)</code> to create a <code>WebHostBuilder</code>
+               instance which can configure services through the method <code>register()</code>, and
+               builds a <code>WebHost</code> instance which calls the <code>start()</code> method to configure the
+               app's request pipeline, then runs the application as shown in the code below, and we will discuss
+               how to register services, middlewares and routes in details in the upcoming sections.
+            </p>
+            <pre><code class="language-php">&lt;?php
   
 namespace Application;
 
@@ -65,59 +65,59 @@ use DevNet\Web\Hosting\WebHost;
 
 class Program
 &lcub;
-    public static function main(array $args = [])
-    &lcub;
-        $builder = WebHost::createDefaultBuilder($args);
-        $configuration = $builder->Configuration;
+   public static function main(array $args = [])
+   &lcub;
+      $builder = WebHost::createDefaultBuilder($args);
+      $configuration = $builder->Configuration;
 
-        $builder->register(function ($services) use ($configuration) &lcub;
-            // services
-        });
+      $builder->register(function ($services) use ($configuration) &lcub;
+         // services
+      });
 
-        $host = $builder->build();
+      $host = $builder->build();
 
-        $host->start(function ($app) &lcub;
-            // middlewares
-            $app->UseExceptionHandler();
-            $app->useRouter();
-            $app->useEndpoint(function ($routes) &lcub;
-                // routes
-                $routes->mapGet("/", fn () => "Hello World!");
-            });
-        });
+      $host->start(function ($app) &lcub;
+         // middlewares
+         $app->UseExceptionHandler();
+         $app->useRouter();
+         $app->useEndpoint(function ($routes) &lcub;
+            // routes
+            $routes->mapGet("/", fn () => "Hello World!");
+         });
+      });
     }
 }</code></pre>
-        <br>
-        <h3>Run the application</h3>
-        <p>
-          To run the web application, run the following command in the Terminal :
-        </p>
-        <pre><code class="language-shell">devnet run</code></pre>
-        <p>
-          This will start the development web server at <a href="http://localhost:8000">http://localhost:8000</a> in
-          <samp>/webroot</samp> folder, and
-          optionaly you can override this default server settings by adding arguments to the following
-          parameters <code>--host</code>, <code>--port</code> and <code>--root</code> to the <code>run</code>
-          command in the terminal like the following example:
-        </p>
-        <pre><code class="language-shell">devnet run --host 127.0.0.1 --port 8888 --root webroot</code></pre>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/core/diagnostics">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/http">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <br>
+            <h3>Run the application</h3>
+            <p>
+               To run the web application, run the following command in the Terminal :
+            </p>
+            <pre><code class="language-shell">devnet run</code></pre>
+            <p>
+               This will start the development web server at <a href="http://localhost:8000">http://localhost:8000</a> in
+               <samp>/webroot</samp> folder, and
+               optionaly you can override this default server settings by adding arguments to the following
+               parameters <code>--host</code>, <code>--port</code> and <code>--root</code> to the <code>run</code>
+               command in the terminal like the following example:
+            </p>
+            <pre><code class="language-shell">devnet run --host 127.0.0.1 --port 8888 --root webroot</code></pre>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/core/diagnostics">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/http">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>

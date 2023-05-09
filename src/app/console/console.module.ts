@@ -5,13 +5,13 @@ import { SharedModule } from '../shared/shared.module';
 import { StartComponent } from './start/start.component';
 
 @NgModule({
-  declarations: [
-    StartComponent
-  ],
-  imports: [
-    CommonModule,
-    ConsoleRoutingModule,
-    SharedModule
-  ]
+   declarations: [
+      StartComponent
+   ],
+   imports: [
+      CommonModule,
+      ConsoleRoutingModule,
+      SharedModule
+   ]
 })
 export class ConsoleModule { }

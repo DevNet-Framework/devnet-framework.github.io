@@ -4,11 +4,11 @@ import { SecurityRoutingModule } from './security-routing.module';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    SecurityRoutingModule,
-    SharedModule
-  ]
+   declarations: [],
+   imports: [
+      CommonModule,
+      SecurityRoutingModule,
+      SharedModule
+   ]
 })
 export class SecurityModule { }

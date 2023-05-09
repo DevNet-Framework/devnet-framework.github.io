@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { StartComponent } from './start/start.component';
 
 const routes: Routes = [
-  { path: 'docs/console/start', component: StartComponent },
-  { path: 'docs/console', redirectTo: 'docs/console/start', pathMatch: 'full' }
+   { path: 'docs/console/start', component: StartComponent },
+   { path: 'docs/console', redirectTo: 'docs/console/start', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+   imports: [RouterModule.forChild(routes)],
+   exports: [RouterModule]
 })
 export class ConsoleRoutingModule { }

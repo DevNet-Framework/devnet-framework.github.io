@@ -6,19 +6,19 @@ import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    FooterComponent,
-    SidebarComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedRoutingModule
-  ],
-  exports: [
-    HeaderComponent,
-    FooterComponent,
-    SidebarComponent
-  ]
+   declarations: [
+      HeaderComponent,
+      FooterComponent,
+      SidebarComponent
+   ],
+   imports: [
+      CommonModule,
+      SharedRoutingModule
+   ],
+   exports: [
+      HeaderComponent,
+      FooterComponent,
+      SidebarComponent
+   ]
 })
 export class SharedModule { }

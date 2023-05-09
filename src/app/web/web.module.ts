@@ -14,22 +14,22 @@ import { DependencyComponent } from './dependency/dependency.component';
 import { ExceptionComponent } from './exception/exception.component';
 
 @NgModule({
-  declarations: [
-    StartComponent,
-    HttpComponent,
-    MiddlewareComponent,
-    RoutingComponent,
-    ControllerComponent,
-    ViewComponent,
-    LayoutComponent,
-    FilterComponent,
-    DependencyComponent,
-    ExceptionComponent
-  ],
-  imports: [
-    CommonModule,
-    WebRoutingModule,
-    SharedModule
-  ]
+   declarations: [
+      StartComponent,
+      HttpComponent,
+      MiddlewareComponent,
+      RoutingComponent,
+      ControllerComponent,
+      ViewComponent,
+      LayoutComponent,
+      FilterComponent,
+      DependencyComponent,
+      ExceptionComponent
+   ],
+   imports: [
+      CommonModule,
+      WebRoutingModule,
+      SharedModule
+   ]
 })
 export class WebModule { }

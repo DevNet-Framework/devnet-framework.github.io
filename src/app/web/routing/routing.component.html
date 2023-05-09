@@ -1,34 +1,34 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>Routing</h1>
-        <hr>
-        <p>
-          The router is a component responsible for matching incoming HTTP requests and dispatching those requests to the app's executable endpoints, which are executable actions responsible for request-handling, defined and configured in the application builder, and selected and executed when request URL matches a defined URL Pattern called Route Template.
-        </p>
-        <p>
-          The endpoint matching process can also filter HTTP requests by allowing restraint HTTP Verbs and can extract values from the request's URL and provide those values for request processing.<br> Routing is also able to generate URLs that map to endpoints.
-        </p>
-        <h3>Routing basics</h3>
-        <p>
-          Router is registered in the middleware pipeline in the <code>start()</code> method of <code>WebHost</code> class.<br> by using a pair of middleware, defined by <code>useRouter()</code> and <code>useEndpoint(RouteCollection $routes)</code> methods:
-        </p>
-        <ul>
-          <li>
-            <b>UseRouter</b> adds route matching middleware to the middleware pipeline, and this middleware looks at the set of endpoints defined in the App and selects the best match based on the request.
-          </li>
-          <li>
-            <b>UseEndpoint</b> adds endpoint execution middleware to the middleware pipeline, which runs the request delegate associated with the selected endpoint.
-          </li>
-        </ul>
-        <p>
-          The following code below shows a basic routing example, write <code>"Hello World!"</code> to the HTTP response when an HTTP GET request is sent to the root URL <code>"/"</code>, which is By default is <code>https://localhost:8000/</code><br> else If the request doesn't match any route, an HTTP 404 page not found is returned.
-        </p>
-        <pre><code class="language-php">&lt;?php
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Routing</h1>
+            <hr>
+            <p>
+               The router is a component responsible for matching incoming HTTP requests and dispatching those requests to the app's executable endpoints, which are executable actions responsible for request-handling, defined and configured in the application builder, and selected and executed when request URL matches a defined URL Pattern called Route Template.
+            </p>
+            <p>
+               The endpoint matching process can also filter HTTP requests by allowing restraint HTTP Verbs and can extract values from the request's URL and provide those values for request processing.<br> Routing is also able to generate URLs that map to endpoints.
+            </p>
+            <h3>Routing basics</h3>
+            <p>
+               Router is registered in the middleware pipeline in the <code>start()</code> method of <code>WebHost</code> class.<br> by using a pair of middleware, defined by <code>useRouter()</code> and <code>useEndpoint(RouteCollection $routes)</code> methods:
+            </p>
+            <ul>
+               <li>
+                  <b>UseRouter</b> adds route matching middleware to the middleware pipeline, and this middleware looks at the set of endpoints defined in the App and selects the best match based on the request.
+               </li>
+               <li>
+                  <b>UseEndpoint</b> adds endpoint execution middleware to the middleware pipeline, which runs the request delegate associated with the selected endpoint.
+               </li>
+            </ul>
+            <p>
+               The following code below shows a basic routing example, write <code>"Hello World!"</code> to the HTTP response when an HTTP GET request is sent to the root URL <code>"/"</code>, which is By default is <code>https://localhost:8000/</code><br> else If the request doesn't match any route, an HTTP 404 page not found is returned.
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
@@ -36,57 +36,57 @@ use DevNet\Web\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
-  $app->UseExceptionHandler();
-  $app->useRouter();
-  // additional middlewares here
-  $app->useEndpoint(function ($routes) &lcub;
+   $app->UseExceptionHandler();
+   $app->useRouter();
+   // additional middlewares here
+   $app->useEndpoint(function ($routes) &lcub;
       // routes
       $routes->mapGet("/", fn () => "Hello World!");
-  });
+   });
 });</code></pre>
-        <p>
-          The following table shows the available routing methods and their descriptions.
-        </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Methods</th>
-              <th scope="col">Discription</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>map(string $pattern, string|callable $handler)</code></td>
-              <td>Accept any HTTP verb</td>
-            </tr>
-            <tr>
-              <td><code>mapGet(string $pattern callable $handler)</code></td>
-              <td>Accept only HTTP GET verb</td>
-            </tr>
-            <tr>
-              <td><code>mapPost(string $pattern, callable $handler)</code></td>
-              <td>Accept only HTTP POST verb</td>
-            </tr>
-            <tr>
-              <td><code>mapPut(string $pattern, callable $handler)</code></td>
-              <td>Accept only HTTP PUT verb</td>
-            </tr>
-            <tr>
-              <td><code>mapDelete(string $pattern, callable $handler)</code></td>
-              <td>Accept only HTTP DELETE verb</td>
-            </tr>
-            <tr>
-              <td><code>mapVerb(string $verb, string $pattern, callable $handler)</code></td>
-              <td>Accept defined HTTP verb</td>
-            </tr>
-          </tbody>
-        </table>
-        <br>
-        <h3>Async Handler</h3>
-        <p>
-          DevNet route can accept the Request Handler as an async function to handle the HTTP request asynchronously, like in the following example:
-        </p>
-        <pre><code class="language-php">&lt;?php
+            <p>
+               The following table shows the available routing methods and their descriptions.
+            </p>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Methods</th>
+                     <th scope="col">Discription</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td><code>map(string $pattern, string|callable $handler)</code></td>
+                     <td>Accept any HTTP verb</td>
+                  </tr>
+                  <tr>
+                     <td><code>mapGet(string $pattern callable $handler)</code></td>
+                     <td>Accept only HTTP GET verb</td>
+                  </tr>
+                  <tr>
+                     <td><code>mapPost(string $pattern, callable $handler)</code></td>
+                     <td>Accept only HTTP POST verb</td>
+                  </tr>
+                  <tr>
+                     <td><code>mapPut(string $pattern, callable $handler)</code></td>
+                     <td>Accept only HTTP PUT verb</td>
+                  </tr>
+                  <tr>
+                     <td><code>mapDelete(string $pattern, callable $handler)</code></td>
+                     <td>Accept only HTTP DELETE verb</td>
+                  </tr>
+                  <tr>
+                     <td><code>mapVerb(string $verb, string $pattern, callable $handler)</code></td>
+                     <td>Accept defined HTTP verb</td>
+                  </tr>
+               </tbody>
+            </table>
+            <br>
+            <h3>Async Handler</h3>
+            <p>
+               DevNet route can accept the Request Handler as an async function to handle the HTTP request asynchronously, like in the following example:
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 use DevNet\Web\Http\Client\HttpClient;
 use DevNet\Web\Http\HttpContext;
@@ -96,114 +96,112 @@ use function Devnet\System\await;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
-    $routes->mapGet("/", async(function(HttpContext $context)
-    &lcub;
-        $client  = new HttpClient();
-        $content = await($client->getStringAsync('www.example.com'));
-        await($context->Response->writeAsync($content));
-    }));
+   $routes->mapGet("/", async(function(HttpContext $context) &lcub;
+      $client  = new HttpClient();
+      $content = await($client->getStringAsync('www.example.com'));
+      await($context->Response->writeAsync($content));
+   }));
 });</code></pre>
-        <br>
-        <h3>Route Template</h3>
-        <p>
-          A route template is a string pattern composed of segments, separated by a slash <code>"/"</code> used to define how the endpoint matches the URL Path, by splitting the URL path into segments and matching each segment with the route pattern segment in the same corresponding order.
-        </p>
-        <p>
-          The segment pattern can be literal or parameter enclosed in curly brackets <code>"&lcub; }"</code> to hold a potential value of its corresponding matched URL segment, and this parameter can be mandatory or optionally by adding interrogation point <code>"?"</code> or it can have a default value using the equal sign <code>"="</code> after the route parameter name followed by a value.
-        </p>
-        <p>
-          The following code example shows a simple get route with a callback request handler, that retrieves the value of the parameter <code>&lcub;id}</code> from <code>HttpContext</code> to look for a product in the reposotory and then returns the data as a JSON response.
-        </p>
-        <pre><code class="language-php">...
+            <br>
+            <h3>Route Template</h3>
+            <p>
+               A route template is a string pattern composed of segments, separated by a slash <code>"/"</code> used to define how the endpoint matches the URL Path, by splitting the URL path into segments and matching each segment with the route pattern segment in the same corresponding order.
+            </p>
+            <p>
+               The segment pattern can be literal or parameter enclosed in curly brackets <code>"&lcub; }"</code> to hold a potential value of its corresponding matched URL segment, and this parameter can be mandatory or optionally by adding interrogation point <code>"?"</code> or it can have a default value using the equal sign <code>"="</code> after the route parameter name followed by a value.
+            </p>
+            <p>
+               The following code example shows a simple get route with a callback request handler, that retrieves the value of the parameter <code>&lcub;id}</code> from <code>HttpContext</code> to look for a product in the reposotory and then returns the data as a JSON response.
+            </p>
+            <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-  $routes->mapGet("/api/products/&lcub;id?}", function(HttpContext $context)
-  &lcub;
+   $routes->mapGet("/api/products/&lcub;id?}", function(HttpContext $context) &lcub;
       $id = $context->RouteValues["id"];
       $product = ProductRepository::find($id);
       return $context->Response->writeJsonAsync($product);
-  });
+   });
 });</code></pre>
-        <p>
-          The following table demonstrates a list of route templates examples:
-        </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col" class="col-3">Route template</th>
-              <th scope="col" class="col-3">Matching URL example</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>/contact</td>
-              <td>/contact</td>
-            </tr>
-            <tr>
-              <td>/&lcub;language}/shop</td>
-              <td>/en/shop</td>
-            </tr>
-            <tr>
-              <td>/posts/&lcub;title?}</td>
-              <td>/posts or /posts/my-post</td>
-            </tr>
-            <tr>
-              <td>/&lcub;page=home}</td>
-              <td>/ or /about</td>
-            </tr>
-          </tbody>
-        </table>
-        <blockquote class="alert alert-info">
-          <b>Note:</b> The order of the routes is important, if a route matches the request URL, it will not check the next route, so make sure to not put a route with a greedy pattern at the top, because it will catch all the URLs.
-        </blockquote>
-        <br>
-        <h3>Conventional Routing</h3>
-        <p>
-          If the MVC service is registered, you can use a single conventional routing to map all URLs to the matched action method of a controller using the following path pattern: <br>
-          <code>&lcub;Controller=Home}/&lcub;Action=Index}/&lcub;Id?}</code>
-        </p>
-        <ol>
-          <li><b>Controller:</b> is the name of the controller, by default is "home"</li>
-          <li><b>Action:</b> is the name of action handler, by default is "index"</li>
-          <li><b>Id:</b> is an optional parameter that will be handled by the action handler</li>
-        </ol>
-        <p>
-          <b>e.g.</b> the path: <samp>"/blog/show/9"</samp> will be handled by the following action handler: <br>
-          <code>BlogController::show(int $id)</code> where <code>$id = 9</code>
-        </p>
-        <p>
-          The following code example shows how to map a conventional route for a MVC endpoint.
-        </p>
-        <pre><code class="language-php">...
+            <p>
+               The following table demonstrates a list of route templates examples:
+            </p>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col" class="col-3">Route template</th>
+                     <th scope="col" class="col-3">Matching URL example</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>/contact</td>
+                     <td>/contact</td>
+                  </tr>
+                  <tr>
+                     <td>/&lcub;language}/shop</td>
+                     <td>/en/shop</td>
+                  </tr>
+                  <tr>
+                     <td>/posts/&lcub;title?}</td>
+                     <td>/posts or /posts/my-post</td>
+                  </tr>
+                  <tr>
+                     <td>/&lcub;page=home}</td>
+                     <td>/ or /about</td>
+                  </tr>
+               </tbody>
+            </table>
+            <blockquote class="alert alert-info">
+               <b>Note:</b> The order of the routes is important, if a route matches the request URL, it will not check the next route, so make sure to not put a route with a greedy pattern at the top, because it will catch all the URLs.
+            </blockquote>
+            <br>
+            <h3>Conventional Routing</h3>
+            <p>
+               If the MVC service is registered, you can use a single conventional routing to map all URLs to the matched action method of a controller using the following path pattern: <br>
+               <code>&lcub;Controller=Home}/&lcub;Action=Index}/&lcub;Id?}</code>
+            </p>
+            <ol>
+               <li><b>Controller:</b> is the name of the controller, by default is "home"</li>
+               <li><b>Action:</b> is the name of action handler, by default is "index"</li>
+               <li><b>Id:</b> is an optional parameter that will be handled by the action handler</li>
+            </ol>
+            <p>
+               <b>e.g.</b> the path: <samp>"/blog/show/9"</samp> will be handled by the following action handler: <br>
+               <code>BlogController::show(int $id)</code> where <code>$id = 9</code>
+            </p>
+            <p>
+               The following code example shows how to map a conventional route for a MVC endpoint.
+            </p>
+            <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-    $routes->map("&lcub;controller=Home}/&lcub;action=Index}/&lcub;id?}");
+   $routes->map("&lcub;controller=Home}/&lcub;action=Index}/&lcub;id?}");
 });</code></pre>
-        <p>
-          You can also map a conventional route to a particular controller like the following example:
-        </p>
-        <pre><code class="language-php">...
+            <p>
+               You can also map a conventional route to a particular controller like the following example:
+            </p>
+            <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-    $routes->map("/admin/&lcub;action=Index}/&lcub;id?}", AdminController::class);
+   $routes->map("/admin/&lcub;action=Index}/&lcub;id?}", AdminController::class);
 });</code></pre>
-        <blockquote class="alert alert-info">
-          <b>Note:</b> You need to register the MVC service in order to use the conventional routing, which will be discussed in the next section.
-        </blockquote>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/middleware">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/controller">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <blockquote class="alert alert-info">
+               <b>Note:</b> You need to register the MVC service in order to use the conventional routing, which will be discussed in the next section.
+            </blockquote>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/middleware">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/controller">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>

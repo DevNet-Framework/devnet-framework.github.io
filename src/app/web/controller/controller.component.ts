@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'web-controller',
-  templateUrl: './controller.component.html',
-  styleUrls: ['./controller.component.css']
+   selector: 'web-controller',
+   templateUrl: './controller.component.html',
+   styleUrls: ['./controller.component.css']
 })
 export class ControllerComponent implements OnInit {
 
-  constructor() { }
+   constructor() { }
 
-  ngOnInit(): void {
-    hljs.highlightAll();
-  }
+   ngOnInit(): void {
+      hljs.highlightAll();
+   }
 
 }

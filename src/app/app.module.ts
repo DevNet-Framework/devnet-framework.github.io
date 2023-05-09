@@ -16,24 +16,24 @@ import { ErrorComponent } from './error/error.component';
 import { DocsComponent } from './docs/docs.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    ErrorComponent,
-    DocsComponent
-  ],
-  imports: [
-    BrowserModule,
-    SetupModule,
-    CoreModule,
-    ConsoleModule,
-    WebModule,
-    EntityModule,
-    SecurityModule,
-    AppRoutingModule,
-    SharedModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      HomeComponent,
+      ErrorComponent,
+      DocsComponent
+   ],
+   imports: [
+      BrowserModule,
+      SetupModule,
+      CoreModule,
+      ConsoleModule,
+      WebModule,
+      EntityModule,
+      SecurityModule,
+      AppRoutingModule,
+      SharedModule
+   ],
+   providers: [],
+   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,138 +1,138 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>Layout View</h1>
-        <hr>
-        <p>
-          The layout or master page is common UI (User Interface) a template of common HTML elements that remains the same throughout the application, such as header, navigation bar, or footer section, to reduce duplicate code in views and make it easy to maintain.
-        </p>
-        <p>
-          By default layouts placed in the folder <samp>/views/layouts</samp> and, an individual views can specify a layout by calling the method <code>layout(string $layoutName)</code>, the string parameter <code>$layoutName</code> define the relative path to the layout file without the extension file <samp>".phtml"</samp> as shown in the following example:
-        </p>
-        <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Layout View</h1>
+            <hr>
+            <p>
+               The layout or master page is common UI (User Interface) a template of common HTML elements that remains the same throughout the application, such as header, navigation bar, or footer section, to reduce duplicate code in views and make it easy to maintain.
+            </p>
+            <p>
+               By default layouts placed in the folder <samp>/views/layouts</samp> and, an individual views can specify a layout by calling the method <code>layout(string $layoutName)</code>, the string parameter <code>$layoutName</code> define the relative path to the layout file without the extension file <samp>".phtml"</samp> as shown in the following example:
+            </p>
+            <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
   
 &lt;h1>Hello World!&lt;/h1></code></pre>
-        <p>
-          Layout can include the view contents, by calling the method <code>renderBody()</code> and wherever the call to this method is placed, the contents of the view will be rendered.
-        </p>
-        <p>
-          In this example the view engin catch the content <code>&lt;h1>Hello World!&lt;/h1></code> of the view and rendered it into the body of the layout where the method <code>renderBody()</code> is called.
-        </p>
-        <pre><code class="language-php-template">&lt;!DOCTYPE html>
+            <p>
+               Layout can include the view contents, by calling the method <code>renderBody()</code> and wherever the call to this method is placed, the contents of the view will be rendered.
+            </p>
+            <p>
+               In this example the view engin catch the content <code>&lt;h1>Hello World!&lt;/h1></code> of the view and rendered it into the body of the layout where the method <code>renderBody()</code> is called.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
 &lt;html lang="en">
 &lt;head>
-  &lt;meta charset="UTF-8">
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
-  &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
-  &lt;title>DevNet&lt;/title>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
 &lt;/head>
 &lt;body>
-  &lt;header>
-    &lt;nav class="navbar">
-      &lt;a href="/">Home&lt;/a>
-      &lt;a href="/about">About&lt;/a>
-      &lt;a href="/contact">Contact&lt;/a>
-    &lt;/nav>
-  &lt;/header>
-  &lt;main>
-    &lt;? $this->renderBody() ?>
-  &lt;/main>
+   &lt;header>
+      &lt;nav class="navbar">
+         &lt;a href="/">Home&lt;/a>
+         &lt;a href="/about">About&lt;/a>
+         &lt;a href="/contact">Contact&lt;/a>
+      &lt;/nav>
+   &lt;/header>
+   &lt;main>
+      &lt;? $this->renderBody() ?>
+   &lt;/main>
 &lt;/body>
 &lt;/html></code></pre>
-        <br>
-        <h2>Partial views</h2>
-        <p>
-          A partial view is a reusable portion of the layout, which means Layout can be split into many files that contains HTML code, It can be used in one or more views or layout views, You can use the same partial view at multiple places and eliminates the redundant code.
-        </p>
-        <pre><code class="language-php-template">&lt;!DOCTYPE html>
+            <br>
+            <h2>Partial views</h2>
+            <p>
+               A partial view is a reusable portion of the layout, which means Layout can be split into many files that contains HTML code, It can be used in one or more views or layout views, You can use the same partial view at multiple places and eliminates the redundant code.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
 &lt;html lang="en">
 &lt;head>
-  &lt;meta charset="UTF-8">
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
-  &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
-  &lt;title>DevNet&lt;/title>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
 &lt;/head>
 &lt;body>
-  &lt;header>
-    &lt;? $this->renderPartial('Shared/navbar') ?>
-  &lt;/header>
-  &lt;main>
-    &lt;? $this->renderBody() ?>
-  &lt;/main>
+   &lt;header>
+      &lt;? $this->renderPartial('Shared/navbar') ?>
+   &lt;/header>
+   &lt;main>
+      &lt;? $this->renderBody() ?>
+   &lt;/main>
 &lt;/body>
 &lt;/html></code></pre>
-        <p>
-          The code below is the content of the partial view in separated file: <samp>"/Views/layouts/navbar.phtml"</samp>.
-        </p>
-        <pre><code class="language-php-template">&lt;nav class="navbar">
-  &lt;a href="/">Home&lt;/a>
-  &lt;a href="/about">About&lt;/a>
-  &lt;a href="/contact">Contact&lt;/a>
+            <p>
+               The code below is the content of the partial view in separated file: <samp>"/Views/layouts/navbar.phtml"</samp>.
+            </p>
+            <pre><code class="language-php-template">&lt;nav class="navbar">
+   &lt;a href="/">Home&lt;/a>
+   &lt;a href="/about">About&lt;/a>
+   &lt;a href="/contact">Contact&lt;/a>
 &lt;/nav></code></pre>
-        <br>
-        <h2>Sections</h2>
-        <p>
-          Sections provide a dinamic way to organize where certain page elements should be placed, unlike the partial view which they remains the same throughout all the application, sections can be changed for each view.
-        </p>
-        <p>
-          To be able to use a section in a layout, we must first define a section in the view, by wrting a block of content between the methods <code>section(string $sectionName)</code> and <code>endSection()</code> and give a ane to the section, which hepl us later to select which section to be rendered in the layout.
-        </p>
-        <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
+            <br>
+            <h2>Sections</h2>
+            <p>
+               Sections provide a dinamic way to organize where certain page elements should be placed, unlike the partial view which they remains the same throughout all the application, sections can be changed for each view.
+            </p>
+            <p>
+               To be able to use a section in a layout, we must first define a section in the view, by wrting a block of content between the methods <code>section(string $sectionName)</code> and <code>endSection()</code> and give a ane to the section, which hepl us later to select which section to be rendered in the layout.
+            </p>
+            <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
   
 &lt;h1>Hello World!&lt;/h1> 
 
 &lt;? $this->section('sidebar') ?>
-  &lt;ul class="menu">
-  &lt;li>&lt;Item1&lt;/li>
-  &lt;li>&lt;Item2&lt;/li>
-  &lt;/ul>
+   &lt;ul class="menu">
+   &lt;li>&lt;Item1&lt;/li>
+   &lt;li>&lt;Item2&lt;/li>
+   &lt;/ul>
 &lt;? $this->endSection() ?></code></pre>
-        <p>
-          A layout can include one or more view sections, by calling the method <code>RenderSection(string $sectionName)</code> with specifying the name of the section be rendered, and where the call of this method is placed, the view section contents will be rendered.
-        </p>
-        <pre><code class="language-php-template">&lt;!DOCTYPE html>
+            <p>
+               A layout can include one or more view sections, by calling the method <code>RenderSection(string $sectionName)</code> with specifying the name of the section be rendered, and where the call of this method is placed, the view section contents will be rendered.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
 &lt;html lang="en">
 &lt;head>
-  &lt;meta charset="UTF-8">
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
-  &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
-  &lt;title>DevNet&lt;/title>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
 &lt;/head>
 &lt;body>
-  &lt;header>
-  &lt;? $this->renderPartial('Shared/navbar') ?>
-  &lt;/header>
-  &lt;div class="container">
-  &lt;aside>
-      &lt;? $this->renderSection('sidebar') ?>
-  &lt;/aside>
-  &lt;main>
-      &lt;? $this->renderBody() ?>
-  &lt;/main>
-  &lt;/div>
+   &lt;header>
+      &lt;? $this->renderPartial('Shared/navbar') ?>
+   &lt;/header>
+   &lt;main>
+      &lt;aside>
+         &lt;? $this->renderSection('sidebar') ?>
+      &lt;/aside>
+      &lt;article>
+         &lt;? $this->renderBody() ?>
+      &lt;/article>
+   &lt;/main>
 &lt;/body>
 &lt;/html></code></pre>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/view">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/filter">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/view">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/filter">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>

@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'web-middleware',
-  templateUrl: './middleware.component.html',
-  styleUrls: ['./middleware.component.css']
+   selector: 'web-middleware',
+   templateUrl: './middleware.component.html',
+   styleUrls: ['./middleware.component.css']
 })
 export class MiddlewareComponent implements OnInit {
 
-  constructor() { }
+   constructor() { }
 
-  ngOnInit(): void {
-    hljs.highlightAll();
-  }
+   ngOnInit(): void {
+      hljs.highlightAll();
+   }
 
 }

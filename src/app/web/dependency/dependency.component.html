@@ -1,60 +1,60 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>Dependency Injection</h1>
-        <hr>
-        <p>
-          Dependency injection (DI) is a technique for achieving loose coupling between objects and dependencies rather than directly instantiating dependencies or using static references, most often the dependency objects are provided to the class which depends on, via constructor injection declaration, allowing them to follow the Explicit Dependencies Principle.
-        </p>
-        <p>
-          The following code represents a class <code>MyService</code> that depends on the class <code>MyDependency</code>, which will be injected automatically into its constructor by the service container.
-        </p>
-        <pre><code class="language-php">&lt;?php
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Dependency Injection</h1>
+            <hr>
+            <p>
+               Dependency injection (DI) is a technique for achieving loose coupling between objects and dependencies rather than directly instantiating dependencies or using static references, most often the dependency objects are provided to the class which depends on, via constructor injection declaration, allowing them to follow the Explicit Dependencies Principle.
+            </p>
+            <p>
+               The following code represents a class <code>MyService</code> that depends on the class <code>MyDependency</code>, which will be injected automatically into its constructor by the service container.
+            </p>
+            <pre><code class="language-php">&lt;?php
                   
 class MyService implement IService
 &lcub;
-    Private MyDependency $Dependency;
+   Private MyDependency $Dependency;
 
-    public function __construct(MyDependency $dependency)
-    &lcub;
-        $this->Dependency = $dependency;
-    }
+   public function __construct(MyDependency $dependency)
+   &lcub;
+      $this->Dependency = $dependency;
+   }
 }
 </code></pre>
-        <br>
-        <h2>Service Container</h2>
-        <p>
-          Service Container is an implementation of Dependency Injection Container (aka Inversion of Controller Container), a system that implements an automatic dependency injection, it creates an object of the specified class as a service and injects all the dependency objects through their constructor by its type and manages its lifetime, whether Transient or Singleton lifetime.
-        </p>
-        <h5>Transient</h5>
-        <p>
-          Transient lifetime services are created each time they're requested from the service container. This lifetime works best for lightweight, stateless services.
-        </p>
-        <h5>Singleton</h5>
-        <p>
-          Singleton lifetime services are created only once, and Every subsequent request uses the same instance in the application life cycle.
-        </p>
-        <h2>Registring services</h2>
-        <p>
-          Typically the method <code>WebHostBuilder::register(IServiceCollection $services)</code> is responsible for defining the services that will be used throw your application without hard coding, and you can add services to the container with complex dependencies by using one of the following methods:
-        </p>
-        <ul>
-          <li>
-            <code>IserviceCollection::addSingleton(String $serviceType, String|Object|Closure $service);</code>
-          </li>
-          <li><code>IserviceCollection::addTransient(String $serviceType, String|Object|Closure $service);</code></li>
-        </ul>
-        <p>
-          Services are defined by the same service type class, parent class, or interface that the service is implementing, which will be used later to call the service from the service provider.
-        </p>
-        <p>
-          The following code shows an example of registring two services, <code>MyDependency</code> registred with Transient lifetime, defined by the same service type, and <code>MyService</code> with singleton lifetime defined by <code>IMyService</code> interface:
-        </p>
-        <pre><code class="language-php">&lt;?php
+            <br>
+            <h2>Service Container</h2>
+            <p>
+               Service Container is an implementation of Dependency Injection Container (aka Inversion of Controller Container), a system that implements an automatic dependency injection, it creates an object of the specified class as a service and injects all the dependency objects through their constructor by its type and manages its lifetime, whether Transient or Singleton lifetime.
+            </p>
+            <h5>Transient</h5>
+            <p>
+               Transient lifetime services are created each time they're requested from the service container. This lifetime works best for lightweight, stateless services.
+            </p>
+            <h5>Singleton</h5>
+            <p>
+               Singleton lifetime services are created only once, and Every subsequent request uses the same instance in the application life cycle.
+            </p>
+            <h2>Registring services</h2>
+            <p>
+               Typically the method <code>WebHostBuilder::register(IServiceCollection $services)</code> is responsible for defining the services that will be used throw your application without hard coding, and you can add services to the container with complex dependencies by using one of the following methods:
+            </p>
+            <ul>
+               <li>
+                  <code>IserviceCollection::addSingleton(String $serviceType, String|Object|Closure $service);</code>
+               </li>
+               <li><code>IserviceCollection::addTransient(String $serviceType, String|Object|Closure $service);</code></li>
+            </ul>
+            <p>
+               Services are defined by the same service type class, parent class, or interface that the service is implementing, which will be used later to call the service from the service provider.
+            </p>
+            <p>
+               The following code shows an example of registring two services, <code>MyDependency</code> registred with Transient lifetime, defined by the same service type, and <code>MyService</code> with singleton lifetime defined by <code>IMyService</code> interface:
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 namespace Application;
 
@@ -67,26 +67,26 @@ use Appplication\Services\MyDependency;
 
 class Program
 &lcub;
-    public static function main(array $args = [])
-    &lcub;
+   public static function main(array $args = [])
+   &lcub;
       $builder = WebHost::createDefaultBuilder($args);
       $configuration = $builder->Configuration;
 
       $builder->register(function ($services) &lcub;
-          // adding services
-          services->addTransient(MyDependency::class);
-          services->addSingleton(IMyService::class, MyService::class);
+         // adding services
+         services->addTransient(MyDependency::class);
+         services->addSingleton(IMyService::class, MyService::class);
       });
       ...
-    }
+   }
 }
 </code></pre>
-        <br>
-        <h3>Registring services using custom factory</h3>
-        <p>
-          Devnet Service container uses Service Activator to create your dependency when you call it, but if you want to resolve the instantiation of your dependency in your way, DevNet service container allows you to implement your own factory using a closure function that has <code>IServiceProvider</code> parameter to allow you to call any service registered within <code>IServiceCollection</code> and use it as a dependency for your service creation process as shown in the following example:
-        </p>
-        <pre><code class="language-php">&lt;?php
+            <br>
+            <h3>Registring services using custom factory</h3>
+            <p>
+               Devnet Service container uses Service Activator to create your dependency when you call it, but if you want to resolve the instantiation of your dependency in your way, DevNet service container allows you to implement your own factory using a closure function that has <code>IServiceProvider</code> parameter to allow you to call any service registered within <code>IServiceCollection</code> and use it as a dependency for your service creation process as shown in the following example:
+            </p>
+            <pre><code class="language-php">&lt;?php
 
 namespace Application;
 
@@ -99,45 +99,45 @@ use Appplication\Services\MyDependency;
 
 class Program
 &lcub;
-    public static function main(array $args = [])
-    &lcub;
+   public static function main(array $args = [])
+   &lcub;
       $builder = WebHost::createDefaultBuilder($args);
       $configuration = $builder->Configuration;
 
       $builder->register(function ($services) &lcub;
-          
-          services->addSingleton(IService::class,
-              fn($provider) => new MyService($provider->getService(MyDependency::class)));
-          
-          services->addTransient(MyDependency::class);
+            
+         services->addSingleton(IService::class,
+            fn($provider) => new MyService($provider->getService(MyDependency::class)));
+         
+         services->addTransient(MyDependency::class);
       });
       ...
-    }
+   }
 }
 </code></pre>
-        <br>
-        <h3>Requesting Services</h3>
-        <p>
-          Services can be requested by their type using the method <code>IserviceProvider::getService(string $type)</code>, which can be accessible from the property <code>HttpContext::RequestServices</code>, like in the following example.
-        </p>
-        <pre><code class="language-php">
+            <br>
+            <h3>Requesting Services</h3>
+            <p>
+               Services can be requested by their type using the method <code>IserviceProvider::getService(string $type)</code>, which can be accessible from the property <code>HttpContext::RequestServices</code>, like in the following example.
+            </p>
+            <pre><code class="language-php">
 ...
 $app->useEndpoint(function($routes) &lcub;
-    $routes->mapGet("/service", function(HttpContext $context) &lcub;
-        // getting services
-        $service1 = $context->RequestServices->getService(IService::class);
-        $service2 = $context->RequestServices->getService(MyService::class);
+   $routes->mapGet("/service", function(HttpContext $context) &lcub;
+      // getting services
+      $service1 = $context->RequestServices->getService(IService::class);
+      $service2 = $context->RequestServices->getService(MyService::class);
 
-        // code...
-    });
+      // code...
+   });
 });
 </code></pre>
-        <br>
-        <h3>Requesting services through controller</h3>
-        <p>
-          Services are injected into controllers as a constructor parameter during the creation of the controller, the service activator resolves the services from <code>IServiceCollection</code> that matches the parameter types of the controller's constructor and injects them into it automatically.
-        </p>
-        <pre><code class="language-php">&lt;?php
+            <br>
+            <h3>Requesting services through controller</h3>
+            <p>
+               Services are injected into controllers as a constructor parameter during the creation of the controller, the service activator resolves the services from <code>IServiceCollection</code> that matches the parameter types of the controller's constructor and injects them into it automatically.
+            </p>
+            <pre><code class="language-php">&lt;?php
                   
 namespace Application\Controllers;
 
@@ -147,76 +147,76 @@ use Application\Services\IMyService;
 
 class HelloController extends AbstractController
 &lcub;
-    private IMyService $MyService;
+   private IMyService $MyService;
 
-    public function __construct(IMyService $myService)
-    &lcub;
+   public function __construct(IMyService $myService)
+   &lcub;
       $this->MyService = $myService;
-    }
-    ...
+   }
+   ...
 }
 </code></pre>
-        <br>
-        <h3>Built-in services</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Method</th>
-              <th scope="col">Discription</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>addAntiforgery(?Closure $configuration)</code></td>
-              <td>register Antiforgery service.</td>
-            </tr>
-            <tr>
-              <td><code>addAuthentication(?Closure $configuration)</code></td>
-              <td>register Authentication service.</td>
-            </tr>
-            <tr>
-              <td><code>addAuthorization(?Closure $configuration)</code></td>
-              <td>register Authorization service.</td>
-            </tr>
-            <tr>
-              <td><code>addEntityContext(?Closure $configuration)</code></td>
-              <td>register EntityContext service.</td>
-            </tr>
-            <tr>
-              <td><code>addHttpClient(?Closure $configuration)</code></td>
-              <td>register HttpClient service.</td>
-            </tr>
-            <tr>
-              <td><code>addIdentity(?Closure $configuration)</code></td>
-              <td>register Identity Manager service.</td>
-            </tr>
-            <tr>
-              <td><code>addLogging(?Closure $configuration)</code></td>
-              <td>register ILoggerFactory service.</td>
-            </tr>
-            <tr>
-              <td><code>addMvc(?Closure $configuration)</code></td>
-              <td>register Model-View-Controller service.</td>
-            </tr>
-          </tbody>
-        </table>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/filter">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/exception">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <br>
+            <h3>Built-in services</h3>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Method</th>
+                     <th scope="col">Discription</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td><code>addAntiforgery(?Closure $configuration)</code></td>
+                     <td>register Antiforgery service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addAuthentication(?Closure $configuration)</code></td>
+                     <td>register Authentication service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addAuthorization(?Closure $configuration)</code></td>
+                     <td>register Authorization service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addEntityContext(?Closure $configuration)</code></td>
+                     <td>register EntityContext service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addHttpClient(?Closure $configuration)</code></td>
+                     <td>register HttpClient service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addIdentity(?Closure $configuration)</code></td>
+                     <td>register Identity Manager service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addLogging(?Closure $configuration)</code></td>
+                     <td>register ILoggerFactory service.</td>
+                  </tr>
+                  <tr>
+                     <td><code>addMvc(?Closure $configuration)</code></td>
+                     <td>register Model-View-Controller service.</td>
+                  </tr>
+               </tbody>
+            </table>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/filter">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/exception">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>

@@ -1,46 +1,46 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>Installation</h1>
-        <hr>
-        <p>
-          DevNet Framework has some software requirements in order to work, so make sure your system meets the software requirements before getting to the installation.
-        </p>
-        <h3>Software Requirements</h3>
-        <ul>
-          <li><a href="https://www.php.net/" rel="nofollow">PHP</a> version 8.1 or higher</li>
-          <li><a href="https://getcomposer.org/" rel="nofollow">Composer</a> version 2.0 or higher</li>
-          <li>You may need to install or activate <code>PDO PHP Extension</code></li>
-        </ul>
-        <blockquote class="alert alert-warning">
-          <b>Important:</b> In order to run <strong>DevNet Framework</strong> globally in Linux operating system, including <strong>DevNet CLI</strong> you need to add <code>composer/vendor/bin</code> into the system environment variables in <code>.bashrc</code> file like this:<br>
-          <code>export PATH="$PATH:$HOME/.config/composer/vendor/bin"</code>
-        </blockquote>
-        <br>
-        <h3>Installing DevNet Framwork</h3>
-        <p>
-          It is recommended to Install DevNet Framework globally in your system, just one framework runs multiple projects unless your projects use different versions of the DevNet framework, which may cause conflict because composer doesn't support multi-versioning, in this case, you can solve this problem using docker container or installing the compatible version of DevNet framework locally inside its proper project.
-        </p>
-        <p>
-          To install the DevNet framework globally using composer run the following command line in the terminal:
-        </p>
-        <pre><code class="language-shell">composer global require devnet/framework</code></pre>
-        <p>
-          Or local installation inside your project by running the following command line in the terminal:
-        </p>
-        <pre><code class="language-shell">composer require devnet/framework</code></pre>
-        <br>
-        <h3>Using DevNet CLI</h3>
-        <p>
-          After installing the DevNet framework, you can use DevNet CLI to create and manage your projects, and for the first start you can run the <code>devnet</code> command with the option <code>--help</code> in your terminal, to show the help on how to use the devnet command-line tools, as shown below:
-        </p>
-        <pre><code class="language-shell">devnet --help</code></pre>
-        <h5>Output</h5>
-        <pre><code class="language-shell">Description:
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Installation</h1>
+            <hr>
+            <p>
+               DevNet Framework has some software requirements in order to work, so make sure your system meets the software requirements before getting to the installation.
+            </p>
+            <h3>Software Requirements</h3>
+            <ul>
+               <li><a href="https://www.php.net/" rel="nofollow">PHP</a> version 8.1 or higher</li>
+               <li><a href="https://getcomposer.org/" rel="nofollow">Composer</a> version 2.0 or higher</li>
+               <li>You may need to install or activate <code>PDO PHP Extension</code></li>
+            </ul>
+            <blockquote class="alert alert-warning">
+               <b>Important:</b> In order to run <strong>DevNet Framework</strong> globally in Linux operating system, including <strong>DevNet CLI</strong> you need to add <code>composer/vendor/bin</code> into the system environment variables in <code>.bashrc</code> file like this:<br>
+               <code>export PATH="$PATH:$HOME/.config/composer/vendor/bin"</code>
+            </blockquote>
+            <br>
+            <h3>Installing DevNet Framwork</h3>
+            <p>
+               It is recommended to Install DevNet Framework globally in your system, just one framework runs multiple projects unless your projects use different versions of the DevNet framework, which may cause conflict because composer doesn't support multi-versioning, in this case, you can solve this problem using docker container or installing the compatible version of DevNet framework locally inside its proper project.
+            </p>
+            <p>
+               To install the DevNet framework globally using composer run the following command line in the terminal:
+            </p>
+            <pre><code class="language-shell">composer global require devnet/framework</code></pre>
+            <p>
+               Or local installation inside your project by running the following command line in the terminal:
+            </p>
+            <pre><code class="language-shell">composer require devnet/framework</code></pre>
+            <br>
+            <h3>Using DevNet CLI</h3>
+            <p>
+               After installing the DevNet framework, you can use DevNet CLI to create and manage your projects, and for the first start you can run the <code>devnet</code> command with the option <code>--help</code> in your terminal, to show the help on how to use the devnet command-line tools, as shown below:
+            </p>
+            <pre><code class="language-shell">devnet --help</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">Description:
   DevNet command-line interface
 
 Usage:
@@ -57,23 +57,23 @@ commands:
   run            Run a DevNet project
 
 Run 'devnet [command] --help' for more information on a command.</code></pre>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/setup/overview">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/setup/deployment">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/setup/overview">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/setup/deployment">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>

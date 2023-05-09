@@ -7,15 +7,15 @@ import { InstallationComponent } from './installation/installation.component';
 import { DeploymentComponent } from './deployment/deployment.component';
 
 @NgModule({
-  declarations: [
-    OverviewComponent,
-    InstallationComponent,
-    DeploymentComponent
-  ],
-  imports: [
-    CommonModule,
-    SetupRoutingModule,
-    SharedModule
-  ]
+   declarations: [
+      OverviewComponent,
+      InstallationComponent,
+      DeploymentComponent
+   ],
+   imports: [
+      CommonModule,
+      SetupRoutingModule,
+      SharedModule
+   ]
 })
 export class SetupModule { }

@@ -4,18 +4,18 @@ import apache from 'highlight.js/lib/languages/apache';
 import nginx from 'highlight.js/lib/languages/nginx';
 
 @Component({
-  selector: 'setup-deployment',
-  templateUrl: './deployment.component.html',
-  styleUrls: ['./deployment.component.css']
+   selector: 'setup-deployment',
+   templateUrl: './deployment.component.html',
+   styleUrls: ['./deployment.component.css']
 })
 export class DeploymentComponent implements OnInit {
 
-  constructor() { }
+   constructor() { }
 
-  ngOnInit(): void {
-    hljs.registerLanguage('apache', apache);
-    hljs.registerLanguage('nginx', nginx);
-    hljs.highlightAll();
-  }
+   ngOnInit(): void {
+      hljs.registerLanguage('apache', apache);
+      hljs.registerLanguage('nginx', nginx);
+      hljs.highlightAll();
+   }
 
 }

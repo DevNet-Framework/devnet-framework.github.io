@@ -1,87 +1,87 @@
 <div class="container pt-3">
-  <div class="row">
-    <div id="sidebar" style="width: 260px;">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div id="content" class="flex-grow-1" style="width: 400px;">
-      <article>
-        <h1>HTTP Client-Server </h1>
-        <hr>
-        <h3>Http Server</h3>
-        <p class="text-justify">
-          DevNet provides the HttpContext class which encapsulates all HTTP information about the HTTP server request received from the client, and HTTP server response that will be sent to the client.
-        </p>
-        <p class="text-justify">
-          HttpContext already injected in the your application, and you can access it through middlewares and request handler endpoints, but if you want to use HttpContext as a third-party component to another project than DevNet, you can create an instance of HttpContext using <code>HttpContextFactory</code> it will create a default instance with global server variables.
-        </p>
-        <pre><code class="language-php">&lt;?php
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>HTTP Client-Server </h1>
+            <hr>
+            <h3>Http Server</h3>
+            <p class="text-justify">
+               DevNet provides the HttpContext class which encapsulates all HTTP information about the HTTP server request received from the client, and HTTP server response that will be sent to the client.
+            </p>
+            <p class="text-justify">
+               HttpContext already injected in the your application, and you can access it through middlewares and request handler endpoints, but if you want to use HttpContext as a third-party component to another project than DevNet, you can create an instance of HttpContext using <code>HttpContextFactory</code> it will create a default instance with global server variables.
+            </p>
+            <pre><code class="language-php">&lt;?php
           
 use DevNet\Web\Http\HttpContextFactory;
   
 $httpContext = HttpContextFactory::create();</code></pre>
-        <br>
-        <h4>Http Request</h4>
-        <p class="text-justify">
-          You can access the <code>HttpRequest</code> property from the <code>HttpContext</code> and inspect the HTTP request information as shown below
-        </p>
-        <h6>Get The Request Method</h6>
-        <pre><code class="language-php">$method = $httpContext->Resquest->Method;</code></pre>
-        <br>
-        <h6>The Request URI</h6>
-        <pre><code class="language-php">$uri    = $httpContext->Resquest->Uri;
+            <br>
+            <h4>Http Request</h4>
+            <p class="text-justify">
+               You can access the <code>HttpRequest</code> property from the <code>HttpContext</code> and inspect the HTTP request information as shown below
+            </p>
+            <h6>Get The Request Method</h6>
+            <pre><code class="language-php">$method = $httpContext->Resquest->Method;</code></pre>
+            <br>
+            <h6>The Request URI</h6>
+            <pre><code class="language-php">$uri    = $httpContext->Resquest->Uri;
 $scheme = $uri->Scheme;
 $Host   = $uri->Host;
 $Port   = $uri->Port;
 $Query  = $uri->Query;</code></pre>
-        <br>
-        <h6>The Request Form</h6>
-        <pre><code class="language-php">$form  = $httpContext->Resquest->Form;
+            <br>
+            <h6>The Request Form</h6>
+            <pre><code class="language-php">$form  = $httpContext->Resquest->Form;
 $value = $form->getValue('name');</code></pre>
-        <br>
-        <h6>The Request From Files</h6>
-        <pre><code class="language-php">$files = $httpContext->Resquest->Form->Files;
+            <br>
+            <h6>The Request From Files</h6>
+            <pre><code class="language-php">$files = $httpContext->Resquest->Form->Files;
 $file  = $files->getFile('name');
   
 $file->copyto('path');</code></pre>
-        <br>
-        <h6>The Request Headers</h6>
-        <pre><code class="language-php">$headers = $httpContext->Resquest->Headers;
+            <br>
+            <h6>The Request Headers</h6>
+            <pre><code class="language-php">$headers = $httpContext->Resquest->Headers;
 $values  = $headers->getValues('name');
 $value   = $values[0];</code></pre>
-        <br>
-        <h6>The Request Cookies</h6>
-        <pre><code class="language-php">$cookies = $httpContext->Resquest->Cookies;
+            <br>
+            <h6>The Request Cookies</h6>
+            <pre><code class="language-php">$cookies = $httpContext->Resquest->Cookies;
 $value   = $cookies->getValue('name');</code></pre>
-        <br>
-        <h4>Http Response</h4>
-        <p class="text-justify">
-          You can access the <code>HttpResponse</code> property from the <code>HttpContext</code> and set the HTTP response data as shown below.
-        </p>
-        <h6>Adding Response Header</h6>
-        <pre><code class="language-php">$httpContext->Response->Headers->add('name', 'value', replace: true);</code></pre>
-        <br>
-        <h6>Adding Response Cookie</h6>
-        <pre><code class="language-php">$options = new \DevNet\Web\Http\CookieOptions(expires: new DateTime('7 days'), path: '/');
+            <br>
+            <h4>Http Response</h4>
+            <p class="text-justify">
+               You can access the <code>HttpResponse</code> property from the <code>HttpContext</code> and set the HTTP response data as shown below.
+            </p>
+            <h6>Adding Response Header</h6>
+            <pre><code class="language-php">$httpContext->Response->Headers->add('name', 'value', replace: true);</code></pre>
+            <br>
+            <h6>Adding Response Cookie</h6>
+            <pre><code class="language-php">$options = new \DevNet\Web\Http\CookieOptions(expires: new DateTime('7 days'), path: '/');
 $httpContext->Response->Cookies->add('name', 'value', $options);</code></pre>
-        <br>
-        <h6>Writing Response Content</h6>
-        <pre><code class="language-php">$httpContext->Response->Body->write('content');</code></pre>
-        <br>
-        <h6>Writing Response Content Asynchronously</h6>
-        <pre><code class="language-php">$task = $httpContext->Response->writeAsync('content');
+            <br>
+            <h6>Writing Response Content</h6>
+            <pre><code class="language-php">$httpContext->Response->Body->write('content');</code></pre>
+            <br>
+            <h6>Writing Response Content Asynchronously</h6>
+            <pre><code class="language-php">$task = $httpContext->Response->writeAsync('content');
 $task = $httpContext->Response->writeJsonAsync($object);</code></pre>
-        <br>
-        <h6>Send Redirect Response</h6>
-        <pre><code class="language-php">$httpContext->Response->redirect('path');</code></pre>
-        <br>
-        <h6>Set Response Status Code</h6>
-        <pre><code class="language-php">$httpContext->Response->setStatusCode(403);</code></pre>
-        <br>
-        <h4>Http Client</h4>
-        <p class="text-justify">
-          DevNet Provides a <code>HttpClient</code> class for sending HTTP requests to a web API server and receiving back HTTP responses.
-        </p>
-        <pre><code class="language-php">&lt;?php
+            <br>
+            <h6>Send Redirect Response</h6>
+            <pre><code class="language-php">$httpContext->Response->redirect('path');</code></pre>
+            <br>
+            <h6>Set Response Status Code</h6>
+            <pre><code class="language-php">$httpContext->Response->setStatusCode(403);</code></pre>
+            <br>
+            <h4>Http Client</h4>
+            <p class="text-justify">
+               DevNet Provides a <code>HttpClient</code> class for sending HTTP requests to a web API server and receiving back HTTP responses.
+            </p>
+            <pre><code class="language-php">&lt;?php
           
 use DevNet\Web\Http\Client\HttpClient;
 
@@ -89,45 +89,45 @@ use function Devnet\System\async;
 use function Devnet\System\await;
 
 $action = async(function(): string &lcub;
-    $client   = new HttpClient();
-    $task     = $client->requestAsync('GET', 'www.example.com');
-    $response = await($task);
-    $content  = $response->Boby->read();
-    return $content;
+   $client   = new HttpClient();
+   $task     = $client->requestAsync('GET', 'www.example.com');
+   $response = await($task);
+   $content  = $response->Boby->read();
+   return $content;
 });
 
 $task = $action();</code></pre>
-        <br>
-        <h6>Send request content</h6>
-        <pre><code class="language-php">$form    = "Username=john_doe&Password=123456";
+            <br>
+            <h6>Send request content</h6>
+            <pre><code class="language-php">$form    = "Username=john_doe&Password=123456";
 $content = new HttpRequestContent('application/x-www-form-urlencoded', $form);
 $task    = $client->requestAsync('POST', 'www.example.com', $content);</code></pre>
-        <br>
-        <h6>Send HTTP method request using short calls</h6>
-        <pre><code class="language-php">$task = $client->getRequestAsync('www.example.com', $requestContent);
+            <br>
+            <h6>Send HTTP method request using short calls</h6>
+            <pre><code class="language-php">$task = $client->getRequestAsync('www.example.com', $requestContent);
 $task = $client->postRequestAsync('www.example.com', $requestContent);
 $task = $client->putRequestAsync('www.example.com', $requestContent);
 $task = $client->deleteRequestAsync('www.example.com', $requestContent);</code></pre>
-        <br>
-        <h6>Send get request that returns response content</h6>
-        <pre><code class="language-php">$task = $client->getStringAsync('www.example.com');</code></pre>
-        <footer>
-          <nav class="no-print" aria-label="Page navigation">
-            <ul class="nav-page">
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/start">
-                  <i class="chevron left"></i> Previous
-                </a>
-              </li>
-              <li class="nav-page-item">
-                <a class="nav-page-link" routerLink="/docs/web/middleware">
-                  Next <i class="chevron right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </footer>
-      </article>
-    </div>
-  </div>
+            <br>
+            <h6>Send get request that returns response content</h6>
+            <pre><code class="language-php">$task = $client->getStringAsync('www.example.com');</code></pre>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/start">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/web/middleware">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
 </div>
