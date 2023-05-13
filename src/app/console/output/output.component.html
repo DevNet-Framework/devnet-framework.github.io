@@ -1,0 +1,254 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Console Output</h1>
+            <hr>
+            <p>
+               Console output is the text that is printed to the console screen or terminal window when a program is run, by writing data to the standard output stream.
+            </p>
+            <h3>Write to the console</h3>
+            <p>
+               To write data to the standard output stream, the following static methods are used:
+            </p>
+            <ul>
+               <li><code>DevNet\System\IO\Console::write(string, $format, array|string ...$args)</code></li>
+               <li><code>DevNet\System\IO\Console::writeLine(string, $format, array|string ...$args)</code></li>
+            </ul>
+            <p>
+               Both methods are similar, except that <code>Console::writeLine()</code> prints data along with a new line at the end of the output, while the <code>Console::write()</code> prints data without adding a new line, as shown in the following example.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::writeLine("Text with a new line:");
+      Console::write("Some text");
+      Console::write(", printed in the same line.");
+   }
+}
+</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">Text with a new line:
+Some text, printed in the same line.
+</code></pre>
+            <br>
+            <h4>Format string</h4>
+            <p>
+               A format string is a string that contains placeholders indicated by braces <code>&lcub;index}</code> with an index number corresponding to the values that are passed as arguments to be inserted into the string result, like in the following example.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::write("Name: &lcub;0} Age: &lcub;1}", "John Doe", 25);
+   }
+}
+</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">Name: John Doe Age: 25</code></pre>
+            <br>
+            <h4>Control formatting</h4>
+            <p>
+               Control formatting is a way to specify how the inserted value should be displayed in the result string using a format specifier such as <code>&lcub;index, width}</code>, where The width defines the character space that the inserted value will occupy and how it will align in that space. If the width is positive, then the inserted value will be right-aligned, and if the width is negative, it will be left-aligned, like in the example below.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::write("Name: &lcub;0, -12} Age: &lcub;1, 5}", "John Doe", 25);
+   }
+}
+</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">Name: John Doe     Age:    25</code></pre>
+            <br>
+            <h3>Clear the screen</h3>
+            <p>
+               The static method <code>DevNet\System\IO\Console::clear()</code> is used to clear the console buffer and the corresponding displayed information in the console window.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::writeLine("Clearing the screen...");
+      sleep(1);
+      Console::clear();
+      Console::writeLine("The screen has been cleared.");
+      sleep(1);
+      Console::clear();
+   }
+}
+</code></pre>
+            <br>
+            <h3>Console Color</h3>
+            <p>
+               To set the foreground or background color of the console, use the fields of the enumeration <code>DevNet\System\IO\ConsoleColor::class</code> to set the following properties:
+            </p>
+            <ul>
+               <li><code>DevNet\System\IO\Console::$ForegroundColor</code></li>
+               <li><code>DevNet\System\IO\Console::$BackgroundColor</code></li>
+            </ul>
+            <p>
+               The following code example prints all the foreground and background colors, then reset the console colors to the defaults at the end.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::writeLine("The foreground Colors:");
+      foreach (ConsoleColor::cases() as $color) &lcub;
+         Console::$ForegroundColor = $color;
+         Console::writeLine("The foreground color &lcub;0} is &lcub;1}", $color->value, $color->name);
+      }
+
+      Console::resetColor();
+      Console::writeLine();
+
+      Console::writeLine("The background Colors:");
+      foreach (ConsoleColor::cases() as $color) &lcub;
+         Console::$BackgroundColor = $color;
+         Console::writeLine("The background color &lcub;0} is &lcub;1}", $color->value, $color->name);
+      }
+
+      Console::resetColor();
+   }
+}
+</code></pre>
+            <br>
+            <h4>Colors</h4>
+            <p>
+               The enumeration <code>DevNet\System\IO\ConsoleColor::class</code>, that defines the foreground and background colors for the console window, has the following fields:
+            </p>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Name</th>
+                     <th scope="col">Code</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>Black</td>
+                     <td>0</td>
+                  </tr>
+                  <tr>
+                     <td>DarkGrey</td>
+                     <td>1</td>
+                  </tr>
+                  <tr>
+                     <td>DarkRed</td>
+                     <td>2</td>
+                  </tr>
+                  <tr>
+                     <td>DarkMagenta</td>
+                     <td>3</td>
+                  </tr>
+                  <tr>
+                     <td>DarkBlue</td>
+                     <td>4</td>
+                  </tr>
+                  <tr>
+                     <td>DarkCyan</td>
+                     <td>5</td>
+                  </tr>
+                  <tr>
+                     <td>DarkGreen</td>
+                     <td>6</td>
+                  </tr>
+                  <tr>
+                     <td>DarkYellow</td>
+                     <td>7</td>
+                  </tr>
+                  <tr>
+                     <td>Gray</td>
+                     <td>8</td>
+                  </tr>
+                  <tr>
+                     <td>Red</td>
+                     <td>9</td>
+                  </tr>
+                  <tr>
+                     <td>Magenta</td>
+                     <td>10</td>
+                  </tr>
+                  <tr>
+                     <td>Blue</td>
+                     <td>11</td>
+                  </tr>
+                  <tr>
+                     <td>Cyan</td>
+                     <td>12</td>
+                  </tr>
+                  <tr>
+                     <td>Green</td>
+                     <td>13</td>
+                  </tr>
+                  <tr>
+                     <td>Yellow</td>
+                     <td>14</td>
+                  </tr>
+                  <tr>
+                     <td>White</td>
+                     <td>15</td>
+                  </tr>
+               </tbody>
+            </table>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/console/start">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/console/input">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
+</div>

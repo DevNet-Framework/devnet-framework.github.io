@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ConsoleRoutingModule } from './console-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { StartComponent } from './start/start.component';
+import { OutputComponent } from './output/output.component';
 
 @NgModule({
    declarations: [
-      StartComponent
+      StartComponent,
+      OutputComponent
    ],
    imports: [
       CommonModule,
