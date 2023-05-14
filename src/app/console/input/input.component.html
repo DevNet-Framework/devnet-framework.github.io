@@ -1,0 +1,97 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Console Input</h1>
+            <hr>
+            <p>
+               Console input is the input data that is entered by the user through the console window, to interact with system programs or other console applications.
+            </p>
+            <h3>User input</h3>
+            <p>
+               The static method <code>DevNet\System\IO\Console::readLine()</code>, is used to read the user input data from the standard input stream.
+            </p>
+            <p>
+               In the following example, the program prompts the user to enter his name, then reads the user input data and prints it in a greeting message.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::writeLine("What is your name?");
+      $name = Console::readLine();
+      Console.WriteLine("Hello, " . name . "!");
+   }
+}
+</code></pre>
+            <h5>Input</h5>
+            <pre><code class="language-shell">What is your name?
+John Doe
+</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">Hello John Doe!
+</code></pre>
+            <br>
+            <h3>Command arguments</h3>
+            <p>
+               Command line arguments are values specified after the program name and passed to the static method <code>Program::main(array $args)</code> during the execution, They are used for setting up the console application when it is started.
+            </p>
+            <p>
+               Here’s an example of how to handle the command line arguments:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      Console::writeLine("The command line arguments:");
+      foreach ($args as $argument) &lcub;
+         Console::writeLine($argument);
+      }
+   }
+}
+</code></pre>
+            <h5>Input</h5>
+            <pre><code class="language-shell">devnet run arg1 arg2 arg3</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">The command line arguments:
+arg1
+arg2
+arg3
+</code></pre>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/console/output">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/console/command">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
+</div>
