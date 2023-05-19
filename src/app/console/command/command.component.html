@@ -1,0 +1,164 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Command-Line Dispatcher</h1>
+            <hr>
+            <p>
+               The command-line dispatcher is a component used for building command-line applications, it provides a way to organize functionality into logical groups by creating a hierarchy of commands that can be navigated using subcommands, options, and arguments to execute particular actions, like providing the help information for the application.
+            </p>
+            <h3>Command-line syntax</h3>
+            <p>
+               The command-line parser will parse the input into tokens, which are strings delimited by spaces interpreted as commands, options, and arguments.
+            </p>
+            <p>
+               For example, consider the following command line:
+            </p>
+            <pre><code class="language-shell">devnet add class --output MyClass</code></pre>
+            <p>
+               The following table shows how the command-line parser interprets the preceding example:
+            </p>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Token</th>
+                     <th scope="col">Discription</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>devnet</td>
+                     <td>Root command</td>
+                  </tr>
+                  <tr>
+                     <td>add</td>
+                     <td>Child command</td>
+                  </tr>
+                  <tr>
+                     <td>class</td>
+                     <td>Argument for <b>add</b> command</td>
+                  </tr>
+                  <tr>
+                     <td>--output</td>
+                     <td>Option for <b>add</b> command</td>
+                  </tr>
+                  <tr>
+                     <td>MyClass</td>
+                     <td>Argument for <b>--output</b> option</td>
+                  </tr>
+               </tbody>
+            </table>
+            <h4>Root command</h4>
+            <p>
+               The root command is the top-level command that is executed when the application is run, is the one that specifies the name of the app's executable, and can accept parameters, such as subcommands, options, and arguments.
+            </p>
+            <h4>Child commands</h4>
+            <p>
+               The child commands, also known as subcommands or verbs, are commands nested within another, used to specify a particular action, and can accept additional subcommands as parameters, as well as options and arguments.
+            </p>
+            <h4>Options</h4>
+            <p>
+               Options are named parameters passed to a command optionally to modify its behavior, and they can accept an argument or be just flags without it.
+            </p>
+            <h4>Arguments</h4>
+            <p>
+               Arguments are values passed to a command or an option to provide additional information.
+            </p>
+            <br>
+            <h3>Define commands</h3>
+            <p>
+               You can define a root command, with some options and arguments, by creating an instance of the class <code>DevNet\System\Command\CommandLine::class</code>, then you can define subcommands in the same way and add them to it.
+            </p>
+            <p>
+               The following code example is a command line application that can display the time according to the specified timezone.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\IO\Console;
+use DevNet\System\IO\ConsoleColor;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      // define the root command.
+      $rootcommand = new CommandLine('watch', 'Command-line that displays the time.');
+      $rootcommand->addOption('--version', 'Display the version information.', '-v');
+
+      $rootcommand->setHandler(function (object $sender, CommandEventArgs $args): void &lcub;
+         $version = $args->get('--version');
+         if ($version) &lcub;
+            Console::writeline("watch command-line: v1.0.0");
+            return;
+         }
+
+         Console::writeline("Try 'watch --help' to get information about the command's usage.");
+      });
+
+      // define the child command.
+      $subcommand = new CommandLine('time', 'Display the current time');
+      $subcommand->addArgument('timezone', 'Define the time zome');
+
+      $subcommand->setHandler(function (object $sender, CommandEventArgs $args): void &lcub;
+         $datetime = new DateTime('now');
+         $timezone = $args->get('timezone');
+         if ($timezone) &lcub;
+            $datetime->setTimezone(new DateTimeZone($timezone->Value));
+         }
+
+         Console::writeline($datetime->format('H:i:s'));
+      }
+
+      // add the child command.
+      $rootcommand->addCommand($subcommand);
+
+      // parse the input, then invoke the command.
+      $rootcommand->invoke($args);
+   }
+}
+</code></pre>
+            <blockquote class="alert alert-info">
+               <b>Note:</b> You can run your command-line application by executing the bin file of your application <code>./bin/run</code>
+            </blockquote>
+            <p>
+               In this example, we have renamed the bin files <code>./bin/run</code> and <code>./bin/run.bat</code> to match the name of the root command, and became <code>./bin/watch</code> and <code>./bin/watch.bat</code>
+            </p>
+            <p>
+               Now you can execute the command with a given time zone argument to get the current time of that zone.
+            </p>
+            <pre><code class="language-shell">./bin/watch time America/Toronto</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">19:29:01</code></pre>
+            <br>
+            <p>
+               Or execute the command with the option <code>--version</code> to get the version information.
+            </p>
+            <pre><code class="language-shell">./bin/watch --verion</code></pre>
+            <h5>Output</h5>
+            <pre><code class="language-shell">watch command-line: v1.0.0</code></pre>
+            <br>
+            <footer>
+               <nav class="no-print" aria-label="Page navigation">
+                  <ul class="nav-page">
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/console/input">
+                           <i class="chevron left"></i> Previous
+                        </a>
+                     </li>
+                     <li class="nav-page-item">
+                        <a class="nav-page-link" routerLink="/docs/core/overview">
+                           Next <i class="chevron right"></i>
+                        </a>
+                     </li>
+                  </ul>
+               </nav>
+            </footer>
+         </article>
+      </div>
+   </div>
+</div>

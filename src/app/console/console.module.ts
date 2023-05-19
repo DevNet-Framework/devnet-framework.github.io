@@ -5,12 +5,14 @@ import { SharedModule } from '../shared/shared.module';
 import { StartComponent } from './start/start.component';
 import { OutputComponent } from './output/output.component';
 import { InputComponent } from './input/input.component';
+import { CommandComponent } from './command/command.component';
 
 @NgModule({
    declarations: [
       StartComponent,
       OutputComponent,
-      InputComponent
+      InputComponent,
+      CommandComponent
    ],
    imports: [
       CommonModule,
