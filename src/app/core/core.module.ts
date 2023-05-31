@@ -4,11 +4,11 @@ import { CoreRoutingModule } from './core-routing.module';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-   declarations: [],
-   imports: [
-      CommonModule,
-      CoreRoutingModule,
-      SharedModule
-   ]
+  declarations: [],
+  imports: [
+    CommonModule,
+    CoreRoutingModule,
+    SharedModule
+  ]
 })
 export class CoreModule { }

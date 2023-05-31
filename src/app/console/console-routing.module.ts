@@ -6,15 +6,15 @@ import { InputComponent } from './input/input.component';
 import { CommandComponent } from './command/command.component';
 
 const routes: Routes = [
-   { path: 'docs/console/start', component: StartComponent },
-   { path: 'docs/console/output', component: OutputComponent },
-   { path: 'docs/console/input', component: InputComponent },
-   { path: 'docs/console/command', component: CommandComponent },
-   { path: 'docs/console', redirectTo: 'docs/console/start', pathMatch: 'full' }
+  { path: 'docs/console/start', component: StartComponent },
+  { path: 'docs/console/output', component: OutputComponent },
+  { path: 'docs/console/input', component: InputComponent },
+  { path: 'docs/console/command', component: CommandComponent },
+  { path: 'docs/console', redirectTo: 'docs/console/start', pathMatch: 'full' }
 ];
 
 @NgModule({
-   imports: [RouterModule.forChild(routes)],
-   exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
 export class ConsoleRoutingModule { }

@@ -4,11 +4,11 @@ import { EntityRoutingModule } from './entity-routing.module';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-   declarations: [],
-   imports: [
-      CommonModule,
-      EntityRoutingModule,
-      SharedModule
-   ]
+  declarations: [],
+  imports: [
+    CommonModule,
+    EntityRoutingModule,
+    SharedModule
+  ]
 })
 export class EntityModule { }

@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-   selector: 'console-output',
-   templateUrl: './output.component.html',
-   styleUrls: ['./output.component.css']
+  selector: 'console-output',
+  templateUrl: './output.component.html',
+  styleUrls: ['./output.component.css']
 })
 export class OutputComponent implements OnInit {
 
-   constructor() { }
+  constructor() { }
 
-   ngOnInit(): void {
-      hljs.highlightAll();
-   }
+  ngOnInit(): void {
+    hljs.highlightAll();
+  }
 
 }

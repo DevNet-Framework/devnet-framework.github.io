@@ -54,10 +54,10 @@ public static function main(array $args = [])
   
 namespace Application\Controllers;
 
+use DevNet\Web\Action\ActionController;
 use DevNet\Web\Action\IActionResult;
-use DevNet\Web\Controller\AbstractController;
 
-class HelloController extends AbstractController
+class HelloController extends ActionController
 &lcub;
    public function index(): IActionResult
    &lcub;
@@ -81,23 +81,23 @@ class HelloController extends AbstractController
                </thead>
                <tbody>
                   <tr>
-                     <td><code>content(string $content, int $status): IActionResult</code></td>
+                     <td><code>ActionController::content(string $content, int $status): IActionResult</code></td>
                      <td>return a plain text</td>
                   </tr>
                   <tr>
-                     <td><code>json(array $data, int $status): IActionResult</code></td>
+                     <td><code>ActionController::json(array $data, int $status): IActionResult</code></td>
                      <td>return JSON data</td>
                   </tr>
                   <tr>
-                     <td><code>view(string $viewPath, ?object $model): IActionResult</code></td>
+                     <td><code>ActionController::view(string $viewPath, ?object $model): IActionResult</code></td>
                      <td>return HTML content</td>
                   </tr>
                   <tr>
-                     <td><code>redirect(string $urlPath): IActionResult</code></td>
+                     <td><code>ActionController::redirect(string $urlPath): IActionResult</code></td>
                      <td>redirect the request to the geving path</td>
                   </tr>
                   <tr>
-                     <td><code>forbid(): IActionResult</code></td>
+                     <td><code>ActionController::forbid(): IActionResult</code></td>
                      <td>forbid access to a particular route</td>
                   </tr>
                </tbody>
@@ -112,12 +112,12 @@ class HelloController extends AbstractController
 namespace Application\Controllers;
 
 use DevNet\System\Async\Task;
+use DevNet\Web\Action\ActionController;
 use DevNet\Web\Action\IActionResult;
-use DevNet\Web\Controller\AbstractController;
 
 use function Devnet\System\await;
 
-class HelloController extends AbstractController
+class HelloController extends ActionController
 &lcub;
    public function async_index(): IActionResult
    &lcub;
@@ -140,33 +140,31 @@ class HelloController extends AbstractController
   
 namespace Application\Controllers;
 
+use DevNet\Web\Action\ActionController;
 use DevNet\Web\Action\IActionResult;
-use DevNet\Web\Controller\AbstractController;
 
-class StudentController extends AbstractController
+class StudentController extends ActionController
 &lcub;
    public function show(int $id): IActionResult
    &lcub;
       return $this->content("The student Id You have requested is: &lcub;$id}");
    }
 }</code></pre>
-            <footer>
-               <nav class="no-print" aria-label="Page navigation">
-                  <ul class="nav-page">
-                     <li class="nav-page-item">
-                        <a class="nav-page-link" routerLink="/docs/web/routing">
-                           <i class="chevron left"></i> Previous
-                        </a>
-                     </li>
-                     <li class="nav-page-item">
-                        <a class="nav-page-link" routerLink="/docs/web/view">
-                           Next <i class="chevron right"></i>
-                        </a>
-                     </li>
-                  </ul>
-               </nav>
-            </footer>
          </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/routing">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/view">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
       </div>
    </div>
 </div>

@@ -55,16 +55,16 @@ class AuthenticationFilter implements IActionFilter
 
 namespace Application\Controllers;
 
+use DevNet\Web\Action\ActionController;
 use DevNet\Web\Action\IActionResult;
 use DevNet\Web\Action\Filters\HttpMethod;
 use DevNet\Web\Action\Filters\Antiforgery;
-use DevNet\Web\Controller\AbstractController;
 use Application\Filters\AuthenticationFilter;
 use Application\Models\Profile;
 
 // this filter will be applied to all controller's methods.
 #[AuthenticationFilter]
-class UserController extends AbstractController
+class UserController extends ActionController
 &lcub;
    public function index(): IActionResult
    &lcub;
@@ -140,23 +140,21 @@ $host->start(function ($app) &lcub;
                   </tr>
                </tbody>
             </table>
-            <footer>
-               <nav class="no-print" aria-label="Page navigation">
-                  <ul class="nav-page">
-                     <li class="nav-page-item">
-                        <a class="nav-page-link" routerLink="/docs/web/layout">
-                           <i class="chevron left"></i> Previous
-                        </a>
-                     </li>
-                     <li class="nav-page-item">
-                        <a class="nav-page-link" routerLink="/docs/web/dependency">
-                           Next <i class="chevron right"></i>
-                        </a>
-                     </li>
-                  </ul>
-               </nav>
-            </footer>
          </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/layout">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/dependency">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
       </div>
    </div>
 </div>

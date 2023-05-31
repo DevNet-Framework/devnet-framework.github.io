@@ -8,16 +8,16 @@ import { InputComponent } from './input/input.component';
 import { CommandComponent } from './command/command.component';
 
 @NgModule({
-   declarations: [
-      StartComponent,
-      OutputComponent,
-      InputComponent,
-      CommandComponent
-   ],
-   imports: [
-      CommonModule,
-      ConsoleRoutingModule,
-      SharedModule
-   ]
+  declarations: [
+    StartComponent,
+    OutputComponent,
+    InputComponent,
+    CommandComponent
+  ],
+  imports: [
+    CommonModule,
+    ConsoleRoutingModule,
+    SharedModule
+  ]
 })
 export class ConsoleModule { }

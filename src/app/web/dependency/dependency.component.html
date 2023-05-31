@@ -141,11 +141,11 @@ $app->useEndpoint(function($routes) &lcub;
                   
 namespace Application\Controllers;
 
+use DevNet\Web\Action\ActionController;
 use DevNet\Web\Action\IActionResult;
-use DevNet\Web\Controller\AbstractController;
 use Application\Services\IMyService;
 
-class HelloController extends AbstractController
+class HelloController extends ActionController
 &lcub;
    private IMyService $MyService;
 
@@ -200,23 +200,21 @@ class HelloController extends AbstractController
                   </tr>
                </tbody>
             </table>
-            <footer>
-               <nav class="no-print" aria-label="Page navigation">
-                  <ul class="nav-page">
-                     <li class="nav-page-item">
-                        <a class="nav-page-link" routerLink="/docs/web/filter">
-                           <i class="chevron left"></i> Previous
-                        </a>
-                     </li>
-                     <li class="nav-page-item">
-                        <a class="nav-page-link" routerLink="/docs/web/exception">
-                           Next <i class="chevron right"></i>
-                        </a>
-                     </li>
-                  </ul>
-               </nav>
-            </footer>
          </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/filter">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/exception">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
       </div>
    </div>
 </div>
