@@ -1,0 +1,266 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Get Started</h1>
+            <hr>
+            <p>
+               Entity ORM (Object-relational Mapping) is a system that offers an automated mechanism to developers for accessing and storing the data in the database in an object-oriented way, by performing the work required to map between Entities defined in an application's programming language as classes and data stored in relational data sources as tables, without needing the data-access code to be written.
+            </p>
+            <p>
+               The following diagram is an abstraction of Entity ORM architecture.
+            </p>
+            <img src="assets/images/orm.svg" width="100%" height="auto">
+            <br><br>
+            <p>
+               <b>EntityContext:</b> is an implementation of the Unit of work pattern, represents a gateway to the database by providing an API to communicate with the database with the following capabilities:
+            </p>
+            <ul>
+               <li>Database Connections</li>
+               <li>Data querying and persistance</li>
+               <li>Change Tracking</li>
+               <li>Model building</li>
+               <li>Data Mapping</li>
+               <li>Transaction management</li>
+            </ul>
+            <p>
+               <b>EntitySet:</b> is an implementation of the Repository pattern, a class that holds a collection of entities of the same type related to a table in the database, and each entity is an instance that represents a data row in that table.
+            </p>
+            <br>
+            <h3>Installation</h3>
+            <p>
+               If the DevNet framework is not fully installed, you can install the Entity ORM package into your project using Composer by running the following command in your terminal:
+            </p>
+            <pre><code class="language-shell">composer require devnet/entity</code></pre>
+            <br>
+            <h3>Defining the EntityContext</h3>
+            <p>
+               The recommended way to work with Entity ORM is to define a context class in the <b>"Models"</b> folder that derives from <code>DevNet\Entity\EntityContext::class</code> and exposes <code>DevNet\Entity\EntitySet::class</code> properties that represent collections of the specified entities in the context, as shown in the following example.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\Entity\EntityContext;
+use DevNet\Entity\EntityOptions;
+use DevNet\Entity\EntitySet;
+
+class BlogContext extends EntityContext
+&lcub;
+   public readonly EntitySet $Posts;
+
+   public function __construct(EntityOptions $options)
+   &lcub;
+      parent::__construct($options);
+      $this->Posts = $this->set(Post::class);
+   }
+}
+</code></pre>
+            <br>
+            <h4>Entity Type</h4>
+            <p>
+               By convention, the entity types that are exposed in <code>EntitySet</code> properties in <code>EntityContext</code> are included in the model and mapped automatically to the database tables based on their shape.
+            </p>
+            <ul>
+               <li>
+                  Each entity class will be mapped automatically to the corresponding database table with the same name.
+               </li>
+               <li>
+                  Each public property will be mapped to the corresponding column with the same name in the table.
+               </li>
+               <li>
+                  By default, the property that is named <b>"Id"</b> will be considered as the primary key.
+               </li>
+            </ul>
+            <p>
+               The following code example is the entity class <code>Application\Models\Post::class</code> used in the previous context, and it represents the <b>Post</b> table in the database where the properties represent the columns of that table.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DateTime;
+
+class Post
+&lcub;
+   public int $Id;
+   public int $UserId;
+   public string $Title;
+   public string $Content;
+   public DateTime $Date;
+}
+</code></pre>
+            <br>
+            <h4>Fluent API Configuration</h4>
+            <p>
+               In case the database schema does not match the shape of your entities, You can manually map the entities to their corresponding tables, without modifying your entity classes, by overriding the method <code>EntityContext::onModelCreate()</code> in your derived Entitycontext class and using the Model Builder API to reconfigure your model.
+            </p>
+            <p>
+               The following example uses Model Builder API to manually configure the model, assuming the database table uses a different naming style than the style used in the entity class. And the property of the primary key doesn't follow the naming convention mentioned earlier. It has <code>Post::PostId</code> instead of <code>Post::Id</code> which is corresponding to the primary key <b>post_id</b> in the <b>posts</b> database table.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\Entity\EntityContext;
+use DevNet\Entity\EntityModelBuilder;
+use DevNet\Entity\EntityOptions;
+use DevNet\Entity\EntitySet;
+
+class BlogContext extends EntityContext
+&lcub;
+   private EntitySet $Posts;
+
+   public function __construct(EntityOptions $options)
+   &lcub;
+      parent::__construct($options);
+      $this->Posts = $this->set(Post::class);
+   }
+
+   public function onModelCreate(EntityModelBuilder $builder)
+   &lcub;
+      $builder->entity(Post::class)
+         ->toTable("posts")
+         ->hasKey("PostId")
+         ->property("PostId")->hasColumn("post_id");
+         ->property("UserId")->hasColumn("user_id");
+         ->property("Title")->hasColumn("title");
+         ->property("Content")->hasColumn("content");
+         ->property("Date")->hasColumn("date");
+   }
+}
+</code></pre>
+            <br>
+            <h3>Connecting to the Database</h3>
+            <p>
+               The simplest way to connect Entity ORM to the database, is by creating an instance of the derived class of <code>EntityContext</code>, and passing the database configuration options to the constructor as follows:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+use DevNet\Entity\MySql\MySqlDataProvider;
+use DevNet\Entity\EntityOptions;
+
+$options = new EntityOptions();
+$options->ProviderType = MySqlDataProvider::class;
+$options->ConnectionString = "//user:password@127.0.0.1/blog";
+
+$blog = new BlogContext($options);
+$posts = $blog->Posts;
+</code></pre>
+            <br>
+            <h4>Data Providers</h4>
+            <p>
+               The following table shows a list of database providers that Entity ORM supports with the corresponding connection string to each one.
+            </p>
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Driver</th>
+                     <th scope="col">Data Provider</th>
+                     <th scope="col">Connection String</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>MySql</td>
+                     <td><code>DevNet\Entity\MySql\MySqlDataProvider::class</code></td>
+                     <td><samp>"//username:password@127.0.0.1:3306/database"</samp></td>
+                  </tr>
+                  <tr>
+                     <td>PostgreSql</td>
+                     <td><code>DevNet\Entity\PgSql\PgSqlDataProvider::class</code></td>
+                     <td><samp>"//username:password@127.0.0.1:5432/database"</samp></td>
+                  </tr>
+                  <tr>
+                     <td>SQLite</td>
+                     <td><code>DevNet\Entity\Sqlite\SqliteDataProvider::class</code></td>
+                     <td><samp>"//path/to/database"</samp></td>
+                  </tr>
+               </tbody>
+            </table>
+            <h4>Connection String</h4>
+            <p>
+               The connection string used by the database providers follows the following url format:<br>
+               <code>"//[username]:[password]@[host]:[port]/[database]?[option=value]"</code>
+            </p>
+            <br>
+            <h3>Registing the EntityContext</h3>
+            <p>
+               You can register Entity ORM as a reused service that will be injected into your application using the Extension method <code>ServiceCollectionExtensions::addEntityContext()</code> inside the method <code>WebHostBuilder::register()</code>, as shown in the following code example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\Web\Hosting\WebHost;
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Entity\MySql\MySqlDataProvider;
+use Application\Models\BlogContext;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      $builder = WebHost::createDefaultBuilder($args);
+      $builder->register(function ($services) &lcub;
+         // adding EntityContext
+         $services->addEntityContext(BlogContext::class,
+            function ($options) &lcub;
+               $options->ProviderType = MySqlDataProvider::class;
+               $options->ConnectionString = "//user:password@127.0.0.1/blog";
+            }
+         );
+      });
+      ...
+   }
+}
+</code></pre>
+            <p>
+               You can then get the EntityContext using the constructor injection to add the EntityContext to the controller class and use it in the controller methods like the following example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+                  
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\IActionResult;
+use Application\Models\BlogContext;
+
+class BlogController extends ActionController
+&lcub;
+   private BlogContext $blog;
+
+   public function __construct(BlogContext $blog)
+   &lcub;
+      $this->blog = $blog;
+   }
+
+   public function index(): IActionResult
+   &lcub;
+      $this->view($this->blog->Posts);
+   }
+}
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/web/exception">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/query">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
