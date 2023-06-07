@@ -1,0 +1,148 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Querying Data</h1>
+            <hr>
+            <p>
+               The entity repository represents a collection of all records of a particular entity type and can be used to query a single entity or multiple entities.
+            </p>
+            <h3>Loading All Entities</h3>
+            <p>
+               The entity repository is an iterable collection, so you can load all the entities by iterating the <code>EntitySet</code> instance using the <code>foreach</code> statement, like in the following example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+
+foreach ($blog->Posts as $post) &lcub;
+   print($post->Title . PHP_EOL);
+}
+</code></pre>
+            <p>
+               Or you can just export all the entities to an array to deal with them later by using the method <code>toArray()</code> like this:
+            </p>
+            <pre><code class="language-php">$posts = $blog->Posts->toArray();</code></pre>
+            <br>
+            <h3>Loading a single entity</h3>
+            <p>
+               To load a single particular entity selected by its Id, use the method <code>EntitySet::find(string $keyValue)</code>, which will look first if it's already loaded in the tracker to return it quickly, and if it's not, then will load it from the database to the tracker and return it, and here is an example of how to use this method:
+            </p>
+            <pre><code class="language-php">$post = $blog->Posts->find($id);</code></pre>
+            <p>
+               Otherwise, you can use the method <code>EntitySet::first()</code> to load to the first entity of the record or use the method <code>EntitySet::last()</code> to load the last one.
+            </p>
+            <pre><code class="language-php">$firstPost = $blog->Posts->first();
+$lastPost  = $blog->Posts->last();
+</code></pre>
+            <br>
+            <h3>Linq Query</h3>
+            <p>
+               <code>EntitySet</code> implements the <code>IQueryable</code> interface so it can use LINQ (Language-Integrated Query) to query data from the database, which are chained methods that represent SQL operations, compiled by the database provider to be sent as a specific database query language (MySQL, SQLite, ...) and then to get the result set.
+            </p>
+            <blockquote class="alert alert-warning">
+               <b>Importante:</b> Linq methods are extension methods, so to use this feature, you have to declare the use of the Linq namespace <code>DevNet\System\Linq</code> in every class or code that uses Linq methods with an instance of <code>EntitySet</code>.
+            </blockquote>
+            <br>
+            <h4>Filtering Data</h4>
+            <p>
+               The method <code>where()</code> is used to restrict the result set to contain only those elements that satisfy the specified condition in the arrow function, like in the following code example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\Linq;
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+$post = $blog->Posts->where(fn($post) => $post->Title == "My first post")->first();
+</code></pre>
+            <p>
+               Which will be compiled to SQL then executed like this:
+            </p>
+            <pre><code class="language-sql">SELECT * FROM Blog.Post WHERE Title = 'My first post';</code></pre>
+            <br>
+            <h4>Ordering Data</h4>
+            <p>
+               To sort the result set in ascending order by a specified column, use the method <code>orderBy()</code>, and if the rows have the same value in that column, you can optionally chain it with the method <code>thenBy()</code> to sort them by another column, like in the following code:
+            </p>
+            <pre><code class="language-php">posts = $blog->Posts->orderBy(fn($p) => $p->Date)->thenBy(fn($p) => $p->Title)->toArray();</code></pre>
+            <p>
+               And that will be compiled then executed in SQL like this:
+            </p>
+            <pre><code class="language-sql">SELECT * FROM Blog.Post ORDER BY Date, Title;</code></pre>
+            <p>
+               You can also sort the result set in descending order by a specified column using the method <code>orderByDescending()</code>, and optionally you can chain it by the method <code>ThenBy()</code> or <code>thenByDescending()</code> to sort the rows of the same values by another column, like in the code below:
+            </p>
+            <pre><code class="language-php">$posts = $blog->Posts->orderByDescending(fn($p) => $p->Date)
+            ->thenByDescending(fn($p) => $p->Title)
+            ->toArray();
+</code></pre>
+            <p>
+               And this one will be compiled then executed in SQL like this:
+            </p>
+            <pre><code class="language-sql">SELECT * FROM Blog.Post ORDER BY Date DESC, Title DESC;</code></pre>
+            <br>
+            <h4>Partitioning Data</h4>
+            <p>
+               The partitioning data is the operation of dividing an input sequence into sections without changing the order of the elements and then returning one of those sections.
+            </p>
+            <p>
+               You can use the method <code>skip()</code> to skip a specified number of elements from the beginning of a sequence and then return the remaining elements, and use the method <code>take()</code> to return a specified number of contiguous elements from the start of a sequence, like in the following code example:
+            </p>
+            <pre><code class="language-php">$posts = $blog->Posts->skip(5)->take(10)->toArray();</code></pre>
+            <p>
+               Which will be executed in SQL like this:
+            </p>
+            <pre><code class="language-sql">SELECT * FROM Blog.Post LIMIT 5,10;</code></pre>
+            <br>
+            <h5>Pagination Example</h5>
+            <p>
+               You can implement data pagination in Entity ORM using the LINQ methods <code>skip()</code> and <code>take()</code> like this:
+            </p>
+            <pre><code class="language-php">$page  = 1; // The page number you want to retrieve.
+$size  = 10; // The number of items per page.
+$posts = $blog->Posts->skip(($page - 1) * $size)->take($size)->toArray();
+</code></pre>
+            <p>
+               Page number 1 will display the first 10 posts, page 2 will skip the first 10 posts and display the next 10 posts, page 3 will skip 20 posts and display the next 10 posts, and so on...
+            </p>
+            <br>
+            <h4>Complex Query</h4>
+            <p>
+               Sometimes a simple query is not enough to solve a complex problem, so you can combine two or more clauses together to reach what you need as shown in the following code example:
+            </p>
+            <pre><code class="language-php">$posts = $blog->Posts->where(fn($p) =>$p->Date == '2023-01-01' && $p->Likes > 200)
+            ->orderBy(fn($p) => $p->Title)
+            ->take(10)
+            ->toArray();
+</code></pre>
+            <p>
+               Which will be compiled then executed in SQL like this:
+            </p>
+            <pre><code class="language-sql">SELECT * FROM Blog.Post WHERE Date = '2023-01-01' AND Likes > 200 ORDER BY Title LIMIT 10;</code></pre>
+            <blockquote class="alert alert-info">
+               <b>Note:</b> Linq queries are always executed against the database even if the entities returned already exist in the tracker.
+            </blockquote>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/start">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/save">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
