@@ -1,0 +1,108 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Saving Data</h1>
+            <hr>
+            <p>
+               Saving data is the process of persisting the changes made to the entities in the context to be applied to the database, such as adding new entities, removing entities, or modifying the properties of existing entities.
+            </p>
+            <h3>Adding Data</h3>
+            <p>
+               The <code>EntitySet::add(object $entity)</code> method adds a new entity instance to the context to be inserted into the database when calling the <code>EntityContext::save()</code> method.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+use Application\Models\Post;
+use DateTime;
+
+$post = new Post();
+$post->Title = "Post Title";
+$post->Content = "Some content...";
+$post->Date = new DateTime("now");
+
+$blog = new BlogContext();
+$blog->Post->add($post);
+$blog->Post->save();
+</code></pre>
+            <br>
+            <h3>Deleting Data</h3>
+            <p>
+               The <code>EntitySet::remove(object $entity)</code> method attaches the selected entity instance to the context with deleted status, to be deleted from the database when calling the <code>EntityContext::save()</code> method.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+$post = $blog->Post->find(1);
+$blog->Post->remove($post);
+$blog->save();
+</code></pre>
+            <br>
+            <h3>Updating Data</h3>
+            <p>
+               To update a record in the database table, modify the values of the loaded entity instance, and when calling the method <code>EntityContext::save()</code>, the changes will be automatically detected and updated in the database.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+$post = $blog->Post->find(1);
+$post->Content = "Updated content";
+$blog->save();
+</code></pre>
+            <br>
+            <h3>Multiple Operations</h3>
+            <p>
+               You can combine multiple operations (Add/Update/Remove) and then persist all the changes in a single call to the <code>EntityContext::save()</code> method, and here an example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+use Application\Models\Post;
+use DateTime;
+
+$blog = new BlogContext();
+
+// add new post
+$post = new Post();
+$post->Title = "Post Title";
+$post->Content = "Some content...";
+$post->Date = new DateTime("now");
+$blog->Post->add($post);
+
+// delete post with id = 2
+$post = $blog->Post->find(2);
+$blog->Post->remove($post);
+
+// update post with id = 1
+$post = $blog->Post->find(1);
+$post->Content = "Updated content";
+
+// persist all the operations
+$blog->Post->save();
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/query">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/relationships">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
