@@ -1,0 +1,212 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Relationships</h1>
+            <hr>
+            <p>
+               A relationship describes how entities are associated with each other, represented by a referential constraint that defines which entity is the principal or dependent role in the relationship, and there are many kinds of entity relationships, such as one-to-one, one-to-many, many-to-one, and many-to-many.
+            </p>
+            <ul>
+               <li class="mb-2"><b>Dependent entity:</b> sometimes called the 'child,' is the entity that contains the foreign key, which is a reference to the primary key of the principal entity.</li>
+               <li class="mb-2"><b>Principal entity:</b> sometimes called the 'parent,' is the entity that contains the primary key, which is referenced as a foreign key in the dependent entity.</li>
+            </ul>
+            <h3>Navigation property:</h3>
+            <p>
+               A navigation property is a public property presented in the principal or dependent entity that can have a reference type to single or multiple related entities to allow navigation from one entity to another.
+            </p>
+            <ul>
+               <li class="mb-2"><b>Collection navigation property:</b> is a property that contains references to multiple related entities, used to navigate through one-to-many and many-to-many relationships, defined by the type <code>DevNet\System\Collections\ICollection</code> with the annotation <code>DevNet\System\Generic</code> which specifies the type of the related entity collection.</li>
+               <li class="mb-2"><b>Reference navigation property:</b> is a property that contains a reference to a single related entity, used to navigate through one-to-one and many-to-one relationships, has the same type as the type of the related entity, and may have the annotation <code>DevNet\Entity\Annotations\ForeignKey</code> to define the name of the property that is used as a foreign key in the dependent entity.</li>
+            </ul>
+            <p>
+               The example below demonstrates an entity class named <code>Post</code> that has two navigation properties: a reference property called <code>Post::User</code>, and a collection property called <code>Post::Classifications</code>.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\Entity\Annotations\ForeignKey;
+use DevNet\System\Collections\ICollection;
+use DevNet\System\Generic;
+use DateTime;
+
+class Post
+&lcub;
+   public int $Id;
+   public int $UserId;
+   public string $Title;
+   public int $Content;
+   public DateTime $Date;
+
+   #[ForeignKey('UserId')]
+   public User $User;
+
+   #[Generic(Classification::class)]
+   public ICollection $Classifications;
+}
+</code></pre>
+            <br>
+            <h3>One to Many</h3>
+            <p>
+               A one-to-many relationship is one entity associated with one or many entities. It's similar to the one-to-one relationship, except the foreign key in the dependent is not unique, which allow the principal entity to have multiple references.
+            </p>
+            <p>
+               The following example represents an entity class <code>User</code> has a collection navigation property <code>User::Posts</code> establishing a one-to-many connection with the dependent entity class <code>Post</code>, which has a foreign key related to the principal entity <code>User</code>, as demonstrated in the previous example.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\System\Collections\ICollection;
+use DevNet\System\Generic;
+
+class User
+&lcub;
+   public int $Id;
+   public string $Username;
+   public string $Password;
+
+   public Profile $Profile;
+
+   #[Generic(Post::class)]
+   public ICollection $Posts;
+}
+</code></pre>
+            <p>
+               Here is an example that demonstrates how to navigate and iterate through the related entities of the principal entity.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+$user = $blog->Users->find($id);
+// iterating through the posts that are related to the selected user.
+foreach($user->Posts as $post) &lcub;
+   $post->Title;
+}
+</code></pre>
+            <br>
+            <h3>One to one</h3>
+            <p>
+               A one-to-one relationship is one entity associated with at most one other entity by introducing a unique constraint to the foreign key to ensure only one dependent is related to the principal entity.
+            </p>
+            <p>
+               The following example represents an entity class <code>Profile</code> that has a one-to-one relationship with the entity class <code>User</code> presented in the previous example, and both entities have reference navigate to each other, except the entity <code>Profile</code> is a dependent entity has the property <code>Profile::UserId</code> defined as a foreign key.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\Entity\Annotations\ForeignKey;
+
+class Profile
+&lcub;
+   public int $Id;
+   public int $UserId;
+   public string $Name;
+   public string $Address;
+   public string $Email;
+   public int $Phone;
+
+   #[ForeignKey('UserId')]
+   public User $User;
+}
+</code></pre>
+            <p>
+               Here is an example that shows how the related entities navigate to each other:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+$user = $blog->Users->find($id);
+// Getting the related Profile entity from the User entity.
+$profile = $user->Profile;
+// Getting the related User entity from the Profile entity.
+$user = $profile->User;
+</code></pre>
+            <br>
+            <h3>Many to Many</h3>
+            <p>
+               A many-to-many relationship is any number of entities of the same entity type associated with any number of entities of another entity type, this relationship is composed of two on-to-many relationships, represented by a joining table that includes the foreign keys of both tables, and these foreign keys are composite primary keys.
+            </p>
+            <p>
+               Here is an example of an entity named <code>Category</code>, which has a many-to-many relationship with the entity <code>Post</code> demonstrated in the first example, through the junction entity <code>Classification</code>.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\System\Collections\ICollection;
+use DevNet\System\Generic;
+
+class Category
+&lcub;
+   public int $Id;
+   public string $Name;
+   public string $Description;
+
+   #[Generic(Classification::class)]
+   public ICollection $Classification;
+}
+</code></pre>
+            <p>
+               And here is the junction entity <code>Classification</code> associated with the two principal entities, <code>Category</code>, and <code>Post</code>, with two foreign keys <code>Classification::CategoryId</code> and <code>Classification::PostId</code> as the primary key.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\Entity\Annotations\ForeignKey;
+
+#[PrimaryKey('PostId', 'CategoryId')]
+class Classification
+&lcub;
+   public int $PostId;
+   public int $CategoryId;
+
+   #[ForeignKey('PostId')]
+   public Post $Post;
+
+   #[ForeignKey('CategoryId')]
+   public Category $Category;
+}
+</code></pre>
+            <p>
+               This is an example that shows how to navigate the many-to-many relationship by iterating through the junction entity.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\BlogContext;
+
+$blog = new BlogContext();
+$category = $blog->Categories->find($id);
+// Iterate the related entities through the junction entity.
+foreach($category->Classifications as $classification) &lcub;
+   $classification->Post->Title;
+}
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/save">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/migrations">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
