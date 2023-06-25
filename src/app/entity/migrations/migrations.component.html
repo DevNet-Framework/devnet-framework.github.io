@@ -1,0 +1,229 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Migrations</h1>
+            <hr>
+            <p>
+               Migration provides a way to update the database schema incrementally, To keep it in sync with the changes in the data model, Without losing the existing data in the database.
+            </p>
+            <h3>Creating a migration</h3>
+            <p>
+               To create a migration, navigate to the root of your project and run the following command in the
+               terminal:
+            </p>
+            <pre><code class="language-shell">devnet add migration --name InitialMigration</code></pre>
+            <p>
+               This will generate an empty migration class in the <samp>"Migrations"</samp> folder, And the class file name will be prefixed by a timestamp date as an Id.
+            </p>
+            <p>
+               e.g. <samp>"/Migrations/20230701082859_InitialMigration.php"</samp>
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Migrations;
+
+use DevNet\Entity\Migration\AbstractMigration;
+use DevNet\Entity\Migration\MigrationBuilder;
+
+class InitialMigration extends AbstractMigration
+&lcub;  
+   /**
+   * Schema definitions will be executed when the migration is upgraded.
+   */
+   public function up(MigrationBuilder $builder): void
+   &lcub;
+   }
+
+   /**
+   * Schema definitions will be executed when the migration is downgraded
+   * the actions of this method must be the reverse actions of the up method
+   * e.g. if up method contains CREATE TABLE T, here must be DROP TABLE T.
+   */
+   public function down(MigrationBuilder $builder): void
+   &lcub;
+   }
+}
+</code></pre>
+            <p>
+               The <code>MigrationBuilder</code> class provides a fluent-like API for building migration operations, used to create, remove and modify the database schema when the method <code>up()</code> or <code>down()</code> is called.
+            </p>
+            <p>
+               The method <code>up()</code> applies the changes to the database schema based on the code written in its scope when the migration is executed, while the method <code>down()</code> has the opposite code that reverts those changes when the migration is reversed.
+            </p>
+            <br>
+            <h4>Creating the database Schema</h4>
+            <p class="text-justify">
+               After creating the first migration class, use the <code>MigrationBuilder</code> API
+               inside the <code>up()</code> method to generate the initial database schema and do the opposite thing in the <code>down()</code> method, like in the following example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Migrations;
+
+use DevNet\Entity\Migration\AbstractMigration;
+use DevNet\Entity\Migration\MigrationBuilder;
+
+class InitialMigration extends AbstractMigration
+&lcub;
+   public function up(MigrationBuilder $builder): void
+   &lcub;
+      $builder->createTable('User', function ($table) &lcub;;
+         $table->column('Id', 'integer')->identity(); // auto-increment
+         $table->column('Username', 'string', 45)->nullable(false);
+         $table->column('Password', 'string', 60)->nullable(false);
+         $table->primaryKey('Id');
+         $table->uniqueConstraint('Username');
+      });
+
+      $builder->createTable('Role', function ($table) &lcub;;
+         $table->column('Id', 'integer')->identity();
+         $table->column('Name', 'string', 45)->nullable(false);
+         $table->column('Description', 'string')->default('role description');
+         $table->primaryKey('Id');
+      });
+
+      $builder->createTable('UserRole', function ($table) &lcub;;
+         $table->column('UserId', 'integer');
+         $table->column('RoleId', 'integer');
+         $table->primaryKey('UserId', 'RoleId');
+         $table->foreignKey('UserId')->references('User', 'Id')->onDelete('cascade');
+         $table->foreignKey('RoleId')->references('Role', 'Id')->onDelete('cascade');
+      });
+   }
+
+   public function down(MigrationBuilder $builder): void
+   &lcub;
+      // if the constraint ON DELETE is configured as "strict" and which is the default configuration,
+      // the child table must be droped before the parent table, otherwise will throw an error.
+      $builder->dropTable('UserRole');
+      $builder->dropTable('User');
+      $builder->dropTable('Role');
+   }
+}
+</code></pre>
+            <br>
+            <h4>Updating the database schema</h4>
+            <p>
+               If the domain entity has been changed, it might be necessary to update the database schema to match it, and this can be done by creating another migration to make necessary alterations, as shown in the example below:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Migrations;
+
+use DevNet\Entity\Migration\AbstractMigration;
+use DevNet\Entity\Migration\MigrationBuilder;
+
+class AlterMigration extends AbstractMigration
+&lcub;
+   public function up(MigrationBuilder $builder): void
+   &lcub;
+      $builder->alterTable('User', function ($table) &lcub;
+         $table->addColumn('Fullname', 'string', 60);
+         $table->addColumn('Email', 'string', 45);
+         $table->addColumn('Phone', 'string', 15);
+         $table->addColumn('Location', 'string', 45);
+      });
+
+      $builder->alterTable('Role', function ($table) &lcub;
+         $table->renameColumn('Description', 'Definition');
+      });
+
+      $builder->renameTable('UserRole', 'Assignment');
+   }
+
+   public function down(MigrationBuilder $builder): void
+   &lcub;
+      $builder->alterTable('User', function ($table) &lcub;
+         $table->removeColumn('Fullname');
+         $table->removeColumn('Email';
+         $table->removeColumn('Phone');
+         $table->removeColumn('Location');
+      });
+
+      $builder->alterTable('Role', function ($table) &lcub;
+         $table->renameColumn('Definition', 'Description');
+      });
+
+      $builder->renameTable('Assignment', 'UserRole');
+   }
+}
+</code></pre>
+            <br>
+            <h4>Seeding the database</h4>
+            <p class="text-justify">
+               Seed data is data that populates the database at the time of migration execution, used to provide initial values for lookup lists or demo or test purposes, etc...
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Migrations;
+
+use DevNet\Entity\Migration\AbstractMigration;
+use DevNet\Entity\Migration\MigrationBuilder;
+
+class SeedMigration extends AbstractMigration
+&lcub;
+   public function up(MigrationBuilder $builder): void
+   &lcub;
+      $roles = ['admin', 'moderator', 'editor', 'reader'];
+      foreach ($roles as $id => $name) &lcub;
+         $builder->insertData('Role', [
+            'Id'   => $id,
+            'Name' => $name
+         ]);
+      }
+   }
+
+   public function down(MigrationBuilder $builder): void
+   &lcub;
+      for ($i=1; $i <= 4; $i++) &lcub;
+         $builder->deleteData('Role', ['Id' => $i]);
+      }
+   }
+}
+</code></pre>
+            <br>
+            <h3>Applying migrations</h3>
+            <p>
+               When you run the migration command for the first time, a migration history table will be created, which tracks the history of the applied migrations to determine later whether to upgrade or downgrade the migrations.
+            </p>
+            <p>
+               If the migration target is higher than the last migration applied, it will upgrade to the migration target. On the other hand, if it's lower, it will downgrade to the migration target. However, if the migration target has already been applied, then no action will be taken.
+            </p>
+            <p>
+               And here is an example shows how to run the migrate command targeting the migration that we created earlier:
+            </p>
+            <pre><code class="language-shell">devnet migrate --target 20230701082859_InitialMigration</code></pre>
+            <br>
+            <h4>Applying all migrations</h4>
+            <p>
+               When you run the migration command without specifying the migration target, it will apply all migrations or continue from the latest migration applied. If all migrations have already been applied, no action will be taken.
+            </p>
+            <pre><code class="language-shell">devnet migrate</code></pre>
+            <br>
+            <h4>Reversing all migrations</h4>
+            <p>
+               To reverse all migrations to roll back to the state zero, run the migrate command with a target of 0 (zero), like this:
+            </p>
+            <pre><code class="language-shell">devnet migrate --target 0</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/relationships">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/overview">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>

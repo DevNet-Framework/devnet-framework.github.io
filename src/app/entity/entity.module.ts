@@ -6,13 +6,15 @@ import { StartComponent } from './start/start.component';
 import { QueryComponent } from './query/query.component';
 import { SaveComponent } from './save/save.component';
 import { RelationshipsComponent } from './relationships/relationships.component';
+import { MigrationsComponent } from './migrations/migrations.component';
 
 @NgModule({
   declarations: [
     StartComponent,
     QueryComponent,
     SaveComponent,
-    RelationshipsComponent
+    RelationshipsComponent,
+    MigrationsComponent
   ],
   imports: [
     CommonModule,
