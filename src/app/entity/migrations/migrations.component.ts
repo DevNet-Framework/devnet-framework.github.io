@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'app-migrations',
+  selector: 'entity-migrations',
   templateUrl: './migrations.component.html',
   styleUrls: ['./migrations.component.css']
 })

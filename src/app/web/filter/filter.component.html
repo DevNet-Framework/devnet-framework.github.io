@@ -11,7 +11,7 @@
                Action Filters are similar to Middlewars, they allow code to be run before or after specific stages in the request processing pipeline and can choose to short-circuit the pipeline or pass the request to the next filter or the endpoint action, but the difference is that the action filters are invoked after the dispatcher selects the action to execute, just before and after the execution of the action.
             </p>
             <p>
-               The following code example represents an action filter class called <code>AuthenticationFilter::class</code> that prevents accessing the requested resources if the user is not authenticated.
+               The following code example represents an action filter class called <code>AuthenticationFilter</code> that prevents accessing the requested resources if the user is not authenticated.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -46,7 +46,7 @@ class AuthenticationFilter implements IActionFilter
             <br>
             <h3>Apply Filters</h3>
             <p>
-               Any action filter that implements the interface <code>DevNet\Web\Action\IActionFilter::class</code> can be applied to the route endpoint handler or to the controller, but to apply an action filter to a controller, the action filter class must be declared as an attribute because the controller accepts only action filters as attributes, and if the action filter attribute is applied to the class of controller it will be applied to all the action methods of the controller, and if it is applied only to a specific action method of a controller it will be applied only to that specific action method.
+               Any action filter that implements the interface <code>DevNet\Web\Action\IActionFilter</code> can be applied to the route endpoint handler or to the controller, but to apply an action filter to a controller, the action filter class must be declared as an attribute because the controller accepts only action filters as attributes, and if the action filter attribute is applied to the class of controller it will be applied to all the action methods of the controller, and if it is applied only to a specific action method of a controller it will be applied only to that specific action method.
             </p>
             <p>
                The following code represents an example of applying action filters to a controller as attributes.
@@ -127,15 +127,15 @@ $host->start(function ($app) &lcub;
                </thead>
                <tbody>
                   <tr>
-                     <td><code>DevNet\Web\Action\Filters\Authorize::class</code></td>
+                     <td><code>DevNet\Web\Action\Filters\Authorize</code></td>
                      <td>Prevent a non-authorized user from accessing the resources.</td>
                   </tr>
                   <tr>
-                     <td><code>DevNet\Web\Action\Filters\HttpMethod::class</code></td>
+                     <td><code>DevNet\Web\Action\Filters\HttpMethod</code></td>
                      <td>Prevent a not-allowed Http method request.</td>
                   </tr>
                   <tr>
-                     <td><code>DevNet\Web\Action\Filters\Antiforgery::class</code></td>
+                     <td><code>DevNet\Web\Action\Filters\Antiforgery</code></td>
                      <td>Prevent Cross-Site Request Forgery</td>
                   </tr>
                </tbody>

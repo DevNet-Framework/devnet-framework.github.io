@@ -18,7 +18,7 @@
             <br><br>
             <br>
             <p>
-               The following code represents an example of a middleware class called <code>RedirectMiddleware::class</code>, it redirects the old URL requested that has been changed permanently to the new URL before the request gets to the Router middleware.
+               The following code represents an example of a middleware class called <code>RedirectMiddleware</code>, it redirects the old URL requested that has been changed permanently to the new URL before the request gets to the Router middleware.
             </p>
             <pre><code class="language-php">&lt;?php
                   
@@ -51,7 +51,7 @@ class RedirectMiddleware implements IMiddleware
             <br>
             <h3>Registring Middlewares</h3>
             <p>
-               Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Web\Middleware\IMiddleware::class</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
+               Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Web\Middleware\IMiddleware</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
             </p>
             <ul>
                <li><code>ApplicationBuilder::use(callable $middelware)</code></li>
