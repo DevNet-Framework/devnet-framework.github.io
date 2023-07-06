@@ -1,0 +1,118 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Computed Properties</h1>
+            <hr>
+            <p>
+               A computed property is a property that doesn't store a value directly. Instead, it uses a getter and a setter method to retrieve and set other properties indirectly.
+            </p>
+            <br>
+            <h3>Getter</h3>
+            <p>
+               A getter is a function bound to a computed property and returns a value when that property is looked up.
+            </p>
+            <p>
+               To use a getter for a computed property in DevNet, you need first to include the trait <code>DevNet\System\PropertyTrait</code> in your class to enable this feature, then define the computed property as a method prefixed with <code>get</code> that returns a value.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\System\PropertyTrait;
+
+class Person
+&lcub;
+   use PropertyTrait;
+
+   public string $FirstName;
+   public string $LastName;
+   
+   // Defining the getter computed property.
+   public function get_FullName(): string
+   &lcub;
+      return $this->FirstName . ' ' . $this->LastName;
+   }
+}
+</code></pre>
+            <p>
+               And here how you can access the computed property:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Models\Person;
+
+$person = new Person();
+
+$person->FirstName = "John";
+$person->LastName = "Doe";
+
+// Accessing the computed property.
+print($person->FullName); // Output: John Doe
+</code></pre>
+            <br>
+            <h3>Setter</h3>
+            <p>
+               A setter is a function bound to a computed property and will be called when there is an attempt to set that property.
+            </p>
+            <p>
+               To use a setter for a computed property, you need to include the trait <code>DevNet\System\PropertyTrait</code> in your class to enable this feature, then define the computed property as a method prefixed with <code>set</code> that has a value as a parameter.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\System\PropertyTrait;
+
+class Person
+&lcub;
+   use PropertyTrait;
+
+   public string $FirstName;
+   public string $LastName;
+   
+   // Defining the setter computed property.
+   public function set_FullName(string $value): void
+   &lcub;
+      $segments = explode(' ', $value, 2);
+      $this->FirstName = $segments[0] ?? '';
+      $this->LastName = $segments[1] ?? '';
+   }
+}
+</code></pre>
+            <p>
+               And here how to set he computed property:
+            </p>
+            <pre><code class="language-php">&lt;?php
+               
+use Application\Models\Person;
+
+$person = new Person();
+
+// Setting the computed property.
+$person->FullName = "John Doe";
+
+print($person->FirstName); // Output: John
+print($person->LastName); // Output: Doe
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/overview">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/extension">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
