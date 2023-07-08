@@ -4,11 +4,13 @@ import { CoreRoutingModule } from './core-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { OverviewComponent } from './overview/overview.component';
 import { PropertiesComponent } from './properties/properties.component';
+import { ExtensionComponent } from './extension/extension.component';
 
 @NgModule({
   declarations: [
     OverviewComponent,
-    PropertiesComponent
+    PropertiesComponent,
+    ExtensionComponent
   ],
   imports: [
     CommonModule,

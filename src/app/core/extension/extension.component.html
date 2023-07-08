@@ -1,0 +1,95 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Extension Methods</h1>
+            <hr>
+            <p>
+               Extension methods are static methods that can be added to an existing class without modifying the class itself or creating a new derived one, and they can be called as if they were instance methods on that extended class.
+            </p>
+            <h3>Extended class</h3>
+            <p>
+               The extended class is the class that the extension method operates on, and must include the trait <code>DevNet\System\MethodTrait</code> to enable this feature like in the following eample:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Models;
+
+use DevNet\System\MethodTrait;
+
+class Employee
+&lcub;
+   use MethodTrait;
+
+   public string $Name;
+   public float $Salary ;
+}
+</code></pre>
+            <br>
+            <h3>Extension class</h3>
+            <p>
+               The extension class is a static class that contains one or more extension methods that will operate on the extended target, where the first parameter of the extenion method must be an instance of the extended target or have any type compatible with the target type to deal with the input and output of that instance target.
+            </p>
+            <p>
+               The example below represents an extension class called <code>EmployeeExtension</code> that has an extension method called <code>getIncome()</code> targeting the extended class <code>Employee</code> presented in previous example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Extensions;
+
+class EmployeeExtension
+&lcub;
+   public static function getIncome(Employee $employee, float $tax): float
+   &lcub;
+      return $employee->Salary - $employee->Salary * $tax;
+   }
+}
+</code></pre>
+            <br>
+            <h3>Calling the extension method</h3>
+            <p class="text-justify">
+               To call an extension method as if it were an instance method on a particular extended class, the extension class must be declared in the same file where that instance calls the extension method, like in the code below:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Extensions\PersoneExtension; // Must declare the extension method class.
+use Application\Models\Persone;
+
+$employee = new Employee();
+$employee->Name = "John Doe";
+$employee->Salary = 25000;
+$tax = 0.15;
+
+// calling the extension method as if it belongs to the employee instance.
+$income = $employee->getIncome($tax);
+
+print("Income: &lcub;$income}$"); // Income: 21250$
+</code></pre>
+            <p>
+               When calling the extension method, the first parameter will be skipped because it's the target reference, and the second parameter will become the first one, the third one will become the second one, and so on...
+            </p>
+            <br>
+            <blockquote class="alert alert-info">
+               <b>Note:</b> One of the best examples of extension methods is the <b>LINQ</b> methods that allow to perform queries on collections of type <code>IEnumerable</code>, More details about this feature can be found in the <a routerLink="/docs/core/linq">LINQ</a> section.
+            </blockquote>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/properties">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/generics">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
