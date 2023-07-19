@@ -5,12 +5,14 @@ import { SharedModule } from '../shared/shared.module';
 import { OverviewComponent } from './overview/overview.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { ExtensionComponent } from './extension/extension.component';
+import { GenericsComponent } from './generics/generics.component';
 
 @NgModule({
   declarations: [
     OverviewComponent,
     PropertiesComponent,
-    ExtensionComponent
+    ExtensionComponent,
+    GenericsComponent
   ],
   imports: [
     CommonModule,

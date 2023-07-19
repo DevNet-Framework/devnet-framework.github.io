@@ -1,0 +1,213 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Generic Types</h1>
+            <hr>
+            <p>
+               A generic type or parameterized type is a class with type parameters used in class operations without being specific to a particular data type, then defers the specification of these type parameters until the instantiation of the generic type to allow the code re-use.
+            </p>
+            <h3>Generic type parameter</h3>
+            <p>
+               The generic type parameter is a placeholder for a type that will be specified when an instance of the generic type is created.
+               e.g. <code>TypeName&lt;T></code> where <code>T</code> is a generic type parameter.
+            </p>
+            <p>
+               To define a type parameter in a generic class, define a type that inherits from <code>DevNet\System\Parameter</code> and attribute that type parameter to that generic class using the <code>DevNet\System\Generic</code> attribute, then set the generic type arguments through the constructor injection.
+            </p>
+            <p>
+               To work with this feature, you need to include the <code>DevNet\System\Tweak</code> trait in your generic class and the method that deals with the generic parameter should be private to trigger a magic method in the background for the type-checking and the injection of the value argument into the parameter type instance that works as a wrapper. Then you can get the argument value by invoking that wrapper as a callable.
+            </p>
+            <p>
+               Here is an example explaining how to create a generic class using this feature:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Collections;
+
+use DevNet\System\Collections\Enumerator;
+use DevNet\System\Collections\IEnumerable;
+use DevNet\System\Generic;
+use DevNet\System\Tweak;
+
+// Defining the type parameter T as a type of the items in the collection.
+class T extends \Devnet\System\Parameter &lcub;}
+
+#[Generic(T::class)]
+class Collection implements IEnumerable
+&lcub;
+   use Tweak;
+
+   private array $items = [];
+
+   public function __construct(string $typeName)
+   &lcub;
+      // Setting the generic type argument.
+      $this->setGenericArguments($typeName);
+   }
+
+   private function add(T $item): void
+   &lcub;
+      // Call the item wrapper as collable to get the item value.
+      $this->items[] = $item();
+   }
+
+   public function getIterator(): Enumerator
+   &lcub;
+      return new Enumerator($this->items);
+   }
+}
+</code></pre>
+            <br>
+            <h3>Generic type argument</h3>
+            <p>
+               The generic type argument is a type that is passed to the generic type parameter when an instance of the generic type is created.
+               e.g. <code>TypeName&lt;string></code> where <code>string</code> is a generic type argument.
+            </p>
+            <p>
+               The following example uses the generic <code>Collection</code> class created in the previous example to show how to specify the actual type argument at the time of instantiation to make it work only with that specified type.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+// Assuming we have Employee class
+$employee = new Employee();
+$employee->Id = 1;
+$employee->Name = 'Alice';
+
+// Create an instance of type Collection&lt;Employee>
+$collection = new Collection(Employee::class);
+
+// Now this method accepts only arguments of type Employee, other wise will throw a TypeException.
+$collection->add($employee);
+</code></pre>
+            <br>
+            <h3>Checking generic type</h3>
+            <p>
+               Every class uses the <code>Tweak</code> has a <code>getType()</code> method that returns a reflection class type. You can use this reflection type to examine the generic type and its type parameters, and you can also use the <code>TypeOf()</code> function to create an instance of a type that represents a generic type that you want use for compare.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Providers;
+
+use DevNet\System\Exceptions\TypeExcpetion;
+
+class EmployeeProvider
+&lcub;
+   private Collection $employees;
+   
+   public function __construct(Collection $employees)
+   &lcub;
+      // Check if the injected collection is equivalent to the generic type Collection&lt;Employee>
+      if ($employees->getType() != typeof(Collection::class, [Employee::class])) &lcub;
+         throw new TypeException("The argument of index 0, must be of type Collection&lt;Employee>");
+      }
+
+      $this->employees = $employees;
+   }
+
+   public function get(int $id): ?Employee
+   &lcub;
+      foreach ($this->employees as $employee) &lcub;
+         if ($employee->Id == $id) &lcub;
+            return $employee;
+         }
+      }
+      return null;
+   }
+}
+</code></pre>
+            <br>
+            <h3>Multiple type parameters</h3>
+            <p>
+               As mentioned earlier, the generic class can have multiple type parameters, like a pair of key-value type parameters, which are demonstrated in the following example:
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Collections;
+
+use DevNet\System\Generic;
+use DevNet\System\Tweak;
+
+class K extends \Devnet\System\Parameter &lcub;}
+class V extends \Devnet\System\Parameter &lcub;}
+
+#[Generic(K::class, V::class)]
+class Collection
+&lcub;
+   use Tweak;
+
+   private array $items = [];
+
+   public function __construct(string $keyTypeName, string $valueTypeName)
+   &lcub;
+      $this->setGenericArguments($keyTypeName, $valueTypeName);
+   }
+
+   private function add(K $key, V $value): void
+   &lcub;
+      $this->items[$key()] = $value();
+   }
+   ...
+}
+</code></pre>
+            <br>
+            <h3>Built-in generic collections</h3>
+            <p>
+               For rapid development, the DevNet Core library provides two types of generic collections:
+            </p>
+            <ul>
+               <li><code>ArrayList&lt;T></code> an indexed generic collection, where the parameter <code>T</code> is the type of the items in the collection.</li>
+               <li><code>Dictionary&lt;K, V></code> a key-value pairs generic collection, where the parameter <code>K</code> is the type of the keys, and the parameter <code>V</code> is the type of the values in the collection.</li>
+            </ul>
+            <h5>ArrayList Example:</h5>
+            <pre><code class="language-php">&lt;?php
+
+use \DevNet\System\Collections\ArrayList;
+
+// Creating an array of type ArrayList&lt;string>.
+$array = new ArrayList('string');
+$array[] = 'Bob';
+
+// This will throw a TypeException because the key must be of type integer.
+$array['1'] = 'Alice';
+
+// This will throw a TypeException because the value must be of type string.
+$array[1] = 50;
+</code></pre>
+            <br>
+            <h5>Dictionary Example:</h5>
+            <pre><code class="language-php">&lt;?php
+
+use \DevNet\System\Collections\Dictionary;
+
+// Creating an array of type Dictionary&lt;string, float>.
+$array = new Dictionary('string', 'float');
+$array['width'] = 90.5;
+
+// This will throw a TypeException because the value must be of type float.
+$array['height'] = '50';
+
+// This will throw a TypeException because the key must be of type string.
+$array[1] = 50;
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/extension">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/asynchronous">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
