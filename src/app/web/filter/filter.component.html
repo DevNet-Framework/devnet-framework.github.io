@@ -17,7 +17,7 @@
 
 namespace Application\Filters;
 
-use DevNet\System\MethodTrait;
+use DevNet\System\Tweak;
 use DevNet\Web\Action\ActionContext;
 use DevNet\Web\Action\ActionDelegate;
 use DevNet\Web\Action\IActionFilter;
@@ -28,7 +28,7 @@ use function Devnet\System\await;
 #[Attribute]
 class AuthenticationFilter implements IActionFilter
 &lcub;
-    use MethodTrait;
+    use Tweak;
 
     public function async_invoke(ActionContext $context, ActionDelegate $next): void
     &lcub;

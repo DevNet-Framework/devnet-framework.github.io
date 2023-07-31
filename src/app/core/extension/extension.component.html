@@ -12,17 +12,17 @@
             </p>
             <h3>Extended class</h3>
             <p>
-               The extended class is the class that the extension method operates on, and must include the trait <code>DevNet\System\MethodTrait</code> to enable this feature like in the following eample:
+               The extended class is the class that the extension method operates on, and must include the trait <code>DevNet\System\Tweak</code> to enable this feature like in the following eample:
             </p>
             <pre><code class="language-php">&lt;?php
 
 namespace Application\Models;
 
-use DevNet\System\MethodTrait;
+use DevNet\System\Tweak;
 
 class Employee
 &lcub;
-   use MethodTrait;
+   use Tweak;
 
    public string $Name;
    public float $Salary ;
@@ -55,8 +55,8 @@ class EmployeeExtension
             </p>
             <pre><code class="language-php">&lt;?php
 
-use Application\Extensions\PersoneExtension; // Must declare the extension method class.
-use Application\Models\Persone;
+use Application\Extensions\EmployeeExtension; // Must declare the extension method class.
+use Application\Models\Employee;
 
 $employee = new Employee();
 $employee->Name = "John Doe";
