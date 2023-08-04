@@ -1,0 +1,159 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Asynchronous Operations</h1>
+            <hr>
+            <p>
+               Asynchronous programming is a cooperative multitasking technique that allows the program to perform other operations while concurrently waiting for a long-running task to complete and then return the result when that task is complete. This technique is useful when working with an independent process that runs in the background or with I/O stream operations such as network access or database queries.
+            </p>
+            <h3>Coroutine Task</h3>
+            <p>
+               A coroutine task is an object that represents an asynchronous operation. It is used to perform work without blocking the main thread's execution by suspending and resuming the execution of the task's operations until the task completes and then returns a result on success or throws an exception on failure.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\Async\Task;
+
+function readFileAsync(string $path): Task &lcub;
+   // Creating and starting the task.
+   $task = Task::run(function() use($path) &lcub;
+      $result = null;
+      $file = fopen($path, 'r');
+      // Suspend and resume the task while the reading has not finished yet.
+      do &lcub;
+         yield;
+         stream_set_blocking($file, false);
+         $result .= $content = fgets($file);
+         if ($content === false) &lcub;
+            // Throws an exception on failure.
+            throw new \Exception("Unable to read from the file");
+         }
+      } while (!feof($file));
+
+      fclose($file);
+      // Returns a result on success.
+      return $result;
+   });
+
+   return $task;
+}
+
+$task = readFileAsync('path/to/file');
+
+// Some other work can be done here without being blocked by the running task.
+someWork();
+
+// Waiting for the task to complete, this can also be done using the method $task->wait();
+while (true) &lcub;
+   if ($task->IsCompleted) &lcub;
+      break;
+   }
+}
+
+try &lcub;
+   // Getting the result when the task is completed.
+   $result = $task->Result;
+} catch ($exception $e) &lcub;
+   // Logging the error report if the task is failed.
+}
+</code></pre>
+            <br>
+            <h3>Continuation Task</h3>
+            <p class="text-justify">
+               A continuation task is an asynchronous task that is chained to another task by calling the <code>then()</code> method which will be executed when its antecedent task completes its execution.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\Async\Task;
+
+function readJsonAsync(string $path): Task &lcub;
+   // Calling the async method presented in the previous example.
+   $task1 = readFileAsync();
+   // Chaining the antecedent task with the continuation Task.
+   $task2 = $task1->then(function($task1) &lcub;
+      $data = $task1->Result;
+      return json_decode($data);
+   });
+
+   return $task2;
+}
+
+$task = readJsonAsync('path/to/data.json');
+$data = $task->Result;
+</code></pre>
+            <br>
+            <h3>Async/Await Pattern</h3>
+            <p>
+               The async/await pattern is a feature related to the coroutine concept, where the async function can use the await operator to suspend the asynchronous operation until that operation completes and then returns a result. This enables asynchronous non-blocking functions to be structured like normal synchronous functions in the enclosing scope without blocking the main thread during the execution of the async function, which also returns a task object that represents an asynchronous operation and provides a result when the task completes successfully.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\IO\FileStream;
+
+use function DevNet\System\async;
+use function DevNet\System\await;
+
+$readJsonAsync = async(function($path): string &lcub;
+   $file = new FileStream($path, 'r');
+   // await for the async reading to complete without blocking the outside scope.
+   $json = await($file->readAsync($file->Lenth));
+   $data = json_decode($json);
+
+   $file->close();
+   return $data;
+});
+
+$task = $readJsonAsync('path/to/data.json');
+$data = $task->getAwaiter()->getResult();
+</code></pre>
+            <p>
+               Here is the same example in an object-oriented way, where the async method must be prefixed with the <code>async_</code> keyword, and the class that has the async method must use the <code>DevNet\System\Tweak</code> trait to enable this feature.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\IO\FileStream;
+use DevNet\System\Tweak;
+
+use function DevNet\System\await;
+
+class Reader &lcub;
+
+   use Tweak;
+
+   public async_readJsonAsync(function($path): string
+   &lcub;
+      $file = new FileStream($path, 'r');
+      $json = await($file->readAsync($file->Lenth));
+      $data = json_decode($json);
+      
+      $file->close();
+      return $data;
+   });
+}
+
+$reader = new Reader();
+$task = $reader->readJsonAsync('path/to/data.json');
+$data = $task->getAwaiter()->getResult();
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/generics">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/delegate">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>

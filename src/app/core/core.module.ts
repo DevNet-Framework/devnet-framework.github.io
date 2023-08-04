@@ -6,13 +6,15 @@ import { OverviewComponent } from './overview/overview.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { ExtensionComponent } from './extension/extension.component';
 import { GenericsComponent } from './generics/generics.component';
+import { AsynchronousComponent } from './asynchronous/asynchronous.component';
 
 @NgModule({
   declarations: [
     OverviewComponent,
     PropertiesComponent,
     ExtensionComponent,
-    GenericsComponent
+    GenericsComponent,
+    AsynchronousComponent
   ],
   imports: [
     CommonModule,
