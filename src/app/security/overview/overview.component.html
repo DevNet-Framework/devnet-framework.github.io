@@ -1,0 +1,48 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Overview</h1>
+            <hr>
+            <p>
+               DevNet Web provides many security tools and libraries for building secure web applications and APIs, and these security features are:
+            </p>
+            <ul>
+               <li>Cookie-based Authentication</li>
+               <li>Token-based Authentication</li>
+               <li>Policy-based Authorisation</li>
+               <li>Role-based Authorisation</li>
+               <li>Identity Manager</li>
+               <li>CSRF Prevention</li>
+            </ul>
+            <br>
+            <h3>Requirement</h3>
+            <p>
+               These security features are part of the DevNet Web package, and if it's not already installed on your system or project, you still can install it using the composer command line:
+            </p>
+            <pre><code class="language-shell">composer require devnet/web</code></pre>
+            <p>
+               Optionally, you may need the DevNet Entity ORM package if you want to use the Identity manager.
+            </p>
+            <pre><code class="language-shell">composer require devnet/entity</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/migrations">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/authentication">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
