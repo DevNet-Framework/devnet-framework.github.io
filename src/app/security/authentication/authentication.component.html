@@ -1,0 +1,201 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Authentication</h1>
+            <hr>
+            <p>
+               Authentication is the process of verifying the identity of the user who accesses a web application. This may require the user to input a username and password to log into the web application.
+            </p>
+            <p>
+               Authentication is handled by the authentication middleware, which uses the registered authentication service that can have multiple authentication schemes, and each scheme is related to an authentication handler to determine later in the authorization policies which authentication handler should be used to authenticate the user and provides a <code>ClaimsIdentity</code> that represents the user in the request context.
+            </p>
+            <h3>Configuration</h3>
+            <p>
+               The authentication service is added to the application by calling the <code>addAuthentication()</code> method, and then authentication schemes can be specified by calling one of the following methods:
+            </p>
+            <ul>
+               <li><code>AddCookie()</code> for cookie-based authentication</li>
+               <li><code>AddJwtBearer()</code> for token-based authentication</li>
+            </ul>
+            <p>
+               The authentication middleware is used in the application by calling the <code>useAuthentication()</code> method and must be called before any middleware that depends on the user being authenticated.
+            </p>
+            <p>
+               This example shows the configuration of both approaches, cookie-based and token-based authentication, but you can choose one of the two approaches.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\TimeSpan;
+use DevNet\Web\Hosting\WebHost;
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      $builder = WebHost::createDefaultBuilder($args);
+      $builder->register(function ($services) &lcub;
+         // Adding authentication service
+         $services->addAuthentication(function ($builder) &lcub;
+            // Adding cookie-based authentication handler
+            $builder->addCookie(AuthenticationScheme::CookieSession, function ($options) &lcub;
+               // Optimally you can modify the following default options.
+               $options->CookieName = "Identity";
+               $options->CookiePath = "/";
+               $options->ExpireTime = TimeSpan::fromDays(7);
+            });
+            // Adding token-based authentication handler
+            $builder->addJwtBearer(AuthenticationScheme::JwtBearer, function ($options) &lcub;
+               $options->SecurityKey = "jwt security key";
+               // Optinally you can configure the following validation options
+               $options->Issuer = "127.0.0.1:8000"; // server address
+               $options->Audience = "127.0.0.1:8080"; // client address
+            });
+         });
+      });
+      
+      $host = $builder->build();
+
+      $host->start(function ($app) &lcub;
+         $app->UseExceptionHandler();
+         $app->useRouter();
+         // Adding the authentication middleware befor the endpoint middleware.
+         $app->useAuthentication();
+         $app->useEndpoint(function ($routes) &lcub;
+            // routes
+         });
+      });
+   }
+}
+</code></pre>
+            <br>
+            <h3>Cookie-based Authentication</h3>
+            <p>
+               The cookie-based authentication is a stateful process, which means that the server stores the user session data and sends to the client a cookie that contains a session reference, which is often stored in the browser and sent back to the server with every request to authenticate the client requests and maintain session information on the server over the stateless HTTP protocol.
+            </p>
+            <p>
+               The following example demonstrates the working process of cookie-based authentication using <code>ClaimsIdentity</code> and the <code>Authentication</code> service to log in and log out the user.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\Linq;
+use DevNet\System\Collections\ArrayList;
+use DevNet\Web\Http\HttpContext;
+use DevNet\Web\Security\Authentication\AuthenticationScheme;
+use DevNet\Web\Security\ClaimsIdentity;
+use DevNet\Web\Security\ClaimsType;
+...
+
+$app->useEndpoint(function($routes) &lcub;
+   $routes->mapPost("/login", function(HttpContext $context) &lcub;
+      $user = $context->User;
+      if (!$user->isAuthenticated()) &lcub;
+         $form  = $context->Resquest->Form;
+         $json  = file_get_contents(__DIR__ . '/path/to/data.json');
+         $data  = json_decode($json, true);
+         $users = new ArrayList('object');
+         $users->addRange($data);
+
+         $user = $users->where(fn ($user) => $user->Username == $form->getValue('username'))->first();
+         if (!$user || $user->Password != $form->getValue('password')) &lcub;
+            return $context->Response->setStatusCode(401);
+         }
+
+         $identity = new ClaimsIdentity(AuthenticationScheme::CookieSession);
+         $identity->addClaim(new Claim(ClaimType::Identifier , $form->getValue('username')));
+         $identity->addClaim(new Claim(ClaimType::Role, 'member'));
+
+         $context->Authentication->signIn($identity, $form->getValue('remember'));
+      }
+
+      return $context->Response->redirect('/account');
+   });
+
+   $routes->mapGet("/logout", function(HttpContext $context) &lcub;
+      $context->Authentication->signOut();
+      return $context->Response->redirect('/login');
+   })
+});</code></pre>
+            <br>
+            <h3>Token-based Authentication</h3>
+            <p>
+               The token-based authentication is a stateless process. This means that the server does not store any session information about the user on its side. Instead, it sends to the client an encrypted token, typically JWT (JSON Web Token), that contains the user information and expiration time, and the client stores this token and sends it back to the server with every request, where the server does the token validation and grants access to the user.
+            </p>
+            <p>
+               The following example demonstrates the working process of token-based authentication using ClaimsIdentity and JwtSecurityTokenHandler to generate a JWT token and send it to the client to send it back later for authentication.
+            </p>
+            <p>
+               Due to the limitations of this approach, there is no option for remembering or logging out the user on the server side. However, you can easily log out by removing the token from your request header on the client side.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\Linq;
+use DevNet\System\Collections\ArrayList;
+use DevNet\Web\Http\HttpContext;
+use DevNet\Web\Security\Authentication\AuthenticationScheme;
+use DevNet\Web\Security\ClaimsIdentity;
+use DevNet\Web\Security\ClaimsType;
+...
+
+$app->useEndpoint(function($routes) &lcub;
+   $routes->mapGet("/login", (function(HttpContext $context) &lcub;
+      $user = $context->User;
+      if (!$user->isAuthenticated()) &lcub;
+         $form  = $context->Resquest->Form;
+         $json  = file_get_contents(__DIR__ . '/path/to/data.json');
+         $data  = json_decode($json, true);
+         $users = new ArrayList('object');
+         $users->addRange($data);
+
+         $user = $users->where(fn ($user) => $user->Username == $form->getValue('username'))->first();
+         if (!$user || $user->Password != $form->getValue('password')) &lcub;
+            return $context->Response->setStatusCode(401);
+         }
+
+         $claims = new ClaimsIdentity(AuthenticationScheme::JwtBearer);
+         $claims->addClaim(new Claim('sub', $form->getValue('username')));
+         $claims->addClaim(new Claim('role', 'member'));
+         $claims->addClaim(new Claim('iss', '127.0.0.1:8000'));
+         $claims->addClaim(new Claim('aud', '127.0.0.1:8080'));
+
+         // The asymmetric enciption RSA not supported yet, only the symmetric encription HSA for now.
+         $token = new JwtSecurityToken($claims, 'HS256', new DateTime('7 days'));
+         $jwtHandler = new JwtSecurityTokenHandler();
+         $signedToken = $jwtHandler->writeToken($token, "jwt security key");
+
+         // Need to send the token to the client.
+         return $context->Response->WriteJsonAsync(['jwt' => $signedToken]);
+      }
+
+      return $context->Response->redirect('/account');
+   }));
+});</code></pre>
+
+            <blockquote class="alert alert-warning">
+               <b>Important:</b> The client should send back the JWT token in the Authorization header using the Bearer schema in the following format: <code>Authorization: Bearer &lt;token></code>
+            </blockquote>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/overview">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/authorisation">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
