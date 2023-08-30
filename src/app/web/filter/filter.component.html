@@ -28,61 +28,25 @@ use function Devnet\System\await;
 #[Attribute]
 class AuthenticationFilter implements IActionFilter
 &lcub;
-    use Tweak;
+   use Tweak;
 
-    public function async_invoke(ActionContext $context, ActionDelegate $next): void
-    &lcub;
-        // short-circuiting the pipeline if does not fulfil the condition.
-        if (!$context->HttpContext->User) &lcub;
-            $context->HttpContext->Response->setStatusCode(401);
-            return;
-        }
-        // await next action delegate to chain the pipline to the next filter befor executing the action.
-        await($next($context));
-        // logging or other works can be done here after executing the action.
-    }
-}
-</code></pre>
-            <br>
-            <h3>Apply Filters</h3>
-            <p>
-               Any action filter that implements the interface <code>DevNet\Web\Action\IActionFilter</code> can be applied to the route endpoint handler or to the controller, but to apply an action filter to a controller, the action filter class must be declared as an attribute because the controller accepts only action filters as attributes, and if the action filter attribute is applied to the class of controller it will be applied to all the action methods of the controller, and if it is applied only to a specific action method of a controller it will be applied only to that specific action method.
-            </p>
-            <p>
-               The following code represents an example of applying action filters to a controller as attributes.
-            </p>
-            <pre><code class="language-php">&lt;?php
-
-namespace Application\Controllers;
-
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\IActionResult;
-use DevNet\Web\Action\Filters\HttpMethod;
-use DevNet\Web\Action\Filters\Antiforgery;
-use Application\Filters\AuthenticationFilter;
-use Application\Models\Profile;
-
-// this filter will be applied to all controller's methods.
-#[AuthenticationFilter]
-class UserController extends ActionController
-&lcub;
-   public function index(): IActionResult
+   public function async_invoke(ActionContext $context, ActionDelegate $next): void
    &lcub;
-      return $this->view();
-   }
-
-   // this filters will be applied only to this action method.
-   #[Antiforgery]
-   #[HttpMethod('post')]
-   public function edit(Profile $form): IActionResult
-   &lcub;
-      // code...
+      // short-circuiting the pipeline if does not fulfil the condition.
+      if (!$context->HttpContext->User) &lcub;
+         $context->HttpContext->Response->setStatusCode(401);
+         return;
+      }
+      // await next action delegate to chain the pipline to the next filter befor executing the action.
+      await($next($context));
+      // logging or other works can be done here after executing the action.
    }
 }
 </code></pre>
             <br>
+            <h3>Registering action filters</h3>
             <p>
-               The next code example shows how to add action filters to the route endpoint handler, as class or as an anonymous async function, with the help of the method <code>RouteHandler::addFilter(callable|string $filter, ...$args)</code>
+               The code example below shows how to add action filters to the route endpoint handler as class or as an anonymous async function, with the help of the method <code>RouteHandler::addFilter(callable|string $filter, ...$args)</code>
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -116,6 +80,38 @@ $host->start(function ($app) &lcub;
       // other routes.
    });
 });</code></pre>
+<p>
+   You can apply the action filter to a controller using the attribute syntax and decorate the controller class or the action method with the filter name, as shown in the following code example.
+</p>
+<pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Action\Filters\HttpMethod;
+use DevNet\Web\Action\Filters\Antiforgery;
+use Application\Filters\AuthenticationFilter;
+use Application\Models\Profile;
+
+// this filter will be applied to all controller's methods.
+#[AuthenticationFilter]
+class UserController extends ActionController
+&lcub;
+   public function index(): IActionResult
+   &lcub;
+      return $this->view();
+   }
+
+   // this filters will be applied only to this action method.
+   #[Antiforgery]
+   #[HttpMethod('post')]
+   public function edit(Profile $form): IActionResult
+   &lcub;
+      // code...
+   }
+}
+</code></pre>
             <br>
             <h3>Built-in filters</h3>
             <table class="table">

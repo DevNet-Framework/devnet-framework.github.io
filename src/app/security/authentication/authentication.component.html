@@ -35,6 +35,7 @@ use DevNet\System\TimeSpan;
 use DevNet\Web\Hosting\WebHost;
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Security\Authentication\AuthenticationScheme;
 
 class Program
 &lcub;
@@ -90,7 +91,6 @@ use DevNet\System\Collections\ArrayList;
 use DevNet\Web\Http\HttpContext;
 use DevNet\Web\Security\Authentication\AuthenticationScheme;
 use DevNet\Web\Security\ClaimsIdentity;
-use DevNet\Web\Security\ClaimsType;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
@@ -109,8 +109,8 @@ $app->useEndpoint(function($routes) &lcub;
          }
 
          $identity = new ClaimsIdentity(AuthenticationScheme::CookieSession);
-         $identity->addClaim(new Claim(ClaimType::Identifier , $form->getValue('username')));
-         $identity->addClaim(new Claim(ClaimType::Role, 'member'));
+         $identity->addClaim(new Claim('Username' , $form->getValue('username')));
+         $identity->addClaim(new Claim('Role', $user->Role));
 
          $context->Authentication->signIn($identity, $form->getValue('remember'));
       }
@@ -161,7 +161,7 @@ $app->useEndpoint(function($routes) &lcub;
 
          $claims = new ClaimsIdentity(AuthenticationScheme::JwtBearer);
          $claims->addClaim(new Claim('sub', $form->getValue('username')));
-         $claims->addClaim(new Claim('role', 'member'));
+         $claims->addClaim(new Claim('role', $user->Role));
          $claims->addClaim(new Claim('iss', '127.0.0.1:8000'));
          $claims->addClaim(new Claim('aud', '127.0.0.1:8080'));
 
@@ -190,7 +190,7 @@ $app->useEndpoint(function($routes) &lcub;
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/security/authorisation">
+                  <a class="nav-page-link" routerLink="/docs/security/authorization">
                      Next <i class="chevron right"></i>
                   </a>
                </li>

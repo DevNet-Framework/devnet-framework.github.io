@@ -49,7 +49,7 @@ class RedirectMiddleware implements IMiddleware
    }
 }</code></pre>
             <br>
-            <h3>Registring Middlewares</h3>
+            <h3>Registering Middlewares</h3>
             <p>
                Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Web\Middleware\IMiddleware</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
             </p>
