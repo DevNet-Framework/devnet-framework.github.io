@@ -1,0 +1,334 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Authorization</h1>
+            <hr>
+            <p>
+               Authorization is the process that determines if the user has permission to access or use resources, and usually is coupled with authentication so that the server has some concept of who the user is before determining what the user can do.
+            </p>
+            <p>
+               The authorization is controlled by the <code>Authorize</code> filter which is responsible for enforcing the authorization policy on the endpoint action. It uses the <code>Authorization</code> service to evaluate the policy and decide which rule applies to the action. The rule can allow or deny access to the action based on various criteria.
+            </p>
+            <h3>Configuration</h3>
+            <p>
+               To use the authorization feature in your application, you need first to add the <code>Authorization</code> service to the dependency, which also depends on the <code>Authentication</code> service, and the code below shows a simple way to add this feature.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\TimeSpan;
+use DevNet\Web\Hosting\WebHost;
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      $builder = WebHost::createDefaultBuilder($args);
+      $builder->register(function ($services) &lcub;
+         // The authentication service is needed for authorization service.
+         $services->addAuthentication(function ($builder) &lcub;
+            $builder->addCookie();
+         });
+         // Adding the authorization service
+         $services->addAuthorization();
+      });
+      ...
+   }
+}</code></pre>
+            <br>
+            <h3>Simple Authorization</h3>
+            <p>
+               By default, applying the <code>Authorize</code> filter on the endpoint action without specifying any option will restrict the execution of that action only for authenticated users, as shown in the code example below.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Http\HttpContext;
+...
+
+$app->useEndpoint(function($routes) &lcub;
+   $routes->mapGet("/account", function(HttpContext $context) &lcub;
+      $user  = $context->User;
+      $claim = $user->findClaim(fn ($claim) => $claim->Type == "name");
+      $name  = $claim ? $claim->Value : null;
+      return $context->Respose->writeAsync("Welcom &lcub;$name}");
+   })
+   // Adding the authorize filter.
+   ->addFilter(new Authorize());
+});</code></pre>
+            <p>
+               You can also apply the <code>Authorize</code> filter to a controller's action methods using the attribute syntax.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+
+class AccountController extends ActionController
+&lcub;
+   #[Authorize]
+   public function index(): IActionResult
+   &lcub;
+      $user  = $this->Context->User;
+      $claim = $user->findClaim(fn ($claim) => $claim->Type == "name");
+      $name  = $claim ? $claim->Value : null;
+      return $this->content("Welcom &lcub;$name}");
+   }
+
+   public function register(Registration $form): IActionResult
+   &lcub;
+      $data = [];
+      if (file_exists(__DIR__ . '/../../data.json')) &lcub;
+         $json = file_get_contents(__DIR__ . '/../../data.json');
+         $data = json_decode($json);
+      }
+
+      $user = new User();
+      $user->Username = $form->Username;
+      $user->Password = $form->Password;
+      $user->Role     = "User";
+
+      $data[] = $user;
+      $json = json_encode($data, JSON_PRETTY_PRINT);
+      file_put_contents(__DIR__ . '/../../data.json', $json);
+
+      return $this->content("The user was successfully created.");
+   }
+}</code></pre>
+            <p>
+               Another way to restrict access to the controller's action method is to use the Authorize attribute on the entire controller class, which applies the Authorize filter to all the action methods in the controller. But, If you want to exclude some action methods from that, you can use the <code>Authorize("Anonymous")</code> attribute on those methods to override the class-level filter that requires the user to be authenticated and allow access to anyone.
+            </p>
+            <p>
+               In this example, the Authorize filter is applied to all controller methods except for the <code>register()</code> and <code>login()</code> methods.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+use Application\Models\Configuration;
+use Application\Models\Login;
+use Application\Models\Registration;
+
+#[Authorize]
+class AccountController extends ActionController
+&lcub;
+   public function index(): IActionResult
+   &lcub;
+      // code.
+   }
+
+   #[Authorize('Anonymous')]
+   public function register(Registration $form): IActionResult
+   &lcub;
+      // code.
+   }
+
+   public function settings(Configuration $form): IActionResult
+   &lcub;
+      // code.
+   }
+
+   #[Authorize('Anonymous')]
+   public function login(login $form): IActionResult
+   &lcub;
+      // code.
+   }
+}</code></pre>
+            <br>
+            <h4>Authorization with a specific scheme</h4>
+            <p>
+               When your application uses multiple authentication methods, such as cookie-base and token-base authentications, you may need to control how your application grants access to its resources based on the authentication scheme, and you can do this by specifying the authentication scheme in the Authorize filter to select which authentication method should be used to authorize access to particular resources.
+            </p>
+            <p>
+               This example code authorizes only cookie-based authentication.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Security\Authentication\AuthenticationScheme;
+
+#[Authorize(AuthenticationScheme::CookieSession)]
+class AccountController extends ActionController
+&lcub;
+   public function index(): IActionResult
+   &lcub;
+      // code.
+   }
+}</code></pre>
+            <p>
+               And the following example code authorizes only token-based authentication.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Security\Authentication\AuthenticationScheme;
+
+#[Authorize(AuthenticationScheme::JwtBearer)]
+class AccountController extends ActionController
+&lcub;
+   public function index(): IActionResult
+   &lcub;
+      // code.
+   }
+}</code></pre>
+            <br>
+            <h3>Role-based Authorization</h3>
+            <p>
+               Role-based authorization is a method of regulating access to resources based on the roles of users within a system. It specifies roles that the current user must have as claims in order to access the requested resource.
+            </p>
+            <p>
+               For example, in the code below, only users with the role of Administrator can access the resources, in other words only users that have the claim "Role" with the value "Administrator" are accepted.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+
+class AccountController extends ActionController
+&lcub;
+   #[Authorize(roles: ['Administrator'])]
+   public function index(): IActionResult
+   &lcub;
+      return $this->content("Hello Administrator");
+   }
+}</code></pre>
+            <br>
+            <h4>Authorization with multiple roles</h4>
+            <p>
+               Multiple roles can be specified as an array of strings using the named argument <code>roles:</code> in the Authorize attribute, and the user must have at least one of these roles to access the resources.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+
+class AccountController extends ActionController
+&lcub;
+   #[Authorize(roles: ['Administrator, Manager'])]
+   public function index(): IActionResult
+   &lcub;
+      return $this->content("Hello to either Administrator or Manager");
+   }
+}</code></pre>
+            <p>
+               When applying multiple Authorize attributes, the associated resources can only be accessed if the user satisfies all specified roles, unlike the previous example, where the user only needs to have at least one of the roles.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+
+class AccountController extends ActionController
+&lcub;
+   #[Authorize(roles: ['Administrator'])]
+   #[Authorize(roles: ['Manager'])]
+   public function index(): IActionResult
+   &lcub;
+      return $this->content("Hello to Administrator and Manager");
+   }
+}</code></pre>
+            <br>
+            <h3>Policy-based Authorization</h3>
+            <p>
+               Policy-based authorization is a way of creating authorization rules that depend on claims requirements that the user must satisfy to access a resource. It can require any user's claims such as ID, Name, Email, Role, etc., unlike role-based authorization, which is just a special case of policy-based authorization that only requires the role claim.
+            </p>
+            <p>
+               To use a policy in your application, you must first define it in the Authorization service by calling the addPolicy() method, which allows you to specify a group of claim requirements, as shown in the following example.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\TimeSpan;
+use DevNet\Web\Hosting\WebHost;
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      $builder = WebHost::createDefaultBuilder($args);
+      $builder->register(function ($services) &lcub;
+         $services->addAuthentication(function ($builder) &lcub;
+            $builder->addCookie();
+         });
+         // Adding the authorisation service with policy
+         $services->addAuthorisation(function($config) &lcub;
+            $config->addPolicy("Administration", function ($policy) &lcub;
+               $policy->RequireClaim('EmployeeNumber');
+               $policy->RequireClaim('Role', ['Administrator', 'Manager']);
+            }
+         });
+      });
+      ...
+   }
+}
+</code></pre>
+            <p>
+               And here is an example of how to apply a policy in the Authorize attribute using the named argument <code>policy:</code>
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Action\ActionController;
+use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Action\IActionResult;
+
+class AccountController extends ActionController
+&lcub;
+   #[Authorize(policy: 'Administration')]
+   public function index(): IActionResult
+   &lcub;
+      return $this->content("Administration space");
+   }
+}</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/authentication">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/identity">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
