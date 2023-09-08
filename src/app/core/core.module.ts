@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { OverviewComponent } from './overview/overview.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { ExtensionComponent } from './extension/extension.component';
+import { LinqComponent } from './linq/linq.component';
 import { GenericsComponent } from './generics/generics.component';
 import { AsynchronousComponent } from './asynchronous/asynchronous.component';
 
@@ -13,6 +14,7 @@ import { AsynchronousComponent } from './asynchronous/asynchronous.component';
     OverviewComponent,
     PropertiesComponent,
     ExtensionComponent,
+    LinqComponent,
     GenericsComponent,
     AsynchronousComponent
   ],

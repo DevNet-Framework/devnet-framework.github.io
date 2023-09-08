@@ -1,0 +1,173 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Language Integrated Query</h1>
+            <hr>
+            <p>
+               LINQ, or Language Integrated Query, is an integration of query capabilities as expressions of extension methods against data, such as in-memory data, document databases, or SQL databases.
+            </p>
+            <p>
+               Any collection class of type <code>IEnumerable</code> or <code>IQueryable</code> that uses the <code>DevNet\System\Extension\Tweak</code> to support the extension method can take advantage of using LINQ extension methods.
+            </p>
+            <p>
+               The difference between <code>IEnumerable</code> and <code>IQueryable</code> types is that the implementation of the <code>IEnumerable</code> type, like the <code>ArrayList</code>, uses LINQ against in-memory data, while the implementation of the <code>IQueryable</code> type, like the <code>EntitySet</code> repository of DevNet Entity ORM, uses LINQ against SQL database, which means that this one uses <code>IQueryProvider</code> to compile the predicate expressions of the LINQ methods to SQL query syntax.
+            </p>
+            <h3>Using LINQ extension methods</h3>
+            <p>
+               We use the <code>ArrayList</code> collection as an example to show you how to use the Linq extension methods with the <code>IEnumerable</code> collection and make sure to declare the namespace <code>DevNet\System\Linq</code> to be able to use those extension methods.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+// declaring the Linq namespace to be able to use the extension methods with the ArrayList instance.
+use DevNet\System\Linq;
+
+// creating ArrayList instance with generic type argument of Employee class.
+$list = new ArrayList(Employee::class);
+
+// assuming we have Employee class with constructor that initializes Id and Name properties.
+$list[] = new Employee(11, 'bob');
+$list[] = new Employee(12, 'carol');
+$list[] = new Employee(13, 'ted');
+$list[] = new Employee(14, 'alice');
+$list[] = new Employee(15, 'carol');
+$list[] = new Employee(16, 'ted');
+</code></pre>
+            <br>
+            <h5>Picking</h5>
+            <pre><code class="language-php">$first = $list->first();
+$last  = $list->last();
+print("First employee is &lcub;$first->Name} with Id &lcub;$first->Id}\n");
+print("Last employee is &lcub;$last->Name} with Id &lcub;$last->Id}\n");
+</code></pre>
+            <h6>Output:</h6>
+            <pre><code class="language-shell">First employee is bob with Id 11
+Last employee is ted with Id 16
+</code></pre>
+            <br>
+            <h5>Filtring</h5>
+            <pre><code class="language-php">print("Employees with Id greater than 12\n");
+
+$employees = $list->where(fn($employee) => $employee->Id > 12);
+foreach ($employees as $employee) &lcub;
+      print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
+}
+
+print("\n");
+print("Employees with Name ted\n");
+
+$employees = $list->where(fn($employee) => $employee->Name == 'ted');
+foreach ($employees as $employee) &lcub;
+      print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
+}
+</code></pre>
+            <h6>Output:</h6>
+            <pre><code class="language-shell">Employees with Id greater than 12
+13 => ted
+14 => alice
+15 => carol
+16 => ted
+
+Employees with Name ted
+13 => ted
+16 => ted
+</code></pre>
+            <br>
+            <h5>Sorting</h5>
+            <pre><code class="language-php">print("Ascending order by Name\n");
+
+$employees = $list->orderBy(fn($employee) => $employee->Name);
+foreach ($employees as $employee) &lcub;
+print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
+}
+
+print("\n");
+print("Descending order by Id\n");
+
+$employees = $list->orderByDescending(fn($employee) => $employee->Id);
+foreach ($employees as $employee) &lcub;
+print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
+}
+</code></pre>
+            <h6>Output:</h6>
+            <pre><code class="language-shell">Ascending order by Name
+14 => alice
+11 => bob  
+12 => carol
+15 => carol
+13 => ted  
+16 => ted  
+
+Descending order by Id
+16 => ted  
+15 => carol
+14 => alice
+13 => ted  
+12 => carol
+11 => bob
+</code></pre>
+            <br>
+            <h5>Paging</h5>
+            <pre><code class="language-php">// skip first 2 employees then take just 3 from the rest of employees.
+$employees = $list->skip(2)->take(3);
+
+foreach ($employees as $employee) &lcub;
+   print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
+}
+</code></pre>
+            <h6>Output:</h6>
+            <pre><code class="language-shell">13 => ted
+14 => alice
+15 => carol
+</code></pre>
+            <br>
+            <h5>Aggregating</h5>
+            <pre><code class="language-php">$count = $list->count();
+$max   = $list->max(fn($employee) => $employee->Id);
+$min   = $list->min(fn($employee) => $employee->Id);
+
+print("Tolat employess => &lcub;$count}\n");
+print("Max employee Id => &lcub;$max}\n");
+print("Min employee Id => &lcub;$min}\n");
+</code></pre>
+            <h6>Output:</h6>
+            <pre><code class="language-shell">Tolat employess => 6
+Max employee Id => 16
+Min employee Id => 11
+</code></pre>
+            <br>
+            <h5>Grouping</h5>
+            <pre><code class="language-php">// create groups of employees share the same name.
+$groups = $list->groupBy(fn($employee) => $employee->Name);
+
+foreach ($groups as $group) &lcub;
+   print("Total employees in &lcub;$group->Key} group => &lcub;$group->count()}\n");
+}
+</code></pre>
+            <h6>Output:</h6>
+            <pre><code class="language-shell">Total employees in bob group => 1
+Total employees in carol group => 2
+Total employees in ted group => 2
+Total employees in alice group => 1
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/extension">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/generics">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
