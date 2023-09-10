@@ -1,0 +1,212 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>Delegates & Events</h1>
+            <hr>
+            <p>
+               A delegate is a type that holds references to methods or functions with a particular signature of parameters and return type, and any method or function compatible with the delegate signature can be associated with the instance of that delegate and can be called by invoking the delegate instance.
+            </p>
+            <h3>Defining the delegate</h3>
+            <p>
+               A delegate is constructed by extending the abstract class Delegate, defining the method signature with an empty body, and having the same name as the name of the defined delegate class, as shown in the code example below.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+use DevNet\System\Delegate;
+
+class MyDelegate extends Delegate
+&lcub;
+   // Define the delegate signature.
+   public function myDelegate(array $args): string
+   &lcub;
+      // The body is left empty.
+   }
+}
+</code></pre>
+            <br>
+            <h3>Defining the handler</h3>
+            <p>
+               The following code example represents a handler class with two methods that will be associated with the delegate introduced in the previous example, and they must have the same signature of that delegate.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application;
+
+class MyHandler
+&lcub;
+   // Define a method with the same signature as the delegate.
+   public function handle(array $args): string
+   &lcub;
+      return serialize($args);
+   }
+}
+</code></pre>
+            <br>
+            <h3>Using the delegate</h3>
+            <p>
+               When the delegate is instantiated, it can encapsulate any function or method with a compatible signature, and when the call is made to the delegate instance, it will be passed to the associated function, passing along the same arguments and returning the same value.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+// Register the method 'handle' of the Handler class
+$myAction = new MyDelegate([new MyHandler(), 'handle']);
+
+// Or register in-line closure function of the same signature
+$myAction = new MyDelegate(function(array $args): string &lcub;
+   return serialize($args);
+});
+
+$args = ['value1', 'value2'];
+
+// Invoke the delegate instance.
+$result = $myAction($args);
+</code></pre>
+            <br>
+            <h4>Multicast Delegate</h4>
+            <p>
+               A multicast delegate is a delegate that holds references to multiple methods or functions, and when the delegate instance is called, it invokes all of the associated functions, and the return value is that of the last function executed, unless you invoke each function through iteration to deal with each returned value.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+$myAction = new MyDelegate();
+
+// register Handlers
+$myAction[] = [new MyHandler(), 'handle'];
+$myAction[] = function(array $args): string &lcub;
+   return json_encode($args);
+};
+
+$args = ['value1', 'value2'];
+
+// Invoke the multicast delegate and store the last returned value
+$result = $myAction($args);
+
+// Invoke each function of the multicast delegate through iteration to store all the returned values
+$results = [];
+foreach($myAction as $action) &lcub;
+   $results[] = $action->invoke($args);
+}
+</code></pre>
+            <br>
+            <h3>Event</h3>
+            <p>
+               An event is a special type of delegate that enables an object to notify other objects when something of interest occurs, where the class that sends or raises the event is called the publisher (other names: sender, subject), and the classes that receive or handle the event are called subscribers (other names: receivers, observers, listeners, handlers).
+            </p>
+            <h5>Event Handler</h5>
+            <p>
+               DevNet provides an easy way to subscribe to the event by using <code>DevNet\System\Event\EventHandler</code>, which has the following delegate signature <code>function(object $sender, EventArgs $args): void</code>
+            </p>
+            <ul>
+               <li><b>$sender:</b> (<code>object</code>) represents the publisher that raises the event, and the reason for passing the sender as a parameter to the handler, is because the handler can be subscribed to multiple publishers, and sometimes we need to know which publisher raises the event.</li>
+               <li><b>$args:</b> (<code>DevNet\System\Event\EventArgs</code>) represents the event arguments to be handled by the handler.</li>
+            </ul>
+            <p>
+               The example below represents a <code>Button</code> class as a publisher with two events: The <code>click</code> and <code>keypress</code> events, which can be associated with event listners.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Components;
+
+use DevNet\System\Event\EventArgs;
+use DevNet\System\Event\EventHandler;
+
+class Button
+&lcub;
+   public string $Title;
+   private EventHandler $click;
+   private EventHandler $keypress;
+
+   public function __construct(string $title)
+   &lcub;
+      $this->Title = $title;
+      $this->click = new EventHandler();
+      $this->keypress = new EventHandler();
+   }
+
+   public function addListner(string $event, callable $handler): void
+   &lcub;
+      switch($event) &lcub;
+         case 'click':
+            $this->click[] = $handler;
+            break;
+         case 'keypress':
+            $this->keypress[] = $handler;
+            break;
+         default:
+            throw \Exception("The event &lcub;$event} does not exist!");
+      }
+   }
+
+   public function click(): void
+   &lcub;
+      $this->click->invoke($this, new EventArgs);
+   }
+
+   public function keypress(): void
+   &lcub;
+      $this->keypress->invoke($this, new EventArgs);
+   }
+}
+</code></pre>
+            <p>
+               And the following example represents a <code>Window</code> class as a subscriber that can subscribe handlers to the <code>Button</code> events.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Components;
+
+use DevNet\System\Event\EventArgs;
+
+class Window
+&lcub;
+   public string $Title;
+   public Button $MyButton;
+
+   public function __construct(string $title)
+   &lcub;
+      $this->Title = $title;
+      $this->MyButton = new Button("My button");
+      // Subscribe to the click event.
+      $this->MyButton->addListner('click', [$this, 'onMyButtonClick']);
+   }
+
+   public function onMyButtonClick(object $sender, EventArgs $event): void
+   &lcub;
+      print("&lcub;$sender->Title} was clicked");
+   }
+}
+</code></pre>
+            <p>
+               And here is a working example of triggering the click event of the Window's button.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use Application\Components\Window;
+
+$myWindow = new Window("My Window");
+$myWindow->MyButton->click();
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/asynchronous">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/core/diagnostics">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>

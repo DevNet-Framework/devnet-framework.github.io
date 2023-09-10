@@ -8,6 +8,7 @@ import { ExtensionComponent } from './extension/extension.component';
 import { LinqComponent } from './linq/linq.component';
 import { GenericsComponent } from './generics/generics.component';
 import { AsynchronousComponent } from './asynchronous/asynchronous.component';
+import { DelegatesComponent } from './delegates/delegates.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AsynchronousComponent } from './asynchronous/asynchronous.component';
     ExtensionComponent,
     LinqComponent,
     GenericsComponent,
-    AsynchronousComponent
+    AsynchronousComponent,
+    DelegatesComponent
   ],
   imports: [
     CommonModule,
