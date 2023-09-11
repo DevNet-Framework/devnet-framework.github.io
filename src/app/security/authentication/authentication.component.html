@@ -104,7 +104,7 @@ $app->useEndpoint(function($routes) &lcub;
          $users->addRange($data);
 
          $user = $users->where(fn ($user) => $user->Username == $form->getValue('username'))->first();
-         if (!$user || $user->Password != $form->getValue('password')) &lcub;
+         if (!$user || !password_verify($form->getValue('password'), $user->Password)) &lcub;
             return $context->Response->setStatusCode(401);
          }
 
@@ -177,7 +177,6 @@ $app->useEndpoint(function($routes) &lcub;
       return $context->Response->redirect('/account');
    }));
 });</code></pre>
-
             <blockquote class="alert alert-warning">
                <b>Important:</b> The client should send back the JWT token in the Authorization header using the Bearer schema in the following format: <code>Authorization: Bearer &lt;token></code>
             </blockquote>

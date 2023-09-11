@@ -15,17 +15,17 @@
                A getter is a function bound to a computed property and returns a value when that property is looked up.
             </p>
             <p>
-               To use a getter for a computed property in DevNet, you need first to include the trait <code>DevNet\System\Tweak</code> in your class to enable this feature, then define the computed property as a method prefixed with <code>get</code> that returns a value.
+               To use a getter for a computed property in DevNet, you need first to include the trait <code>DevNet\System\PropertyTrait</code> in your class to enable this feature, then define the computed property as a method prefixed with <code>get</code> that returns a value.
             </p>
             <pre><code class="language-php">&lt;?php
 
 namespace Application\Models;
 
-use DevNet\System\Tweak;
+use DevNet\System\PropertyTrait;
 
 class Person
 &lcub;
-   use Tweak;
+   use PropertyTrait;
 
    public string $FirstName;
    public string $LastName;
@@ -64,11 +64,11 @@ print($person->FullName); // Output: John Doe
 
 namespace Application\Models;
 
-use DevNet\System\Tweak;
+use DevNet\System\PropertyTrait;
 
 class Person
 &lcub;
-   use Tweak;
+   use PropertyTrait;
 
    public string $FirstName;
    public string $LastName;

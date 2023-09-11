@@ -95,7 +95,7 @@ class AccountController extends ActionController
 
       $user = new User();
       $user->Username = $form->Username;
-      $user->Password = $form->Password;
+      $user->Password = password_hash($form->Password, PASSWORD_DEFAULT);
       $user->Role     = "User";
 
       $data[] = $user;
@@ -323,7 +323,7 @@ class AccountController extends ActionController
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/security/identity">
+                  <a class="nav-page-link" routerLink="/docs/security/antiforgery">
                      Next <i class="chevron right"></i>
                   </a>
                </li>

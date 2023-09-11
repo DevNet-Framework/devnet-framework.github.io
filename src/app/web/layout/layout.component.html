@@ -11,11 +11,15 @@
                The layout or master page is common UI (User Interface) a template of common HTML elements that remains the same throughout the application, such as header, navigation bar, or footer section, to reduce duplicate code in views and make it easy to maintain.
             </p>
             <p>
-               By default layouts placed in the folder <samp>/views/layouts</samp> and, an individual views can specify a layout by calling the method <code>layout(string $layoutName)</code>, the string parameter <code>$layoutName</code> define the relative path to the layout file without the extension file <samp>".phtml"</samp> as shown in the following example:
+               By default layouts placed in the folder <samp>"/views/layouts"</samp> and, an individual views can specify a layout by calling the method <code>layout(string $layoutName)</code>, the string parameter <code>$layoutName</code> define the relative path to the layout file without the extension file <samp>".phtml"</samp> as shown in the following example:
             </p>
             <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
   
 &lt;h1>Hello World!&lt;/h1></code></pre>
+            <blockquote class="alert alert-warning">
+               <b>Important:</b> DevNet view engine uses its own PHP short tag syntax <code><? ?></code> without causing any conflict with XML tags, and there is no need to enable it in <samp>"php.ini"</samp>
+            </blockquote>
+            <br>
             <p>
                Layout can include the view contents, by calling the method <code>renderBody()</code> and wherever the call to this method is placed, the contents of the view will be rendered.
             </p>

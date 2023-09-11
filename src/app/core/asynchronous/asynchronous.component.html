@@ -111,18 +111,18 @@ $task = $readJsonAsync('path/to/data.json');
 $data = $task->getAwaiter()->getResult();
 </code></pre>
             <p>
-               Here is the same example in an object-oriented way, where the async method must be prefixed with the <code>async_</code> keyword, and the class that has the async method must use the <code>DevNet\System\Tweak</code> trait to enable this feature.
+               Here is the same example in an object-oriented way, where the async method must be prefixed with the <code>async_</code> keyword, and the class that has the async method must use the trait <code>DevNet\System\MethodTrait</code> to enable this feature.
             </p>
             <pre><code class="language-php">&lt;?php
 
 use DevNet\System\IO\FileStream;
-use DevNet\System\Tweak;
+use DevNet\System\MethodTrait;
 
 use function DevNet\System\await;
 
 class Reader &lcub;
 
-   use Tweak;
+   use MethodTrait;
 
    public async_readJsonAsync(function($path): string
    &lcub;

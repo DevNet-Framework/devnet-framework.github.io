@@ -11,7 +11,7 @@
                LINQ, or Language Integrated Query, is an integration of query capabilities as expressions of extension methods against data, such as in-memory data, document databases, or SQL databases.
             </p>
             <p>
-               Any collection class of type <code>IEnumerable</code> or <code>IQueryable</code> that uses the <code>DevNet\System\Extension\Tweak</code> to support the extension method can take advantage of using LINQ extension methods.
+               Any collection class of type <code>IEnumerable</code> or <code>IQueryable</code> that uses the <code>DevNet\System\MethodTrait</code> to support the extension method can take advantage of using LINQ extension methods.
             </p>
             <p>
                The difference between <code>IEnumerable</code> and <code>IQueryable</code> types is that the implementation of the <code>IEnumerable</code> type, like the <code>ArrayList</code>, uses LINQ against in-memory data, while the implementation of the <code>IQueryable</code> type, like the <code>EntitySet</code> repository of DevNet Entity ORM, uses LINQ against SQL database, which means that this one uses <code>IQueryProvider</code> to compile the predicate expressions of the LINQ methods to SQL query syntax.
@@ -29,12 +29,12 @@ use DevNet\System\Linq;
 $list = new ArrayList(Employee::class);
 
 // assuming we have Employee class with constructor that initializes Id and Name properties.
-$list[] = new Employee(11, 'bob');
-$list[] = new Employee(12, 'carol');
-$list[] = new Employee(13, 'ted');
-$list[] = new Employee(14, 'alice');
-$list[] = new Employee(15, 'carol');
-$list[] = new Employee(16, 'ted');
+$list[] = new Employee(1, 'bob');
+$list[] = new Employee(2, 'carol');
+$list[] = new Employee(3, 'ted');
+$list[] = new Employee(4, 'alice');
+$list[] = new Employee(5, 'carol');
+$list[] = new Employee(6, 'ted');
 </code></pre>
             <br>
             <h5>Picking</h5>
@@ -44,14 +44,14 @@ print("First employee is &lcub;$first->Name} with Id &lcub;$first->Id}\n");
 print("Last employee is &lcub;$last->Name} with Id &lcub;$last->Id}\n");
 </code></pre>
             <h6>Output:</h6>
-            <pre><code class="language-shell">First employee is bob with Id 11
-Last employee is ted with Id 16
+            <pre><code class="language-shell">First employee is bob with Id 1
+Last employee is ted with Id 6
 </code></pre>
             <br>
             <h5>Filtring</h5>
-            <pre><code class="language-php">print("Employees with Id greater than 12\n");
+            <pre><code class="language-php">print("Employees with Id greater than 2\n");
 
-$employees = $list->where(fn($employee) => $employee->Id > 12);
+$employees = $list->where(fn($employee) => $employee->Id > 2);
 foreach ($employees as $employee) &lcub;
       print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
 }
@@ -65,15 +65,15 @@ foreach ($employees as $employee) &lcub;
 }
 </code></pre>
             <h6>Output:</h6>
-            <pre><code class="language-shell">Employees with Id greater than 12
-13 => ted
-14 => alice
-15 => carol
-16 => ted
+            <pre><code class="language-shell">Employees with Id greater than 2
+3 => ted
+4 => alice
+5 => carol
+6 => ted
 
 Employees with Name ted
-13 => ted
-16 => ted
+3 => ted
+6 => ted
 </code></pre>
             <br>
             <h5>Sorting</h5>
@@ -94,20 +94,20 @@ print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">Ascending order by Name
-14 => alice
-11 => bob  
-12 => carol
-15 => carol
-13 => ted  
-16 => ted  
+4 => alice
+1 => bob  
+2 => carol
+5 => carol
+3 => ted  
+6 => ted  
 
 Descending order by Id
-16 => ted  
-15 => carol
-14 => alice
-13 => ted  
-12 => carol
-11 => bob
+6 => ted  
+5 => carol
+4 => alice
+3 => ted  
+2 => carol
+1 => bob
 </code></pre>
             <br>
             <h5>Paging</h5>
@@ -119,9 +119,9 @@ foreach ($employees as $employee) &lcub;
 }
 </code></pre>
             <h6>Output:</h6>
-            <pre><code class="language-shell">13 => ted
-14 => alice
-15 => carol
+            <pre><code class="language-shell">3 => ted
+4 => alice
+5 => carol
 </code></pre>
             <br>
             <h5>Aggregating</h5>
@@ -135,8 +135,8 @@ print("Min employee Id => &lcub;$min}\n");
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">Tolat employess => 6
-Max employee Id => 16
-Min employee Id => 11
+Max employee Id => 6
+Min employee Id => 1
 </code></pre>
             <br>
             <h5>Grouping</h5>

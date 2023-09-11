@@ -38,7 +38,7 @@
                <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/core/generics" routerLinkActive="fw-bold">Generic Types</a></li>
                <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/core/asynchronous" routerLinkActive="fw-bold">Async Operations</a></li>
                <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/core/delegates" routerLinkActive="fw-bold">Delegates & Events</a></li>
-               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/core/diagnostics" routerLinkActive="fw-bold">Diagnostics</a></li>
+               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/core/logging" routerLinkActive="fw-bold">Logging</a></li>
             </ul>
          </div>
       </li>
@@ -62,6 +62,19 @@
          </div>
       </li>
       <li class="mb-1">
+         <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#security-collapse" aria-expanded="false">
+            Security
+         </button>
+         <div class="collapse" id="security-collapse" data-bs-parent="#menu" routerLinkActive="show">
+            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/overview" routerLinkActive="fw-bold">Overview</a></li>
+               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/authentication" routerLinkActive="fw-bold">Authentication</a></li>
+               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/authorization" routerLinkActive="fw-bold">Authorization</a></li>
+               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/antiforgery" routerLinkActive="fw-bold">CSRF Prevention</a></li>
+            </ul>
+         </div>
+      </li>
+      <li class="mb-1">
          <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#entity-collapse" aria-expanded="false">
             Entity ORM
          </button>
@@ -72,20 +85,6 @@
                <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/entity/save" routerLinkActive="fw-bold">Save Data</a></li>
                <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/entity/relationships" routerLinkActive="fw-bold">Relationships</a></li>
                <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/entity/migrations" routerLinkActive="fw-bold">Migrations</a></li>
-            </ul>
-         </div>
-      </li>
-      <li class="mb-1">
-         <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#security-collapse" aria-expanded="false">
-            Security
-         </button>
-         <div class="collapse" id="security-collapse" data-bs-parent="#menu" routerLinkActive="show">
-            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/overview" routerLinkActive="fw-bold">Overview</a></li>
-               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/authentication" routerLinkActive="fw-bold">Authentication</a></li>
-               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/authorization" routerLinkActive="fw-bold">Authorization</a></li>
-               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/identity" routerLinkActive="fw-bold">Identity Manager</a></li>
-               <li><a class="link-dark d-inline-flex text-decoration-none rounded" routerLink="/docs/security/antiforgery" routerLinkActive="fw-bold">CSRF Prevention</a></li>
             </ul>
          </div>
       </li>
