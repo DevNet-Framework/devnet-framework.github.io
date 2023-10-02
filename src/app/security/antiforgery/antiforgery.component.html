@@ -1,0 +1,216 @@
+<div class="container pt-3">
+   <div class="row">
+      <div id="sidebar" style="width: 260px;">
+         <app-sidebar></app-sidebar>
+      </div>
+      <div id="content" class="flex-grow-1" style="width: 400px;">
+         <article>
+            <h1>CSRF Prevention</h1>
+            <hr>
+            <p>
+               Cross-site request forgery, abbreviated as CSRF or XSRF and also known as a one-click attack or session riding, is a malicious attack that takes advantage of a user's previously authenticated session to execute unwanted actions by manipulating the interaction between a client browser and a trusted web application.
+            </p>
+            <p>
+               To better understand the CSRF attack, consider the following scenario:
+            </p>
+            <ul>
+               <li class="mb-2">
+                  A user signs into his account on a vulnerable website, which trusts any request received with a valid authentication cookie.
+               </li>
+               <li class="mb-2">
+                  Then, the user visits a malicious site that contains a fake HTML form to win a prize, but in the background, it posts to the vulnerable website like the following example:
+               </li>
+            </ul>
+            <pre><code class="language-html">&lt;h1>Congratulations! You're a Winner!&lt;/h1>
+   &lt;form method="post" action="https://example.com/account/edit">
+   &lt;input type="hidden" name="email" value="malicious@example.com" />
+   &lt;input type="submit" value="Collect the prize!" />
+&lt;/form>
+</code></pre>
+            <ul>
+               <li class="mb-2">
+                  When the user clicks on the submit button. The browser sends a request that includes the authentication cookie for the requested domain.
+               </li>
+               <li class="mb-2">
+                  The vulnerable server trusts the request with the authentication context and allows any action that an authenticated user can perform.
+               </li>
+            </ul>
+            <p>
+               In addition to this scenario, the malicious site could run a script that automatically submits the form by sending the form submission as an AJAX request.
+            </p>
+            <p>
+               To prevent cross-site request forgery attacks, the DevNet framework provides the <code>Antiforgery</code> service that generates a CSRF token, which should be included in the form data or in the request header to be verified by the server when the form is submitted.
+            </p>
+            <br>
+            <h3>Configuration</h3>
+            <p>
+               To use the <code>Antiforgory</code> service across your application, you need to register it as a dependency in your application services with the help of the extension method <code>addAntiforgory()</code> inside the method <code>register()</code> of the <code>WebHostBuilder</code> and have the option to customize the default configurations.
+            </p>
+            <pre><code class="language-php">&lt;?php
+namespace Application;
+
+use DevNet\Web\Hosting\WebHost;
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+
+class Program
+&lcub;
+   public static function main(array $args = [])
+   &lcub;
+      $builder = WebHost::createDefaultBuilder($args);
+      $builder->register(function ($services) &lcub;
+         // Add antiforgery service.
+         $services->addAntiforgery(function ($options) &lcub;
+            // Optimally you can modify the following default options.
+            $options->FieldName  = "X-CSRF-TOKEN";
+            $options->HeaderName = "X-XSRF-TOKEN";
+            // If an cookie name is not provided, the system will generate a unique name.
+            $options->CookieName = null;
+         });
+      });
+      ...
+   }
+}
+</code></pre>
+            <br>
+            <h3>X-CSRF-TOKEN</h3>
+            <p>
+               In traditional HTML-based applications, the Antiforgery tokens are passed to the server using hidden form fields, and usually, the token used in this technique is called <samp>X-CSRF-TOKEN</samp>.
+            </p>
+            <p>
+               After registering the Antiforgery service with the MVC web application, it will be injected into the view so that you can generate a token in the HTML form.
+            </p>
+            <pre><code class="language-php-template">&lt;form method="POST" action="/account/update/<?= $this->Model->Id ?>">
+   &lt;input type="text" name="username value="<?= $this->Model->Username ?>" />
+   &lt;input type="email" name="email" value="<?= $this->Model->Email ?>" />
+   &lt;input type="hidden" name="<?= $this->Antiforgery->FieldName ?>" value="<?= $this->Antiforgery ?>" />
+&lt;/form>
+</code></pre>
+            <p>
+               The controller in this example sends the view that is presented above with an Antiforgory token via the <code>edit()</code> method when the user requests to edit his account, and when the user submits the HTML form, the controller receives the request via the <code>update()</code> method, which is decorated with the <code>DevNet\Web\Action\Filters\AntiForgery</code> attribute to check if the request is trusted before updating the data.
+            </p>
+            <pre><code class="language-php">&lt;?php
+namespace Application\Controllers;
+
+use DevNet\System\Linq;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Filters\AntiForgery;
+use DevNet\Web\Endpoint\Filters\Authorize;
+use DevNet\Web\Routting\Attributes\Get;
+use DevNet\Web\Routting\Attributes\Post;
+
+#[Authorize]
+class AccountController extends ActionController
+&lcub;
+   #[Get(['/account/edit/&lcub;id}'])]
+   public function edit(int $id): IActionResult
+   &lcub;
+      $json  = file_get_contents(__DIR__ . '/path/to/data.json');
+      $data  = json_decode($json, true);
+      $users = new ArrayList('object');
+      $users->addRange($data);
+
+      $user = $users->where(fn ($user) => $user->Id == $id)->first();
+      if (!$user) &lcub;
+         Throw \Exception("page not found!", 404);
+      }
+      return $this->view($user);
+   }
+
+   // add AntiForgery filter as attribute.
+   #[AntiForgery]
+   #[Post(['/account/update/&lcub;id}'])]
+   public function update(int $id, User $form): IActionResult
+   &lcub;
+      $json  = file_get_contents(__DIR__ . '/path/to/data.json');
+      $data  = json_decode($json, true);
+      $users = new ArrayList('object');
+      $users->addRange($data);
+
+      $user = $users->where(fn ($user) => $user->Id == $id)->first();
+      if (!$user) &lcub;
+         Throw \Exception("page not found!", 404);
+      }
+      $user->Username = $from->Username;
+      $user->Email = $from->Username;
+      $json = json_encode($users->toArray(), JSON_PRETTY_PRINT);
+      file_put_contents('path/to/data.json', $json);
+      return $this->view();
+   }
+}
+</code></pre>
+            <br>
+            <h3>X-XSRF-TOKEN</h3>
+            <p>
+               In modern JavaScript-based applications, the Antiforgery tokens are sent to the server via the AJAX request headers, and usually, the token used in this technique is called <samp>X-XSRF-TOKEN</samp>.
+            </p>
+            <p>
+               In the following example, when the user requests the <samp>"/account/create"</samp> endpoint to create a new account, the server returns an HTML form response with <samp>XSRF-TOKEN</samp> as a cookie, which must be sent back to the server via the AJAX request header when the user submits the form to the <samp>"/account/store"</samp> endpoint, which this one has an Antiforgory filter to check if the request is trusted or not before storing the data.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\System\Linq;
+use DevNet\Web\Http\HttpContext;
+...
+
+$app->useEndpoint(function($routes) &lcub;
+   $routes->mapGet("/account/create", (function(HttpContext $context) &lcub;
+      $token = $context->Antiforgery->getToken();
+      $context.Response->Cookies->add("XSRF-TOKEN", token);
+      $html = file_get_contents("path/to/editFrom.phtml");
+      $context->Response->Body->write($html);
+   }));
+
+   $routes.MapPost("/account/store", (function(HttpContext $context) &lcub;
+      $form = $context->Resquest->Form;
+      $user = new User();
+      $user->Username = $form->getValue('username');
+      $user->Password = password_hash($form->getValue('password'), PASSWORD_DEFAULT);
+
+      $json = file_get_contents('path/to/data.json');
+      $data = json_decode($json);
+
+      $data[] = $user;
+      $json = json_encode($data, JSON_PRETTY_PRINT);
+      file_put_contents('path/to/data.json', $json);
+      $context->Response->setStatusCode(200);
+   })
+   // add Antiforgery filter to the endpoint "/account/store".
+   ->addFilter(Antiforgery::class);
+});</code></pre>
+            <p>
+               Here is a Javascript example that uses the AJAX request to send back the <samp>XSRF-TOKEN</samp> to the server after receiving it from the server via the response cookie.
+            </p>
+            <pre><code class="language-javascript">const xsrfToken = document.cookie
+   .split("; ")
+   .find(row => row.startsWith("XSRF-TOKEN="))
+   .split("=")[1];
+
+var request = new XMLHttpRequest();
+request.open("POST", "https://example.com/account/edit");
+request.setRequestHeader("X-XSRF-TOKEN", xsrfToken);
+request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+request.send("username=user&email=user@example.com");
+request.onload = function() &lcub;
+   console.log(this.status);
+ }
+</code></pre>
+         </article>
+         <nav class="no-print" aria-label="Page navigation">
+            <ul class="nav-page">
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/security/authorization">
+                     <i class="chevron left"></i> Previous
+                  </a>
+               </li>
+               <li class="nav-page-item">
+                  <a class="nav-page-link" routerLink="/docs/entity/start">
+                     Next <i class="chevron right"></i>
+                  </a>
+               </li>
+            </ul>
+         </nav>
+      </div>
+   </div>
+</div>
