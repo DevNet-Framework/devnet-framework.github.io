@@ -10,7 +10,7 @@
             <p>
                The exception handler is a middleware that displays detailed information about unhandled request exceptions, it's the first middleware that runs in the request pipeline so that it can catch all the unhandled exceptions thrown in the middleware that follows.
             </p>
-            <h3>Registring the Exception Handler</h3>
+            <h3>Registering the Exception Handler</h3>
             <p>
                Exception Handler is enabled through the method <code>WebHost::start(Closure $configure)</code> by calling the extension method <code>ApplicationBuilderExtensions::useExceptionHandler()</code> of the Application builder, which adds the pre-built middleware <code>ExceptionHandlerMiddleware</code> to the request pipeline, and must be in the top order of all middlewares.
             </p>
@@ -26,7 +26,7 @@ use DevNet\System\Async\Tasks\Task;
 $host->start(function ($app) &lcub;
    // registering the exception handler in the top order
    $app->useExceptionHandler();
-   // some middlewars here
+   // some middlewares here
 });
 </code></pre>
             <br>
@@ -79,7 +79,7 @@ $host->start(function ($app) &lcub;
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/entity/start">
+                  <a class="nav-page-link" routerLink="/docs/security/overview">
                      Next <i class="chevron right"></i>
                   </a>
                </li>

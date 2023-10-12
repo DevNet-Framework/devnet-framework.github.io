@@ -51,11 +51,12 @@ class EmployeeExtension
             <br>
             <h3>Calling the extension method</h3>
             <p class="text-justify">
-               To call an extension method as if it were an instance method on a particular extended class, the extension class must be declared in the same file where that instance calls the extension method, like in the code below:
+               To call an extension method as if it were an instance method on a particular extended class, the extension class must be brought into the scope of the same file where that instance calls the extension method, using the keyword <code>use</code>
             </p>
             <pre><code class="language-php">&lt;?php
 
-use Application\Extensions\EmployeeExtension; // Must declare the extension method class.
+// Must import the extension class in order to use its extension methods.
+use Application\Extensions\EmployeeExtension; 
 use Application\Models\Employee;
 
 $employee = new Employee();

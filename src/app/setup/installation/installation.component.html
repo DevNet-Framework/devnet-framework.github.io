@@ -14,16 +14,16 @@
             <ul>
                <li><a href="https://www.php.net/" rel="nofollow">PHP</a> version 8.1 or higher</li>
                <li><a href="https://getcomposer.org/" rel="nofollow">Composer</a> version 2.0 or higher</li>
-               <li>You may need to install or activate <code>PDO PHP Extension</code></li>
+               <li>You may need to install or activate <code>PDO PHP Extensions</code></li>
             </ul>
             <blockquote class="alert alert-warning">
-               <b>Important:</b> In order to run <strong>DevNet Framework</strong> globally in Linux operating system, including <strong>DevNet CLI</strong> you need to add <code>composer/vendor/bin</code> into the system environment variables in <code>.bashrc</code> file like this:<br>
+               <b>Important:</b> when you install composer in Linux operating system, please do not forget to add <code>composer/vendor/bin</code> into the system environment variables inside the file <code>.bashrc</code> like this:<br>
                <code>export PATH="$PATH:$HOME/.config/composer/vendor/bin"</code>
             </blockquote>
             <br>
             <h3>Installing DevNet Framwork</h3>
             <p>
-               It is recommended to Install DevNet Framework globally in your system, just one framework runs multiple projects unless your projects use different versions of the DevNet framework, which may cause conflict because composer doesn't support multi-versioning, in this case, you can solve this problem using docker container or installing the compatible version of DevNet framework locally inside its proper project.
+               It is recommended to Install the DevNet Framework globally in your system, just one framework runs multiple projects unless your projects use different versions of the DevNet framework, which may cause conflict because the composer doesn't support multi-versioning, in this case, you can solve this problem using docker container or installing the compatible version of DevNet framework locally inside its proper project.
             </p>
             <p>
                To install the DevNet framework globally using composer run the following command line in the terminal:
@@ -34,29 +34,27 @@
             </p>
             <pre><code class="language-shell">composer require devnet/framework</code></pre>
             <br>
-            <h3>Using DevNet CLI</h3>
+            <h4>DevNet Installer</h4>
             <p>
-               After installing the DevNet framework, you can use DevNet CLI to create and manage your projects, and for the first start you can run the <code>devnet</code> command with the option <code>--help</code> in your terminal, to show the help on how to use the devnet command-line tools, as shown below:
+               You can use the DevNet Installer to install the DevNet framework with more options, but you need first to add it to the composer as a plugin by running the following command line in your terminal:
             </p>
-            <pre><code class="language-shell">devnet --help</code></pre>
-            <h5>Output</h5>
-            <pre><code class="language-shell">Description:
-  DevNet command-line interface
-
-Usage:
-  devnet [command] [options]
-
-Options:
-  --help, -h     Show help for the given command-line
-  --version, -v  Show version information
-
-commands:
-  add            Add template code to the project.
-  migrate        Update the database to a specified migration.
-  new            Create a new DevNet project
-  run            Run a DevNet project
-
-Run 'devnet [command] --help' for more information on a command.</code></pre>
+            <pre><code class="language-shell">composer global require devnet/installer</code></pre>
+            <p>
+               When the composer asks if you trust the "devnet/installer", please select <samp>[yes]</samp> to enable it.
+            </p>
+            <p>
+               Now, you can run the following command-line to complete the installation of the DevNet framework:
+            </p>
+            <pre><code class="language-shell">composer global install:devnet</code></pre>
+            <p>
+               Then, DevNet Installer will ask you to select the type of installation mode:
+            </p>
+            <pre><code class="language-shell">DevNet-Framework Installer v1.0.0
+Please select the type of installation mode:
+   [1] Full installation (DevNet CLI, Core Library, Web Library and Entity ORM)
+   [2] Custom installation (Install selected DevNet package)
+   [3] Exit the installation
+></code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

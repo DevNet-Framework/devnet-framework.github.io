@@ -165,7 +165,7 @@ $app->useEndpoint(function($routes) &lcub;
          $claims->addClaim(new Claim('iss', '127.0.0.1:8000'));
          $claims->addClaim(new Claim('aud', '127.0.0.1:8080'));
 
-         // The asymmetric enciption RSA not supported yet, only the symmetric encription HSA for now.
+         // The asymmetric encryption RSA not supported yet, only the symmetric encription HSA for now.
          $token = new JwtSecurityToken($claims, 'HS256', new DateTime('7 days'));
          $jwtHandler = new JwtSecurityTokenHandler();
          $signedToken = $jwtHandler->writeToken($token, "jwt security key");

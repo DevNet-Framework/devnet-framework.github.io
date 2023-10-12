@@ -141,8 +141,8 @@ $app->useEndpoint(function($routes) &lcub;
                   
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
 use Application\Services\IMyService;
 
 class HelloController extends ActionController
@@ -185,10 +185,6 @@ class HelloController extends ActionController
                   <tr>
                      <td><code>addHttpClient(?Closure $configuration)</code></td>
                      <td>register HttpClient service.</td>
-                  </tr>
-                  <tr>
-                     <td><code>addIdentity(?Closure $configuration)</code></td>
-                     <td>register Identity Manager service.</td>
                   </tr>
                   <tr>
                      <td><code>addLogging(?Closure $configuration)</code></td>

@@ -16,10 +16,10 @@
                e.g. <code>TypeName&lt;T></code> where <code>T</code> is a generic type parameter.
             </p>
             <p>
-               To define a type parameter in a generic class, define a type that inherits from <code>DevNet\System\Parameter</code> and attribute that type parameter to that generic class using the <code>DevNet\System\Generic</code> attribute, then set the generic type arguments through the constructor injection.
+               This feature can be added to your class by using the trait <code>DevNet\System\TypeTrait</code>. You can then define the generic type parameters using the attribute <code>DevNet\System\Template</code> on the generic class to specify the type parameters, and pass the generic type arguments via the constructor injection using the method <code>setGenericArguments()</code>
             </p>
             <p>
-               To work with this feature, you need to include the trait <code>DevNet\System\MethodTrait</code> in your generic class and the method that deals with the generic parameter should be private to trigger a magic method in the background for the type-checking and the injection of the value argument into the parameter type instance that works as a wrapper. Then you can get the argument value by invoking that wrapper as a callable.
+               The type parameter can be used as the type of a method parameter using the attribute <code>DevNet\System\Type</code>, where the concrete type would ordinarily be used, and the method <code>checkArgumentTypes()</code> is the first to be called inside the method needed for the type checking.
             </p>
             <p>
                Here is an example explaining how to create a generic class using this feature:
@@ -30,16 +30,14 @@ namespace Application\Collections;
 
 use DevNet\System\Collections\Enumerator;
 use DevNet\System\Collections\IEnumerable;
-use DevNet\System\Generic;
-use DevNet\System\MethodTrait;
+use DevNet\System\Template;
+use DevNet\System\TypeTrait;
 
-// Defining the type parameter T as a type of the items in the collection.
-class T extends \Devnet\System\Parameter &lcub;}
-
-#[Generic(T::class)]
+// Define the type parameter T as a type of the items in the collection.
+#[Template('T')]
 class Collection implements IEnumerable
 &lcub;
-   use MethodTrait;
+   use TypeTrait;
 
    private array $items = [];
 
@@ -49,10 +47,11 @@ class Collection implements IEnumerable
       $this->setGenericArguments($typeName);
    }
 
-   private function add(T $item): void
+   private function add(#[Type('T')] $item): void
    &lcub;
       // Call the item wrapper as collable to get the item value.
-      $this->items[] = $item();
+      $this->checkArgumentTypes(func_get_args());
+      $this->items[] = $item;
    }
 
    public function getIterator(): Enumerator
@@ -86,25 +85,27 @@ $employees->add($employee);
             <br>
             <h3>Checking generic type</h3>
             <p>
-               Every class uses the <code>MethodTrait</code> has a <code>getType()</code> method that returns a reflection class type. You can use this reflection type to examine the generic type and its type parameters, and you can also use the <code>TypeOf()</code> function to create an instance of a type that represents a generic type that you want use for compare.
+               You can use the method <code>checkArgumentTypes()</code> to check the type of any method parameter, including the parameterized type defined in the <code>DevNet\System\Type</code> attribute.
+            </p>
+            <p>
+               The example below represents a class <code>EmployeeProvider</code> that accepts only the injection of <code>Collection&lt;Employee></code> through the constructor.
             </p>
             <pre><code class="language-php">&lt;?php
 
 namespace Application\Providers;
 
-use DevNet\System\Exceptions\TypeExcpetion;
+use DevNet\System\TypeTrait;
 
 class EmployeeProvider
 &lcub;
-   private Collection $employees;
-   
-   public function __construct(Collection $employees)
-   &lcub;
-      // Check if the injected collection is equivalent to the generic type Collection&lt;Employee>
-      if ($employees->getType() != typeof(Collection::class, [Employee::class])) &lcub;
-         throw new TypeException("The argument of index 0, must be of type Collection&lt;Employee>");
-      }
+   use TypeTrait;
 
+   private Collection $employees;
+
+   // accept only the injection of an argument of type Collection&lt;Employee>
+   public function __construct(#[Type(Collection::class, [Employee::class])] $employees)
+   &lcub;
+      $this->checkArgumentTypes(func_get_args());
       $this->employees = $employees;
    }
 
@@ -128,16 +129,13 @@ class EmployeeProvider
 
 namespace Application\Collections;
 
-use DevNet\System\Generic;
-use DevNet\System\MethodTrait;
+use DevNet\System\Template;
+use DevNet\System\TypeTrait;
 
-class K extends \Devnet\System\Parameter &lcub;}
-class V extends \Devnet\System\Parameter &lcub;}
-
-#[Generic(K::class, V::class)]
+#[Template('K', 'K')]
 class Collection
 &lcub;
-   use MethodTrait;
+   use TypeTrait;
 
    private array $items = [];
 
@@ -146,8 +144,9 @@ class Collection
       $this->setGenericArguments($keyTypeName, $valueTypeName);
    }
 
-   private function add(K $key, V $value): void
+   private function add(#[Type('K')] $key, #[Type('V')] $value): void
    &lcub;
+      $this->checkArgumentTypes(func_get_args());
       $this->items[$key()] = $value();
    }
    ...

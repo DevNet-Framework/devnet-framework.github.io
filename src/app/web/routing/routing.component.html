@@ -56,28 +56,28 @@ $host->start(function ($app) &lcub;
                </thead>
                <tbody>
                   <tr>
-                     <td><code>map(string $pattern, string|callable $handler)</code></td>
-                     <td>Accept any HTTP verb</td>
+                     <td><code>mapGet(string $pattern string|callable|array $handler)</code></td>
+                     <td>Adds a route that matches HTTP GET requests for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapGet(string $pattern callable $handler)</code></td>
-                     <td>Accept only HTTP GET verb</td>
+                     <td><code>mapPost(string $pattern, string|callable|array $handler)</code></td>
+                     <td>Adds a route that matches HTTP POST requests for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapPost(string $pattern, callable $handler)</code></td>
-                     <td>Accept only HTTP POST verb</td>
+                     <td><code>mapPut(string $pattern, string|callable|array $handler)</code></td>
+                     <td>Adds a route that matches HTTP PUT requests for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapPut(string $pattern, callable $handler)</code></td>
-                     <td>Accept only HTTP PUT verb</td>
+                     <td><code>mapDelete(string $pattern, string|callable|array $handler)</code></td>
+                     <td>Adds a route that matches HTTP DELETE requests for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapDelete(string $pattern, callable $handler)</code></td>
-                     <td>Accept only HTTP DELETE verb</td>
+                     <td><code>mapPatch(string $pattern, string|callable|array $handler)</code></td>
+                     <td>Adds a route that matches HTTP PATCH requests for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapVerb(string $verb, string $pattern, callable $handler)</code></td>
-                     <td>Accept defined HTTP verb</td>
+                     <td><code>mapRoute(string $pattern, string|callable|array $handler, ?string $verb = null)</code></td>
+                     <td>Adds a route that matches HTTP requests for the specified path and HTTP method, or any HTTP method if it's not specifed.</td>
                   </tr>
                </tbody>
             </table>
@@ -150,40 +150,58 @@ $app->useEndpoint(function($routes) &lcub;
                   </tr>
                </tbody>
             </table>
-            <blockquote class="alert alert-info">
-               <b>Note:</b> The order of the routes is important, if a route matches the request URL, it will not check the next route, so make sure to not put a route with a greedy pattern at the top, because it will catch all the URLs.
+            <blockquote class="alert alert-warning">
+               <b>Important:</b> The order of the routes is important, if a route matches the request URL, it will not check the next route, so make sure to not put a route with a greedy pattern at the top, because it will catch all the URLs.
             </blockquote>
             <br>
-            <h3>Conventional Routing</h3>
+            <h3>Attribute Routing</h3>
             <p>
-               If the MVC service is registered, you can use a single conventional routing to map all URLs to the matched action method of a controller using the following path pattern: <br>
-               <code>&lcub;Controller=Home}/&lcub;Action=Index}/&lcub;Id?}</code>
-            </p>
-            <ol>
-               <li><b>Controller:</b> is the name of the controller, by default is "home"</li>
-               <li><b>Action:</b> is the name of action handler, by default is "index"</li>
-               <li><b>Id:</b> is an optional parameter that will be handled by the action handler</li>
-            </ol>
-            <p>
-               <b>e.g.</b> the path: <samp>"/blog/show/9"</samp> will be handled by the following action handler: <br>
-               <code>BlogController::show(int $id)</code> where <code>$id = 9</code>
+               Attribute routing is a technique that allows routes to be defined directly on the controller actions by using attributes that specify the URL patterns and HTTP methods that match the HTTP requests, giving more control and flexibility over the routing behavior.
             </p>
             <p>
-               The following code example shows how to map a conventional route for a MVC endpoint.
+               The following code example shows how to map routes to MVC controllers.
             </p>
             <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-   $routes->map("&lcub;controller=Home}/&lcub;action=Index}/&lcub;id?}");
+   $routes->mapControllers();
 });</code></pre>
             <p>
-               You can also map a conventional route to a particular controller like the following example:
+               Then, you can use attributes to decorate your controller's action methods with their associated routes.
             </p>
-            <pre><code class="language-php">...
-$app->useEndpoint(function($routes) &lcub;
-   $routes->map("/admin/&lcub;action=Index}/&lcub;id?}", AdminController::class);
-});</code></pre>
+            <pre><code class="language-php">&lt;?php
+
+namespace Application\Controllers;
+
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
+
+class HomeController extends ActionController
+&lcub;
+   // Accept any HTTP method.
+   #[Route(path: '/')]
+   public function index(int $id): IActionResult
+   &lcub;
+      return $this->view();
+   }
+
+   // Accept only the HTTP method GET.
+   #[Route(path: '/contact', method: 'GET')]
+   public function contact(): IActionResult
+   &lcub;
+      return $this->view();
+   }
+
+   // Accept only the HTTP method POST.
+   #[Route(path: '/contact/submit', method: 'POST')]
+   public function submit(string $subject, string $message): IActionResult
+   &lcub;
+      mail("email@example.com", $subject, $message);
+      return $this->statusCode(200);
+   }
+}</code></pre>
             <blockquote class="alert alert-info">
-               <b>Note:</b> You need to register the MVC service in order to use the conventional routing, which will be discussed in the next section.
+               <b>Note:</b> To work with controllers, You need to register the MVC service, which will be discussed in the next section.
             </blockquote>
          </article>
          <nav class="no-print" aria-label="Page navigation">

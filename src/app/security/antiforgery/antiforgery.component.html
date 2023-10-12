@@ -38,11 +38,11 @@
             <p>
                In addition to this scenario, the malicious site could run a script that automatically submits the form by sending the form submission as an AJAX request.
             </p>
+            <br>
+            <h3>Antiforgory</h3>
             <p>
                To prevent cross-site request forgery attacks, the DevNet framework provides the <code>Antiforgery</code> service that generates a CSRF token, which should be included in the form data or in the request header to be verified by the server when the form is submitted.
             </p>
-            <br>
-            <h3>Configuration</h3>
             <p>
                To use the <code>Antiforgory</code> service across your application, you need to register it as a dependency in your application services with the help of the extension method <code>addAntiforgory()</code> inside the method <code>register()</code> of the <code>WebHostBuilder</code> and have the option to customize the default configurations.
             </p>
@@ -60,13 +60,7 @@ class Program
       $builder = WebHost::createDefaultBuilder($args);
       $builder->register(function ($services) &lcub;
          // Add antiforgery service.
-         $services->addAntiforgery(function ($options) &lcub;
-            // Optimally you can modify the following default options.
-            $options->FieldName  = "X-CSRF-TOKEN";
-            $options->HeaderName = "X-XSRF-TOKEN";
-            // If an cookie name is not provided, the system will generate a unique name.
-            $options->CookieName = null;
-         });
+         $services->addAntiforgery();
       });
       ...
    }
@@ -80,14 +74,14 @@ class Program
             <p>
                After registering the Antiforgery service with the MVC web application, it will be injected into the view so that you can generate a token in the HTML form.
             </p>
-            <pre><code class="language-php-template">&lt;form method="POST" action="/account/update/<?= $this->Model->Id ?>">
-   &lt;input type="text" name="username value="<?= $this->Model->Username ?>" />
-   &lt;input type="email" name="email" value="<?= $this->Model->Email ?>" />
-   &lt;input type="hidden" name="<?= $this->Antiforgery->FieldName ?>" value="<?= $this->Antiforgery ?>" />
+            <pre><code class="language-php-template">&lt;form method="POST" action="/account/update/<?= $model->Id ?>">
+   &lt;input type="text" name="username value="<?= $model->Username ?>" />
+   &lt;input type="email" name="email" value="<?= $model->Email ?>" />
+   &lt;input type="hidden" name="X-CSRF-TOKEN" value="<?= $this->Antiforgery->getToken() ?>" />
 &lt;/form>
 </code></pre>
             <p>
-               The controller in this example sends the view that is presented above with an Antiforgory token via the <code>edit()</code> method when the user requests to edit his account, and when the user submits the HTML form, the controller receives the request via the <code>update()</code> method, which is decorated with the <code>DevNet\Web\Action\Filters\AntiForgery</code> attribute to check if the request is trusted before updating the data.
+               The controller in this example sends the view that is presented above with an Antiforgory token via the <code>edit()</code> method when the user requests to edit his account, and when the user submits the HTML form, the controller receives the request via the <code>update()</code> method, which is decorated with the <code>DevNet\Web\Security\Tokens\Csrf\Validate</code> attribute to check if the request is trusted before updating the data.
             </p>
             <pre><code class="language-php">&lt;?php
 namespace Application\Controllers;
@@ -95,15 +89,14 @@ namespace Application\Controllers;
 use DevNet\System\Linq;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\ActionController;
-use DevNet\Web\Endpoint\Filters\AntiForgery;
-use DevNet\Web\Endpoint\Filters\Authorize;
-use DevNet\Web\Routting\Attributes\Get;
-use DevNet\Web\Routting\Attributes\Post;
+use DevNet\Web\Endpoint\Route;
+use DevNet\Web\Security\Authorization\Authorize;
+use DevNet\Web\Security\Tokens\Csrf\Validate;
 
 #[Authorize]
 class AccountController extends ActionController
 &lcub;
-   #[Get(['/account/edit/&lcub;id}'])]
+   #[Route(path: '/account/edit/&lcub;id}', method: 'GET')]
    public function edit(int $id): IActionResult
    &lcub;
       $json  = file_get_contents(__DIR__ . '/path/to/data.json');
@@ -118,9 +111,9 @@ class AccountController extends ActionController
       return $this->view($user);
    }
 
-   // add AntiForgery filter as attribute.
-   #[AntiForgery]
-   #[Post(['/account/update/&lcub;id}'])]
+   // add AntiForgery validation filter as an attribute.
+   #[Validate]
+   #[Route(path: '/account/update/&lcub;id}', method: 'POST')]
    public function update(int $id, User $form): IActionResult
    &lcub;
       $json  = file_get_contents(__DIR__ . '/path/to/data.json');
@@ -136,7 +129,8 @@ class AccountController extends ActionController
       $user->Email = $from->Username;
       $json = json_encode($users->toArray(), JSON_PRETTY_PRINT);
       file_put_contents('path/to/data.json', $json);
-      return $this->view();
+
+      return $this->statusCode(200);
    }
 }
 </code></pre>
@@ -152,6 +146,7 @@ class AccountController extends ActionController
 
 use DevNet\System\Linq;
 use DevNet\Web\Http\HttpContext;
+use DevNet\Web\Security\Tokens\Csrf\Validate;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
@@ -176,8 +171,8 @@ $app->useEndpoint(function($routes) &lcub;
       file_put_contents('path/to/data.json', $json);
       $context->Response->setStatusCode(200);
    })
-   // add Antiforgery filter to the endpoint "/account/store".
-   ->addFilter(Antiforgery::class);
+   // add Antiforgery validation filter to the endpoint "/account/store".
+   ->addFilter(Validate::class);
 });</code></pre>
             <p>
                Here is a Javascript example that uses the AJAX request to send back the <samp>XSRF-TOKEN</samp> to the server after receiving it from the server via the response cookie.

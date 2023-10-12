@@ -17,10 +17,10 @@
 
 namespace Application\Filters;
 
-use DevNet\System\Tweak;
-use DevNet\Web\Action\ActionContext;
-use DevNet\Web\Action\ActionDelegate;
-use DevNet\Web\Action\IActionFilter;
+use DevNet\System\MethodTrait;
+use DevNet\Web\Endpoint\ActionContext;
+use DevNet\Web\Endpoint\ActionDelegate;
+use DevNet\Web\Endpoint\IActionFilter;
 use Attribute;
 
 use function Devnet\System\await;
@@ -28,7 +28,7 @@ use function Devnet\System\await;
 #[Attribute]
 class AuthenticationFilter implements IActionFilter
 &lcub;
-   use Tweak;
+   use MethodTrait;
 
    public function async_invoke(ActionContext $context, ActionDelegate $next): void
    &lcub;
@@ -87,26 +87,27 @@ $host->start(function ($app) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\IActionResult;
-use DevNet\Web\Action\Filters\HttpMethod;
-use DevNet\Web\Action\Filters\Antiforgery;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Tokens\Csrf\Validate;
+use DevNet\Web\Endpoint\Route;
 use Application\Filters\AuthenticationFilter;
 use Application\Models\Profile;
 
 // this filter will be applied to all controller's methods.
 #[AuthenticationFilter]
-class UserController extends ActionController
+class AccountController extends ActionController
 &lcub;
+   #[Route(path: '/account', method: 'GET')]
    public function index(): IActionResult
    &lcub;
       return $this->view();
    }
 
-   // this filters will be applied only to this action method.
+   // this filter will be applied only to this action method.
    #[Antiforgery]
-   #[HttpMethod('post')]
-   public function edit(Profile $form): IActionResult
+   #[Route(path: '/user/create', method: 'POST')]
+   public function create(Profile $form): IActionResult
    &lcub;
       // code...
    }
@@ -123,15 +124,11 @@ class UserController extends ActionController
                </thead>
                <tbody>
                   <tr>
-                     <td><code>DevNet\Web\Action\Filters\Authorize</code></td>
+                     <td><code>DevNet\Web\Security\Authorization\Authorize</code></td>
                      <td>Prevent a non-authorized user from accessing the resources.</td>
                   </tr>
                   <tr>
-                     <td><code>DevNet\Web\Action\Filters\HttpMethod</code></td>
-                     <td>Prevent a not-allowed Http method request.</td>
-                  </tr>
-                  <tr>
-                     <td><code>DevNet\Web\Action\Filters\Antiforgery</code></td>
+                     <td><code>DevNet\Web\Security\Tokens\Csrf\Validate</code></td>
                      <td>Prevent Cross-Site Request Forgery</td>
                   </tr>
                </tbody>

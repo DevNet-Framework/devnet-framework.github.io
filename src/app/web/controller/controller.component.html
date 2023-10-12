@@ -11,7 +11,7 @@
                A controller is one of the important components of the architectural pattern MVC (Model View Controller) which helps to achieve the separation of concerns, it is the brain of the application that controls how the data is displayed, where each browser request is mapped to a particular method of a particular controller class called Action, and this action will handle the HTTP request and return data as HTTP response via the view engine.
             </p>
             <img src="assets/images/mvc.svg" alt="Web app home page" width="80%" height="auto">
-            <br><br>
+            <br><br><br>
             <h3>Registring MVC Service</h3>
             <p>
                Before using the controller component, we need first to register the MVC service inside the method <code>WebHostBuilder::register()</code> by calling the extension method <code>ServiceCollectionExtensions::addMvc()</code> which is attached to the instance of type IServiceCollection, as shown in the following code example.
@@ -46,19 +46,21 @@ public static function main(array $args = [])
             <p>
                Controller class can be created manually inside "Controllers" folder or by using DevNet command-line:
             </p>
-            <pre><code class="language-shell">devnet add controller --name HelloController</code></pre>
+            <pre><code class="language-shell">devnet add controller --name HomeController</code></pre>
             <p>
-               The class below represent an example of Controller class named HelloController extends a base Controller class to inherit some MVC features, and has one action method called index and return an instatence of IActionResult, with a content of <samp>"Hello World!"</samp> as a response.<br>
+               The class below represent an example of Controller class named HomeController extends a base Controller class to inherit some MVC features, and has one action method called index and return an instatence of IActionResult, with a content of <samp>"Hello World!"</samp> as a response.<br>
             </p>
             <pre><code class="language-php">&lt;?php
   
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
 
-class HelloController extends ActionController
+class HomeController extends ActionController
 &lcub;
+   #[Route(path: '/')]
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello World!");
@@ -81,24 +83,28 @@ class HelloController extends ActionController
                </thead>
                <tbody>
                   <tr>
-                     <td><code>ActionController::content(string $content, int $status): IActionResult</code></td>
-                     <td>return a plain text</td>
+                     <td><code>view(object|array $data, ?string $name): IActionResult</code></td>
+                     <td>Return HTML content result</td>
                   </tr>
                   <tr>
-                     <td><code>ActionController::json(array $data, int $status): IActionResult</code></td>
-                     <td>return JSON data</td>
+                     <td><code>json(object|array $data): IActionResult</code></td>
+                     <td>Return JSON data result</td>
                   </tr>
                   <tr>
-                     <td><code>ActionController::view(string $viewPath, ?object $model): IActionResult</code></td>
-                     <td>return HTML content</td>
+                     <td><code>content(string $content, ?string $contentType): IActionResult</code></td>
+                     <td>Return text content result</td>
                   </tr>
                   <tr>
-                     <td><code>ActionController::redirect(string $urlPath): IActionResult</code></td>
-                     <td>redirect the request to the geving path</td>
+                     <td><code>file(string $path, ?string $contentType): IActionResult</code></td>
+                     <td>Return HTML content result</td>
                   </tr>
                   <tr>
-                     <td><code>ActionController::forbid(): IActionResult</code></td>
-                     <td>forbid access to a particular route</td>
+                     <td><code>redirect(string $url): IActionResult</code></td>
+                     <td>Redirect the request to the geving path</td>
+                  </tr>
+                  <tr>
+                     <td><code>statusCode(int $code): IActionResult</code></td>
+                     <td>Return HTTP status code result</td>
                   </tr>
                </tbody>
             </table>
@@ -112,13 +118,15 @@ class HelloController extends ActionController
 namespace Application\Controllers;
 
 use DevNet\System\Async\Task;
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
 
 use function Devnet\System\await;
 
-class HelloController extends ActionController
+class HomeController extends ActionController
 &lcub;
+   #[Route(path: '/')]
    public function async_index(): IActionResult
    &lcub;
       $task = Task::run(function () &lcub;
@@ -131,23 +139,99 @@ class HelloController extends ActionController
    }
 }</code></pre>
             <br>
-            <h3>Action Method Parameters</h3>
+            <h3>Model binding</h3>
             <p>
-               Every action methods can have parameters as input data and can be primitive data type or complex type parameters, and
-               by default, the parameters values are retrieved from the request's data collection, such as query string values, name/values pairs for form data or cookie values, Model binding automatically maps the request's data to the action method parameters if both names match.
+               Model Bidding is a mechanism that retrieves data from the HTTP request and provides it to the controller action method parameters as simple data types or updates the data into the properties of a complex type parameter.
+            </p>
+            <p>
+               It automates the process of retrieving data from various sources, such as:
+            </p>
+            <ul>
+               <li>Route data.</li>
+               <li>Query strings.</li>
+               <li>Form fields.</li>
+               <li>Uploaded files.</li>
+            </ul>
+            <h4>Simple type binding</h4>
+            <p>
+               Simple model bidding is a technique that automatically assigns values to the controller action method parameters that have the same names as the request data and are of simple types such as string, int, or bool, etc.
+            </p>
+            <p>
+               The following example shows how the Model Binder maps the route data and query string to the controller action method parameters of simple types.
             </p>
             <pre><code class="language-php">&lt;?php
   
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
 
-class StudentController extends ActionController
+class BlogController extends ActionController
 &lcub;
-   public function show(int $id): IActionResult
+   #[Route(path: '/posts/&lcub;id}', method: 'GET')]
+   public function getPost(int $id, ?bool $excerpt): IActionResult
    &lcub;
-      return $this->content("The student Id You have requested is: &lcub;$id}");
+      if ($excerpt) &lcub;
+         return $this->content("Excerpt from the content of the post: &lcub;$id}");
+      }
+
+      return $this->content("The full content of the post: &lcub;$id}");
+   }
+}</code></pre>
+            <p>
+               Assuming the user requests the following URL: <samp>"/posts/1/?excerpt=true"</samp><br>
+               The model binder will retrieve the value <code>1</code> from the route data and provide it to the <code>$id</code> parameter and the value <code>true</code> from the query string to the <code>$excerpt</code> parameter.
+            </p>
+            <br>
+            <h4>Complex type binding</h4>
+            <p>
+               The complex-type binding is an automatic way of mapping the request data to the public properties of an object that is passed as a parameter to a controller action method. This provides easy access to the data of the HTTP request without having to parse it manually.
+            </p>
+            <p>
+               The code example below shows a controller with a <code>send()</code> action method that accepts a complex type parameter of type <code>Contact</code>, where the Model Binder automatically populates the request form data into the public properties of the Contact object, which is used to validate the data before sending it via email when the user submits the contact form.
+            </p>
+            <pre><code class="language-php">&lt;?php
+  
+namespace Application\Controllers;
+
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
+use Application\Models\Contact;
+
+class HomeController extends ActionController
+&lcub;
+   #[Route(path: '/contact/send', method: 'POST')]
+   public function send(Contact $form): IActionResult
+   &lcub;
+      if (!$form->isValide()) &lcub;
+         return $this->content("All required fields must be filled out!");
+      }
+
+      mail("email@example.com", $form->Subject, $form->Message);
+      return $this->statusCode(200);
+   }
+}</code></pre>
+<p>
+   And here is the code for the <code>Contact</code> model that is used as a parameter in the controller action method.
+</p>
+            <pre><code class="language-php">&lt;?php
+  
+namespace Application\Models;
+
+class Contact
+&lcub;
+   public string $Subject;
+   public string $Message;
+
+   public function isValide(): bool
+   &lcub;
+      if (isset($this->Subject) && isset($this->Message)) &lcub;
+         return true
+      }
+
+      return false;
    }
 }</code></pre>
          </article>

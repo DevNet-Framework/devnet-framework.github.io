@@ -62,7 +62,7 @@ class Post
 namespace Application\Models;
 
 use DevNet\System\Collections\ICollection;
-use DevNet\System\Generic;
+use DevNet\System\Type;
 
 class User
 &lcub;
@@ -72,7 +72,7 @@ class User
 
    public Profile $Profile;
 
-   #[Generic(Post::class)]
+   #[Type(ICollection, [Post::class])]
    public ICollection $Posts;
 }
 </code></pre>
@@ -144,7 +144,7 @@ $user = $profile->User;
 namespace Application\Models;
 
 use DevNet\System\Collections\ICollection;
-use DevNet\System\Generic;
+use DevNet\System\Type;
 
 class Category
 &lcub;
@@ -152,7 +152,7 @@ class Category
    public string $Name;
    public string $Description;
 
-   #[Generic(Classification::class)]
+   #[Type(ICollection::class, [Classification::class])]
    public ICollection $Classification;
 }
 </code></pre>

@@ -49,7 +49,7 @@ class Program
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Action\Filters\Authorize;
+use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Http\HttpContext;
 ...
 
@@ -70,9 +70,9 @@ $app->useEndpoint(function($routes) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 
 class AccountController extends ActionController
 &lcub;
@@ -115,9 +115,9 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 use Application\Models\Configuration;
 use Application\Models\Login;
 use Application\Models\Registration;
@@ -159,9 +159,9 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Security\Authentication\AuthenticationScheme;
 
 #[Authorize(AuthenticationScheme::CookieSession)]
@@ -179,9 +179,9 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Security\Authentication\AuthenticationScheme;
 
 #[Authorize(AuthenticationScheme::JwtBearer)]
@@ -204,9 +204,9 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 
 class AccountController extends ActionController
 &lcub;
@@ -225,9 +225,9 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 
 class AccountController extends ActionController
 &lcub;
@@ -244,9 +244,9 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Security\Authorization\Authorize;
 
 class AccountController extends ActionController
 &lcub;
@@ -302,9 +302,9 @@ class Program
 
 namespace Application\Controllers;
 
-use DevNet\Web\Action\ActionController;
-use DevNet\Web\Action\Filters\Authorize;
-use DevNet\Web\Action\IActionResult;
+use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Security\Authorization\Authorize;
+use DevNet\Web\Endpoint\IActionResult;
 
 class AccountController extends ActionController
 &lcub;
