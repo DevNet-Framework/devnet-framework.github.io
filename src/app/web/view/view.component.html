@@ -23,17 +23,20 @@
                <code>"/Views/Home/index.phtml"</code><br> assuming that the controller name is <b>"Home"</b> and the
                action name is <b>"index"</b>.
             </p>
-            <pre><code class="language-html">&lt;!DOCTYPE html>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
 &lt;html lang="en">
 &lt;head>
    &lt;meta charset="UTF-8">
    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
-   &lt;title>Document&lt;/title>
+   &lt;title>&lt;?= $viewName ?>&lt;/title>
 &lt;/head>
 &lt;body>
    &lt;h1>Hello World!&lt;/h1>
 &lt;/body>
 &lt;/html></code></pre>
+            <blockquote class="alert alert-warning">
+               <b>Important:</b> DevNet view engine uses its own PHP short tag syntax <code><? ?></code> without causing any conflict with XML tags, and there is no need to enable it in <samp>"php.ini"</samp>
+            </blockquote>
             <br>
             <h3>Returning the View</h3>
             <p>
@@ -79,42 +82,17 @@ class HomeController extends ActionController
 &lcub;
    public function index(): IActionResult
    &lcub;
-      return $this->view("Template/home");
+      return $this->view(name: "Template/home");
    }
 }</code></pre>
             <br>
-            <h3>Passing data to views</h3>
+            <h3>Passing data to the view</h3>
             <p>
-               Passing data to the view can be done in two ways:
-            </p>
-            <ul>
-               <li><b>ViewModel:</b> a strongly typed data</li>
-               <li><b>ViewData:</b> a weakly typed data</li>
-            </ul>
-            <h4>View Model</h4>
-            <p>
-               One of the approachs to pass data to the view is to pass an instance object of a model type to the
-               view method, This model is commonly referred to as a viewmodel, it allows the view to take advantage
-               of strong typing, it means that every property has an explicitly defined type like:
-               <code>string</code>, <code>int</code> or <code>boolean</code>, which helps you write code quickly with
-               fewer errors.
+               The view data is an MVC communication mechanism for passing data from the controller's action method to the view.
+               The data is passed as a key-value array argument and can then be retrieved in the view by accessing its corresponding keys in the ViewData property or by using variables with the same names as the keys.
             </p>
             <p>
-               This class <code>Student</code> represent a the model that we want to pass to the view in this
-               example:
-            </p>
-            <pre><code class="language-php">&lt;?php
-
-namespace Application\Models;
-
-class Student
-&lcub;
-   public int $Id;
-   public string $Name;
-}</code></pre>
-            <p>
-               Handling the model in the controller by the action method and passing it to the view method as a
-               parameter:
+               Here is an example of a controller that passes key-value data to the view.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -127,63 +105,146 @@ class HomeController extends ActionController
 &lcub;
    public function index($name): IActionResult
    &lcub;
-      $student = new Student();
-      $student->Name = $name;
-      return $this->view($student);
+      $data = [
+         'site' => 'MySite',
+         'page' => 'Home'
+      ];
+      return $this->view($data);
    }
 }</code></pre>
             <p>
-               Working with <b>ViewModel</b> in the view:
+               And here is an example of a view that retrieves the passed data by accessing the keys of the ViewData property.
             </p>
             <pre><code class="language-php-template">&lt;!DOCTYPE html>
 &lt;html lang="en">
 &lt;head>
    &lt;meta charset="UTF-8">
    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
-   &lt;title>Document&lt;/title>
+   &lt;title>&lt;?= $this->ViewData['site'] . '-' . $this->ViewData['page'] ?>&lt;title>
+   ...
+</code></pre>
+            <p>
+               Or, retrieve the view data as variables with the same names as the keys of the ViewData property.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;head>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;title>&lt;?= $site . '-' . $page ?>&lt;title>
+   ...
+</code></pre>
+            <br>
+            <h3>Layout</h3>
+            <p>
+               The layout or master page is common UI (User Interface) a template of common HTML elements that remains the same throughout the application, such as header, navigation bar, or footer section, to reduce duplicate code in views and make it easy to maintain.
+            </p>
+            <p>
+               By default layouts placed in the folder <samp>"/views/layouts"</samp> and, an individual views can specify a layout by calling the method <code>layout(string $layoutName)</code>, the string parameter <code>$layoutName</code> define the relative path to the layout file without the extension file <samp>".phtml"</samp> as shown in the following example:
+            </p>
+            <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
+  
+&lt;h1>Hello World!&lt;/h1></code></pre>
+            <p>
+               Layout can include the view contents, by calling the method <code>renderBody()</code> and wherever the call to this method is placed, the contents of the view will be rendered.
+            </p>
+            <p>
+               In this example the view engin catch the content <code>&lt;h1>Hello World!&lt;/h1></code> of the view and rendered it into the body of the layout where the method <code>renderBody()</code> is called.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;head>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
 &lt;/head>
 &lt;body>
-   &lt;h1>Hello &lt;?= $this->Model->Name ?>!&lt;/h1>
+   &lt;header>
+      &lt;nav class="navbar">
+         &lt;a href="/">Home&lt;/a>
+         &lt;a href="/about">About&lt;/a>
+         &lt;a href="/contact">Contact&lt;/a>
+      &lt;/nav>
+   &lt;/header>
+   &lt;main>
+      &lt;? $this->renderBody() ?>
+   &lt;/main>
 &lt;/body>
 &lt;/html></code></pre>
             <br>
-            <h4>View Data</h4>
+            <h4>Partial views</h4>
             <p>
-               ViewData is a ViewDataDictionary object accessed through string keys. String data can be stored and
-               used directly without the need for a cast, but you must cast other ViewData object values to specific
-               types when you extract them. You can use ViewData to pass data from controllers to views and within
-               views, including partial views and layouts.
-            </p>
-            <p>
-               The following code is an example of setting ViewData values by associating a single value to the key
-               "Title" and a list of values to the key "List".
-            </p>
-            <pre><code class="language-php">&lt;?php
-
-namespace Application\Controllers;
-
-use DevNet\Web\Endpoint\ActionController;
-use DevNet\Web\Endpoint\IActionResult;
-
-class HomeController extends ActionController
-&lcub;
-   public function index($name): IActionResult
-   &lcub;
-      $this->ViewData["Title"] = "My Web Site";
-      return $this->view();
-   }
-}</code></pre>
-            <p>
-               Working with <b>ViewData</b> in the view:
+               A partial view is a reusable portion of the layout, which means Layout can be split into many files that contains HTML code, It can be used in one or more views or layout views, You can use the same partial view at multiple places and eliminates the redundant code.
             </p>
             <pre><code class="language-php-template">&lt;!DOCTYPE html>
 &lt;html lang="en">
 &lt;head>
    &lt;meta charset="UTF-8">
    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
-   &lt;title>&lt;?= $this->ViewData["Title"] ?>&lt;title>
-   ...
-</code></pre>
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
+&lt;/head>
+&lt;body>
+   &lt;header>
+      &lt;? $this->renderPartial('Shared/navbar') ?>
+   &lt;/header>
+   &lt;main>
+      &lt;? $this->renderBody() ?>
+   &lt;/main>
+&lt;/body>
+&lt;/html></code></pre>
+            <p>
+               The code below is the content of the partial view in separated file: <samp>"/Views/layouts/navbar.phtml"</samp>.
+            </p>
+            <pre><code class="language-php-template">&lt;nav class="navbar">
+   &lt;a href="/">Home&lt;/a>
+   &lt;a href="/about">About&lt;/a>
+   &lt;a href="/contact">Contact&lt;/a>
+&lt;/nav></code></pre>
+            <br>
+            <h4>Sections</h4>
+            <p>
+               Sections provide a dynamic way to organize where certain page elements should be placed, unlike the partial view which they remains the same throughout all the application, sections can be changed for each view.
+            </p>
+            <p>
+               To be able to use a section in a layout, we must first define a section in the view, by writing a block of content between the methods <code>section(string $sectionName)</code> and <code>endSection()</code> and give a ane to the section, which hepl us later to select which section to be rendered in the layout.
+            </p>
+            <pre><code class="language-php-template">&lt;? $this->layout('Shared/layout') ?>
+  
+&lt;h1>Hello World!&lt;/h1> 
+
+&lt;? $this->section('sidebar') ?>
+   &lt;ul class="menu">
+   &lt;li>&lt;Item1&lt;/li>
+   &lt;li>&lt;Item2&lt;/li>
+   &lt;/ul>
+&lt;? $this->endSection() ?></code></pre>
+            <p>
+               A layout can include one or more view sections, by calling the method <code>RenderSection(string $sectionName)</code> with specifying the name of the section be rendered, and where the call of this method is placed, the view section contents will be rendered.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;head>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
+&lt;/head>
+&lt;body>
+   &lt;header>
+      &lt;? $this->renderPartial('Shared/navbar') ?>
+   &lt;/header>
+   &lt;main>
+      &lt;aside>
+         &lt;? $this->renderSection('sidebar') ?>
+      &lt;/aside>
+      &lt;article>
+         &lt;? $this->renderBody() ?>
+      &lt;/article>
+   &lt;/main>
+&lt;/body>
+&lt;/html></code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">
@@ -193,7 +254,7 @@ class HomeController extends ActionController
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/web/layout">
+                  <a class="nav-page-link" routerLink="/docs/web/filter">
                      Next <i class="chevron right"></i>
                   </a>
                </li>

@@ -6,7 +6,6 @@ import { RoutingComponent } from './routing/routing.component';
 import { MiddlewareComponent } from './middleware/middleware.component';
 import { ControllerComponent } from './controller/controller.component';
 import { ViewComponent } from './view/view.component';
-import { LayoutComponent } from './layout/layout.component';
 import { FilterComponent } from './filter/filter.component';
 import { DependencyComponent } from './dependency/dependency.component';
 import { ExceptionComponent } from './exception/exception.component';
@@ -18,7 +17,6 @@ const routes: Routes = [
   { path: 'docs/web/routing', component: RoutingComponent },
   { path: 'docs/web/controller', component: ControllerComponent },
   { path: 'docs/web/view', component: ViewComponent },
-  { path: 'docs/web/layout', component: LayoutComponent },
   { path: 'docs/web/filter', component: FilterComponent },
   { path: 'docs/web/dependency', component: DependencyComponent },
   { path: 'docs/web/exception', component: ExceptionComponent },

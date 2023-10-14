@@ -8,7 +8,6 @@ import { MiddlewareComponent } from './middleware/middleware.component';
 import { RoutingComponent } from './routing/routing.component';
 import { ControllerComponent } from './controller/controller.component';
 import { ViewComponent } from './view/view.component';
-import { LayoutComponent } from './layout/layout.component';
 import { FilterComponent } from './filter/filter.component';
 import { DependencyComponent } from './dependency/dependency.component';
 import { ExceptionComponent } from './exception/exception.component';
@@ -21,7 +20,6 @@ import { ExceptionComponent } from './exception/exception.component';
     RoutingComponent,
     ControllerComponent,
     ViewComponent,
-    LayoutComponent,
     FilterComponent,
     DependencyComponent,
     ExceptionComponent
