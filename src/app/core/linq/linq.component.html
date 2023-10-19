@@ -22,13 +22,13 @@
             </p>
             <pre><code class="language-php">&lt;?php
 
-// declaring the Linq namespace to be able to use the extension methods with the ArrayList instance.
+// Declaring the Linq namespace to be able to use the extension methods with the ArrayList instance.
 use DevNet\System\Linq;
 
-// creating ArrayList instance with generic type argument of Employee class.
+// Creating ArrayList instance with generic type argument of Employee class.
 $list = new ArrayList(Employee::class);
 
-// assuming we have Employee class with constructor that initializes Id and Name properties.
+// Assuming we have Employee class with constructor that initializes Id and Name properties.
 $list[] = new Employee(1, 'bob');
 $list[] = new Employee(2, 'carol');
 $list[] = new Employee(3, 'ted');
@@ -48,7 +48,7 @@ print("Last employee is &lcub;$last->Name} with Id &lcub;$last->Id}\n");
 Last employee is ted with Id 6
 </code></pre>
             <br>
-            <h5>Filtring</h5>
+            <h5>Filtering</h5>
             <pre><code class="language-php">print("Employees with Id greater than 2\n");
 
 $employees = $list->where(fn($employee) => $employee->Id > 2);
@@ -111,7 +111,7 @@ Descending order by Id
 </code></pre>
             <br>
             <h5>Paging</h5>
-            <pre><code class="language-php">// skip first 2 employees then take just 3 from the rest of employees.
+            <pre><code class="language-php">// Skips the first 2 employees then take just 3 from the rest of employees.
 $employees = $list->skip(2)->take(3);
 
 foreach ($employees as $employee) &lcub;
@@ -129,18 +129,18 @@ foreach ($employees as $employee) &lcub;
 $max   = $list->max(fn($employee) => $employee->Id);
 $min   = $list->min(fn($employee) => $employee->Id);
 
-print("Tolat employess => &lcub;$count}\n");
+print("Total employees => &lcub;$count}\n");
 print("Max employee Id => &lcub;$max}\n");
 print("Min employee Id => &lcub;$min}\n");
 </code></pre>
             <h6>Output:</h6>
-            <pre><code class="language-shell">Tolat employess => 6
+            <pre><code class="language-shell">Total employees => 6
 Max employee Id => 6
 Min employee Id => 1
 </code></pre>
             <br>
             <h5>Grouping</h5>
-            <pre><code class="language-php">// create groups of employees share the same name.
+            <pre><code class="language-php">// Creates a groups of employees share the same name.
 $groups = $list->groupBy(fn($employee) => $employee->Name);
 
 foreach ($groups as $group) &lcub;

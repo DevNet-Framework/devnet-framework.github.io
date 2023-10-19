@@ -43,7 +43,7 @@ class RedirectMiddleware implements IMiddleware
          $context->Response->redirect("/new/path");
          return;
       }
-      // await next request delegate to chain the pipline to the next middleware or endpoint.
+      // await next request delegate to chain the pipeline to the next middleware or endpoint.
       await($next($context));
       // logging or other works can be done here after calling the next request delegate.
    }
@@ -54,8 +54,8 @@ class RedirectMiddleware implements IMiddleware
                Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Web\Middleware\IMiddleware</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
             </p>
             <ul>
-               <li><code>ApplicationBuilder::use(callable $middelware)</code></li>
-               <li><code>ApplicationBuilderExtensions::useMiddleware(string $middelware, ...$args)</code></li>
+               <li><code>ApplicationBuilder::use(callable $middleware)</code></li>
+               <li><code>ApplicationBuilderExtensions::useMiddleware(string $middleware, ...$args)</code></li>
             </ul>
             <pre><code class="language-php">&lt;?php
 
@@ -78,7 +78,7 @@ $host->start(function ($app) use ($configuration) &lcub;
 
    // using in-line middleware
    $app->use(async(function($context, $next) &lcub; //;
-      // some works can be done here befor calling the next request delegate.
+      // some works can be done here before calling the next request delegate.
       await($next($context));
       // other works can be done here after calling the next request delegate.
    }));
@@ -95,7 +95,7 @@ $host->start(function ($app) use ($configuration) &lcub;
                <thead>
                   <tr>
                      <th scope="col">Method</th>
-                     <th scope="col">Discription</th>
+                     <th scope="col">Description</th>
                   </tr>
                </thead>
                <tbody>

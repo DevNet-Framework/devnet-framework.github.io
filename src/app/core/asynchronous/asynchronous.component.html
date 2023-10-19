@@ -21,18 +21,18 @@ use DevNet\System\Async\Task;
 function readFileAsync(string $path): Task &lcub;
    // Creating and starting the task.
    $task = Task::run(function() use($path) &lcub;
-      $result = null;
       $file = fopen($path, 'r');
-      // Suspend and resume the task while the reading has not finished yet.
-      do &lcub;
-         yield;
-         stream_set_blocking($file, false);
-         $result .= $content = fgets($file);
+      stream_set_blocking($file, false);
+      $result = null;
+      while (!feof($file)) &lcub;
+         // Suspend and resume the task while the reading has not finished yet.
+         $content = yield fread($file, 1024);
          if ($content === false) &lcub;
             // Throws an exception on failure.
             throw new \Exception("Unable to read from the file");
          }
-      } while (!feof($file));
+         $result .= $content;
+      }
 
       fclose($file);
       // Returns a result on success.
@@ -99,8 +99,8 @@ use function DevNet\System\await;
 
 $readJsonAsync = async(function($path): string &lcub;
    $file = new FileStream($path, 'r');
-   // await for the async reading to complete without blocking the outside scope.
-   $json = await($file->readAsync($file->Lenth));
+   // Await for the async reading to complete without blocking the outside scope.
+   $json = await($file->readAsync($file->Length));
    $data = json_decode($json);
 
    $file->close();
@@ -127,7 +127,7 @@ class Reader &lcub;
    public async_readJsonAsync(function($path): string
    &lcub;
       $file = new FileStream($path, 'r');
-      $json = await($file->readAsync($file->Lenth));
+      $json = await($file->readAsync($file->Length));
       $data = json_decode($json);
       
       $file->close();

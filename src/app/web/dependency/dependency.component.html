@@ -38,21 +38,21 @@ class MyService implement IService
             <p>
                Singleton lifetime services are created only once, and Every subsequent request uses the same instance in the application life cycle.
             </p>
-            <h2>Registring services</h2>
+            <h2>Registering services</h2>
             <p>
                Typically the method <code>WebHostBuilder::register(IServiceCollection $services)</code> is responsible for defining the services that will be used throw your application without hard coding, and you can add services to the container with complex dependencies by using one of the following methods:
             </p>
             <ul>
                <li>
-                  <code>IserviceCollection::addSingleton(String $serviceType, String|Object|Closure $service);</code>
+                  <code>IServiceCollection::addSingleton(String $serviceType, String|Object|Closure $service);</code>
                </li>
-               <li><code>IserviceCollection::addTransient(String $serviceType, String|Object|Closure $service);</code></li>
+               <li><code>IServiceCollection::addTransient(String $serviceType, String|Object|Closure $service);</code></li>
             </ul>
             <p>
                Services are defined by the same service type class, parent class, or interface that the service is implementing, which will be used later to call the service from the service provider.
             </p>
             <p>
-               The following code shows an example of registring two services, <code>MyDependency</code> registred with Transient lifetime, defined by the same service type, and <code>MyService</code> with singleton lifetime defined by <code>IMyService</code> interface:
+               The following code shows an example of registering two services, <code>MyDependency</code> registered with Transient lifetime, defined by the same service type, and <code>MyService</code> with singleton lifetime defined by <code>IMyService</code> interface:
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -61,9 +61,9 @@ namespace Application;
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
 use DevNet\Web\Hosting\WebHost;
-use Appplication\Services\IMyService;
-use Appplication\Services\MyService;
-use Appplication\Services\MyDependency;
+use Application\Services\IMyService;
+use Application\Services\MyService;
+use Application\Services\MyDependency;
 
 class Program
 &lcub;
@@ -82,7 +82,7 @@ class Program
 }
 </code></pre>
             <br>
-            <h3>Registring services using custom factory</h3>
+            <h3>Registering services using custom factory</h3>
             <p>
                Devnet Service container uses Service Activator to create your dependency when you call it, but if you want to resolve the instantiation of your dependency in your way, DevNet service container allows you to implement your own factory using a closure function that has <code>IServiceProvider</code> parameter to allow you to call any service registered within <code>IServiceCollection</code> and use it as a dependency for your service creation process as shown in the following example:
             </p>
@@ -93,9 +93,9 @@ namespace Application;
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
 use DevNet\Web\Hosting\WebHost;
-use Appplication\Services\IMyService;
-use Appplication\Services\MyService;
-use Appplication\Services\MyDependency;
+use Application\Services\IMyService;
+use Application\Services\MyService;
+use Application\Services\MyDependency;
 
 class Program
 &lcub;
@@ -118,15 +118,15 @@ class Program
             <br>
             <h3>Requesting Services</h3>
             <p>
-               Services can be requested by their type using the method <code>IserviceProvider::getService(string $type)</code>, which can be accessible from the property <code>HttpContext::RequestServices</code>, like in the following example.
+               Services can be requested by their type using the method <code>IServiceProvider::getService(string $type)</code>, which can be accessible from the property <code>HttpContext::Services</code>, like in the following example.
             </p>
             <pre><code class="language-php">
 ...
 $app->useEndpoint(function($routes) &lcub;
    $routes->mapGet("/service", function(HttpContext $context) &lcub;
-      // getting services
-      $service1 = $context->RequestServices->getService(IService::class);
-      $service2 = $context->RequestServices->getService(MyService::class);
+      // Getting the services
+      $service1 = $context->Services->getService(IService::class);
+      $service2 = $context->Services->getService(MyService::class);
 
       // code...
    });
@@ -162,7 +162,7 @@ class HelloController extends ActionController
                <thead>
                   <tr>
                      <th scope="col">Method</th>
-                     <th scope="col">Discription</th>
+                     <th scope="col">Description</th>
                   </tr>
                </thead>
                <tbody>

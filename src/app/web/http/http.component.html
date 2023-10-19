@@ -25,32 +25,32 @@ $httpContext = HttpContextFactory::create();</code></pre>
                You can access the <code>HttpRequest</code> property from the <code>HttpContext</code> and inspect the HTTP request information as shown below
             </p>
             <h6>Get The Request Method</h6>
-            <pre><code class="language-php">$method = $httpContext->Resquest->Method;</code></pre>
+            <pre><code class="language-php">$method = $httpContext->Request->Method;</code></pre>
             <br>
             <h6>The Request URI</h6>
-            <pre><code class="language-php">$uri    = $httpContext->Resquest->Uri;
+            <pre><code class="language-php">$uri    = $httpContext->Request->Uri;
 $scheme = $uri->Scheme;
 $Host   = $uri->Host;
 $Port   = $uri->Port;
 $Query  = $uri->Query;</code></pre>
             <br>
             <h6>The Request Form</h6>
-            <pre><code class="language-php">$form  = $httpContext->Resquest->Form;
+            <pre><code class="language-php">$form  = $httpContext->Request->Form;
 $value = $form->getValue('name');</code></pre>
             <br>
             <h6>The Request From Files</h6>
-            <pre><code class="language-php">$files = $httpContext->Resquest->Form->Files;
+            <pre><code class="language-php">$files = $httpContext->Request->Form->Files;
 $file  = $files->getFile('name');
   
-$file->copyto('path');</code></pre>
+$file->copyTo('path');</code></pre>
             <br>
             <h6>The Request Headers</h6>
-            <pre><code class="language-php">$headers = $httpContext->Resquest->Headers;
+            <pre><code class="language-php">$headers = $httpContext->Request->Headers;
 $values  = $headers->getValues('name');
 $value   = $values[0];</code></pre>
             <br>
             <h6>The Request Cookies</h6>
-            <pre><code class="language-php">$cookies = $httpContext->Resquest->Cookies;
+            <pre><code class="language-php">$cookies = $httpContext->Request->Cookies;
 $value   = $cookies->getValue('name');</code></pre>
             <br>
             <h4>Http Response</h4>
@@ -92,7 +92,10 @@ $action = async(function(): string &lcub;
    $client   = new HttpClient();
    $task     = $client->requestAsync('GET', 'www.example.com');
    $response = await($task);
-   $content  = $response->Boby->read();
+   $content  = null;
+   while(!$response->Body->EndOfStream) &lcub;
+      $content .= await($response->Body->readAsync(1024));
+   }
    return $content;
 });
 

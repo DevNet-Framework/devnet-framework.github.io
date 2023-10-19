@@ -58,7 +58,7 @@ $app->useEndpoint(function($routes) &lcub;
       $user  = $context->User;
       $claim = $user->findClaim(fn ($claim) => $claim->Type == "name");
       $name  = $claim ? $claim->Value : null;
-      return $context->Respose->writeAsync("Welcom &lcub;$name}");
+      return $context->Response->writeAsync("Welcome &lcub;$name}");
    })
    // Adding the authorize filter.
    ->addFilter(new Authorize());
@@ -82,7 +82,7 @@ class AccountController extends ActionController
       $user  = $this->Context->User;
       $claim = $user->findClaim(fn ($claim) => $claim->Type == "name");
       $name  = $claim ? $claim->Value : null;
-      return $this->content("Welcom &lcub;$name}");
+      return $this->content("Welcome &lcub;$name}");
    }
 
    public function register(Registration $form): IActionResult
@@ -283,8 +283,8 @@ class Program
          $services->addAuthentication(function ($builder) &lcub;
             $builder->addCookie();
          });
-         // Adding the authorisation service with policy
-         $services->addAuthorisation(function($config) &lcub;
+         // Adding the authorization service with policy
+         $services->addAuthorization(function($config) &lcub;
             $config->addPolicy("Administration", function ($policy) &lcub;
                $policy->RequireClaim('EmployeeNumber');
                $policy->RequireClaim('Role', ['Administrator', 'Manager']);

@@ -185,7 +185,7 @@ $posts = $blog->Posts;
                <code>"//[username]:[password]@[host]:[port]/[database]?[option=value]"</code>
             </p>
             <br>
-            <h3>Registing the EntityContext</h3>
+            <h3>Registering the EntityContext</h3>
             <p>
                You can register Entity ORM as a reused service that will be injected into your application using the Extension method <code>ServiceCollectionExtensions::addEntityContext()</code> inside the method <code>WebHostBuilder::register()</code>, as shown in the following code example:
             </p>
@@ -226,6 +226,7 @@ namespace Application\Controllers;
 
 use DevNet\Web\Endpoint\ActionController;
 use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
 use Application\Models\BlogContext;
 
 class BlogController extends ActionController
@@ -237,9 +238,10 @@ class BlogController extends ActionController
       $this->blog = $blog;
    }
 
+   #[Route("/")]
    public function index(): IActionResult
    &lcub;
-      $this->view($this->blog->Posts);
+      $this->view(['posts' => $this->blog->Posts]);
    }
 }
 </code></pre>

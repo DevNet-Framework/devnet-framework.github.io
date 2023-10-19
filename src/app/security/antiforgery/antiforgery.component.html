@@ -74,9 +74,9 @@ class Program
             <p>
                After registering the Antiforgery service with the MVC web application, it will be injected into the view so that you can generate a token in the HTML form.
             </p>
-            <pre><code class="language-php-template">&lt;form method="POST" action="/account/update/<?= $model->Id ?>">
-   &lt;input type="text" name="username value="<?= $model->Username ?>" />
-   &lt;input type="email" name="email" value="<?= $model->Email ?>" />
+            <pre><code class="language-php-template">&lt;form method="POST" action="/account/update/<?= $user->Id ?>">
+   &lt;input type="text" name="username value="<?= $user->Username ?>" />
+   &lt;input type="email" name="email" value="<?= $user->Email ?>" />
    &lt;input type="hidden" name="X-CSRF-TOKEN" value="<?= $this->Antiforgery->getToken() ?>" />
 &lt;/form>
 </code></pre>
@@ -108,10 +108,10 @@ class AccountController extends ActionController
       if (!$user) &lcub;
          Throw \Exception("page not found!", 404);
       }
-      return $this->view($user);
+      return $this->view(['user' => $user]);
    }
 
-   // add AntiForgery validation filter as an attribute.
+   // Adds AntiForgery validation filter as an attribute.
    #[Validate]
    #[Route(path: '/account/update/&lcub;id}', method: 'POST')]
    public function update(int $id, User $form): IActionResult
@@ -158,7 +158,7 @@ $app->useEndpoint(function($routes) &lcub;
    }));
 
    $routes.MapPost("/account/store", (function(HttpContext $context) &lcub;
-      $form = $context->Resquest->Form;
+      $form = $context->Request->Form;
       $user = new User();
       $user->Username = $form->getValue('username');
       $user->Password = password_hash($form->getValue('password'), PASSWORD_DEFAULT);
@@ -171,7 +171,7 @@ $app->useEndpoint(function($routes) &lcub;
       file_put_contents('path/to/data.json', $json);
       $context->Response->setStatusCode(200);
    })
-   // add Antiforgery validation filter to the endpoint "/account/store".
+   // Adds Antiforgery validation filter to the endpoint "/account/store".
    ->addFilter(Validate::class);
 });</code></pre>
             <p>

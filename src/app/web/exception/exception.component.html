@@ -32,7 +32,7 @@ $host->start(function ($app) &lcub;
             <br>
             <h3>Custom error handling</h3>
             <p>
-               The exception handler is very useful for debugging, but when the application runs in a production environment, it shouldn't display detailed exception information publicly, so you need to handle the errors differently with a custom error handler, e.g. log the erros and return only the status code.
+               The exception handler is very useful for debugging, but when the application runs in a production environment, it shouldn't display detailed exception information publicly, so you need to handle the errors differently with a custom error handler, e.g. log the errors and return only the status code.
             </p>
             <p>
                The following example shows how to register an exception handler that redirects the errors to a custom route, then the endpoint handler of that custom route handles the errors.
@@ -49,9 +49,9 @@ $host->start(function ($app) &lcub;
    $app->useExceptionHandler("/error");
    $app->useRouter();
    $app->useEndpoint(function ($routes) &lcub;
-      // handle the erros in RESTfull way
+      // handle the errors in RESTfull way
       $routes->mapGet("/error", function ($context) &lcub;
-         $code = $context->Error ? $context->Error->getCode() : 404;
+         $code = $context->Error ? $context->Items['ErrorException']->getCode() : 404;
          switch ($code) &lcub;
             case 401:
                $context->Response->setStatusCode(401);

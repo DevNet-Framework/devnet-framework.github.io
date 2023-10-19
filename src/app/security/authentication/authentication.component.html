@@ -55,7 +55,7 @@ class Program
             // Adding token-based authentication handler
             $builder->addJwtBearer(AuthenticationScheme::JwtBearer, function ($options) &lcub;
                $options->SecurityKey = "jwt security key";
-               // Optinally you can configure the following validation options
+               // Optionally you can configure the following validation options
                $options->Issuer = "127.0.0.1:8000"; // server address
                $options->Audience = "127.0.0.1:8080"; // client address
             });
@@ -67,7 +67,7 @@ class Program
       $host->start(function ($app) &lcub;
          $app->UseExceptionHandler();
          $app->useRouter();
-         // Adding the authentication middleware befor the endpoint middleware.
+         // Adding the authentication middleware before the endpoint middleware.
          $app->useAuthentication();
          $app->useEndpoint(function ($routes) &lcub;
             // routes
@@ -90,6 +90,7 @@ use DevNet\System\Linq;
 use DevNet\System\Collections\ArrayList;
 use DevNet\Web\Http\HttpContext;
 use DevNet\Web\Security\Authentication\AuthenticationScheme;
+use DevNet\Web\Security\Authentication\IAuthentication;
 use DevNet\Web\Security\ClaimsIdentity;
 ...
 
@@ -97,7 +98,7 @@ $app->useEndpoint(function($routes) &lcub;
    $routes->mapPost("/login", function(HttpContext $context) &lcub;
       $user = $context->User;
       if (!$user->isAuthenticated()) &lcub;
-         $form  = $context->Resquest->Form;
+         $form  = $context->Request->Form;
          $json  = file_get_contents(__DIR__ . '/path/to/data.json');
          $data  = json_decode($json, true);
          $users = new ArrayList('object');
@@ -108,18 +109,20 @@ $app->useEndpoint(function($routes) &lcub;
             return $context->Response->setStatusCode(401);
          }
 
-         $identity = new ClaimsIdentity(AuthenticationScheme::CookieSession);
-         $identity->addClaim(new Claim('Username' , $form->getValue('username')));
-         $identity->addClaim(new Claim('Role', $user->Role));
+         $user = new ClaimsIdentity(AuthenticationScheme::CookieSession);
+         $user->addClaim(new Claim('Username' , $form->getValue('username')));
+         $user->addClaim(new Claim('Role', $user->Role));
 
-         $context->Authentication->signIn($identity, $form->getValue('remember'));
+         $authentication = $context->Services->getService(IAuthentication::class);
+         $authentication->signIn($user, $form->getValue('remember'));
       }
 
       return $context->Response->redirect('/account');
    });
 
    $routes->mapGet("/logout", function(HttpContext $context) &lcub;
-      $context->Authentication->signOut();
+      $authentication = $context->Services->getService(IAuthentication::class);
+      $authentication->signOut();
       return $context->Response->redirect('/login');
    })
 });</code></pre>
@@ -148,7 +151,7 @@ $app->useEndpoint(function($routes) &lcub;
    $routes->mapGet("/login", (function(HttpContext $context) &lcub;
       $user = $context->User;
       if (!$user->isAuthenticated()) &lcub;
-         $form  = $context->Resquest->Form;
+         $form  = $context->Request->Form;
          $json  = file_get_contents(__DIR__ . '/path/to/data.json');
          $data  = json_decode($json, true);
          $users = new ArrayList('object');
@@ -165,7 +168,7 @@ $app->useEndpoint(function($routes) &lcub;
          $claims->addClaim(new Claim('iss', '127.0.0.1:8000'));
          $claims->addClaim(new Claim('aud', '127.0.0.1:8080'));
 
-         // The asymmetric encryption RSA not supported yet, only the symmetric encription HSA for now.
+         // The asymmetric encryption RSA not supported yet, only the symmetric encryption HSA for now.
          $token = new JwtSecurityToken($claims, 'HS256', new DateTime('7 days'));
          $jwtHandler = new JwtSecurityTokenHandler();
          $signedToken = $jwtHandler->writeToken($token, "jwt security key");

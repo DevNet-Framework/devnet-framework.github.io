@@ -22,7 +22,7 @@ use DevNet\System\Delegate;
 
 class MyDelegate extends Delegate
 &lcub;
-   // Define the delegate signature.
+   // Defining the delegate signature.
    public function myDelegate(array $args): string
    &lcub;
       // The body is left empty.
@@ -40,7 +40,7 @@ namespace Application;
 
 class MyHandler
 &lcub;
-   // Define a method with the same signature as the delegate.
+   // Defining a method with the same signature as the delegate.
    public function handle(array $args): string
    &lcub;
       return serialize($args);
@@ -54,17 +54,17 @@ class MyHandler
             </p>
             <pre><code class="language-php">&lt;?php
 
-// Register the method 'handle' of the Handler class
+// Associating the method 'handle' of the Handler class to the delegate.
 $myAction = new MyDelegate([new MyHandler(), 'handle']);
 
-// Or register in-line closure function of the same signature
+// Or Associating in-line closure function of the same signature
 $myAction = new MyDelegate(function(array $args): string &lcub;
    return serialize($args);
 });
 
 $args = ['value1', 'value2'];
 
-// Invoke the delegate instance.
+// Invoking the delegate instance.
 $result = $myAction($args);
 </code></pre>
             <br>
@@ -76,7 +76,7 @@ $result = $myAction($args);
 
 $myAction = new MyDelegate();
 
-// register Handlers
+// Associating Handlers
 $myAction[] = [new MyHandler(), 'handle'];
 $myAction[] = function(array $args): string &lcub;
    return json_encode($args);
@@ -107,7 +107,7 @@ foreach($myAction as $action) &lcub;
                <li><b>$args:</b> (<code>DevNet\System\Event\EventArgs</code>) represents the event arguments to be handled by the handler.</li>
             </ul>
             <p>
-               The example below represents a <code>Button</code> class as a publisher with two events: The <code>click</code> and <code>keypress</code> events, which can be associated with event listners.
+               The example below represents a <code>Button</code> class as a publisher with two events: The <code>click</code> and <code>keypress</code> events, which can be associated with event listeners.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -129,7 +129,7 @@ class Button
       $this->keypress = new EventHandler();
    }
 
-   public function addListner(string $event, callable $handler): void
+   public function addListener(string $event, callable $handler): void
    &lcub;
       switch($event) &lcub;
          case 'click':
@@ -173,7 +173,7 @@ class Window
       $this->Title = $title;
       $this->MyButton = new Button("My button");
       // Subscribe to the click event.
-      $this->MyButton->addListner('click', [$this, 'onMyButtonClick']);
+      $this->MyButton->addListener('click', [$this, 'onMyButtonClick']);
    }
 
    public function onMyButtonClick(object $sender, EventArgs $event): void

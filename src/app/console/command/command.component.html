@@ -25,7 +25,7 @@
                <thead>
                   <tr>
                      <th scope="col">Token</th>
-                     <th scope="col">Discription</th>
+                     <th scope="col">Description</th>
                   </tr>
                </thead>
                <tbody>
@@ -86,23 +86,23 @@ class Program
 &lcub;
    public static function main(array $args = [])
    &lcub;
-      // define the root command.
-      $rootcommand = new CommandLine('watch', 'Command-line that displays the time.');
-      $rootcommand->addOption('--version', 'Display the version information.', '-v');
+      // Defines the root command.
+      $rootCommand = new CommandLine('watch', 'Command-line that displays the time.');
+      $rootCommand->addOption('--version', 'Display the version information.', '-v');
 
-      $rootcommand->setHandler(function (object $sender, CommandEventArgs $args): void &lcub;
+      $rootCommand->setHandler(function (object $sender, CommandEventArgs $args): void &lcub;
          $version = $args->get('--version');
          if ($version) &lcub;
-            Console::writeline("watch command-line: v1.0.0");
+            Console::writeLine("watch command-line: v1.0.0");
             return;
          }
 
-         Console::writeline("Try 'watch --help' to get information about the command's usage.");
+         Console::writeLine("Try 'watch --help' to get information about the command's usage.");
       });
 
-      // define the child command.
+      // Defines the child command.
       $subcommand = new CommandLine('time', 'Display the current time');
-      $subcommand->addArgument('timezone', 'Define the time zome');
+      $subcommand->addArgument('timezone', 'Define the time zone');
 
       $subcommand->setHandler(function (object $sender, CommandEventArgs $args): void &lcub;
          $datetime = new DateTime('now');
@@ -111,14 +111,14 @@ class Program
             $datetime->setTimezone(new DateTimeZone($timezone->Value));
          }
 
-         Console::writeline($datetime->format('H:i:s'));
+         Console::writeLine($datetime->format('H:i:s'));
       }
 
-      // add the child command.
-      $rootcommand->addCommand($subcommand);
+      // Adds the child command.
+      $rootCommand->addCommand($subcommand);
 
-      // parse the input, then invoke the command.
-      $rootcommand->invoke($args);
+      // Parsing the input, then invoking the command.
+      $rootCommand->invoke($args);
    }
 }
 </code></pre>
@@ -126,7 +126,7 @@ class Program
                <b>Note:</b> You can run your command-line application by executing the bin file of your application <code>./bin/run</code>
             </blockquote>
             <p>
-               In this example, we have renamed the bin files <code>./bin/run</code> and <code>./bin/run.bat</code> to match the name of the root command, and became <code>./bin/watch</code> and <code>./bin/watch.bat</code>
+               In this example, we have renamed the bin files <code>./bin/run</code> and <code>./bin/run.bat</code> to <code>./bin/watch</code> and <code>./bin/watch.bat</code> to match the name of the root command.
             </p>
             <p>
                Now you can execute the command with a given time zone argument to get the current time of that zone.
@@ -138,7 +138,7 @@ class Program
             <p>
                Or execute the command with the option <code>--version</code> to get the version information.
             </p>
-            <pre><code class="language-shell">./bin/watch --verion</code></pre>
+            <pre><code class="language-shell">./bin/watch --version</code></pre>
             <h5>Output</h5>
             <pre><code class="language-shell">watch command-line: v1.0.0</code></pre>
          </article>

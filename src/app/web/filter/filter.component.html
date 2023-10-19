@@ -8,7 +8,7 @@
             <h1>Action Filter</h1>
             <hr>
             <p>
-               Action Filters are similar to Middlewars, they allow code to be run before or after specific stages in the request processing pipeline and can choose to short-circuit the pipeline or pass the request to the next filter or the endpoint action, but the difference is that the action filters are invoked after the dispatcher selects the action to execute, just before and after the execution of the action.
+               Action Filters are similar to Middlewares, they allow code to be run before or after specific stages in the request processing pipeline and can choose to short-circuit the pipeline or pass the request to the next filter or the endpoint action, but the difference is that the action filters are invoked after the dispatcher selects the action to execute, just before and after the execution of the action.
             </p>
             <p>
                The following code example represents an action filter class called <code>AuthenticationFilter</code> that prevents accessing the requested resources if the user is not authenticated.
@@ -37,7 +37,7 @@ class AuthenticationFilter implements IActionFilter
          $context->HttpContext->Response->setStatusCode(401);
          return;
       }
-      // await next action delegate to chain the pipline to the next filter befor executing the action.
+      // await next action delegate to chain the pipeline to the next filter before executing the action.
       await($next($context));
       // logging or other works can be done here after executing the action.
    }
@@ -72,7 +72,7 @@ $host->start(function ($app) &lcub;
 
       // adding in-line action filter as anonymous async function.
       ->addFilter(async(function ($actionContext, $next)) &lcub;
-         // some works can be done here befor executing the action.
+         // some works can be done here before executing the action.
          await($next);
          // other works can be done here after executing the action.
       }));
@@ -89,12 +89,12 @@ namespace Application\Controllers;
 
 use DevNet\Web\Endpoint\ActionController;
 use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Security\Tokens\Csrf\Validate;
 use DevNet\Web\Endpoint\Route;
+use DevNet\Web\Security\Tokens\Csrf\Validate;
 use Application\Filters\AuthenticationFilter;
 use Application\Models\Profile;
 
-// this filter will be applied to all controller's methods.
+// This filter will be applied to all controller's methods.
 #[AuthenticationFilter]
 class AccountController extends ActionController
 &lcub;
@@ -104,8 +104,8 @@ class AccountController extends ActionController
       return $this->view();
    }
 
-   // this filter will be applied only to this action method.
-   #[Antiforgery]
+   // This filter will be applied only to this action method.
+   #[Validate]
    #[Route(path: '/user/create', method: 'POST')]
    public function create(Profile $form): IActionResult
    &lcub;
@@ -119,7 +119,7 @@ class AccountController extends ActionController
                <thead>
                   <tr>
                      <th scope="col">Filter</th>
-                     <th scope="col">Discription</th>
+                     <th scope="col">Description</th>
                   </tr>
                </thead>
                <tbody>
