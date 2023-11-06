@@ -19,8 +19,6 @@
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
 use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Http\HttpContext;
-use DevNet\System\Async\Tasks\Task;
 ...
 
 $host->start(function ($app) &lcub;
@@ -51,7 +49,8 @@ $host->start(function ($app) &lcub;
    $app->useEndpoint(function ($routes) &lcub;
       // handle the errors in RESTfull way
       $routes->mapGet("/error", function ($context) &lcub;
-         $code = $context->Error ? $context->Items['ErrorException']->getCode() : 404;
+      $error = $context->Items->getValue('ErrorException');
+      $code  = $error ? $error->getCode() : 404;
          switch ($code) &lcub;
             case 401:
                $context->Response->setStatusCode(401);
@@ -68,6 +67,31 @@ $host->start(function ($app) &lcub;
          }
       });
    });
+});
+</code></pre>
+            <br>
+            <h3>Runtime environment</h3>
+            <p>
+               The DevNet web application can determine the runtime environment by reading the environment variable <samp><b>DEVNET_ENVIRONMENT</b></samp> from your operating system, which can have two values: <code>development</code> and <code>production</code>, and you can use this as an advantage to control the error-handling behavior of your application.
+            </p>
+            <pre><code class="language-php">&lt;?php
+
+use DevNet\Web\Extensions\ApplicationBuilderExtensions;
+use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Hosting\WebHost;
+...
+
+$host->start(function ($app) &lcub;
+   if ($app->Environment->isDevolvement()) &lcub;
+      $app->useExceptionHandler();
+   } else &lcub;
+      // Using custom error handler in production
+      $app->useExceptionHandler("/error");
+   }
+
+   // The rest of middlewares
+   $app->useRouter();
+   ...
 });
 </code></pre>
          </article>

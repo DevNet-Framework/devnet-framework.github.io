@@ -26,10 +26,10 @@
 
 namespace Application\Migrations;
 
-use DevNet\Entity\Migration\AbstractMigration;
-use DevNet\Entity\Migration\MigrationBuilder;
+use DevNet\Entity\Migrations\Migration;
+use DevNet\Entity\Migrations\MigrationBuilder;
 
-class InitialMigration extends AbstractMigration
+class InitialMigration extends Migration
 &lcub;  
    /**
    * Schema definitions will be executed when the migration is upgraded.
@@ -64,10 +64,10 @@ class InitialMigration extends AbstractMigration
 
 namespace Application\Migrations;
 
-use DevNet\Entity\Migration\AbstractMigration;
-use DevNet\Entity\Migration\MigrationBuilder;
+use DevNet\Entity\Migrations\Migration;
+use DevNet\Entity\Migrations\MigrationBuilder;
 
-class InitialMigration extends AbstractMigration
+class InitialMigration extends Migration
 &lcub;
    public function up(MigrationBuilder $builder): void
    &lcub;
@@ -98,7 +98,7 @@ class InitialMigration extends AbstractMigration
    public function down(MigrationBuilder $builder): void
    &lcub;
       // if the constraint ON DELETE is configured as "strict" and which is the default configuration,
-      // the child table must be droped before the parent table, otherwise will throw an error.
+      // the child table must be dropped before the parent table, otherwise will throw an error.
       $builder->dropTable('UserRole');
       $builder->dropTable('User');
       $builder->dropTable('Role');
@@ -114,10 +114,10 @@ class InitialMigration extends AbstractMigration
 
 namespace Application\Migrations;
 
-use DevNet\Entity\Migration\AbstractMigration;
-use DevNet\Entity\Migration\MigrationBuilder;
+use DevNet\Entity\Migrations\Migration;
+use DevNet\Entity\Migrations\MigrationBuilder;
 
-class AlterMigration extends AbstractMigration
+class AlterMigration extends Migration
 &lcub;
    public function up(MigrationBuilder $builder): void
    &lcub;
@@ -161,10 +161,10 @@ class AlterMigration extends AbstractMigration
 
 namespace Application\Migrations;
 
-use DevNet\Entity\Migration\AbstractMigration;
-use DevNet\Entity\Migration\MigrationBuilder;
+use DevNet\Entity\Migrations\Migration;
+use DevNet\Entity\Migrations\MigrationBuilder;
 
-class SeedMigration extends AbstractMigration
+class SeedMigration extends Migration
 &lcub;
    public function up(MigrationBuilder $builder): void
    &lcub;
@@ -197,6 +197,9 @@ class SeedMigration extends AbstractMigration
                And here is an example shows how to run the migrate command targeting the migration that we created earlier:
             </p>
             <pre><code class="language-shell">devnet migrate --target 20230701082859_InitialMigration</code></pre>
+            <blockquote class="alert alert-warning">
+               <b>Important:</b> Make sure to specify the database configuration in the <samp><b>settings.json</b></samp> before running the <code>migrate</code> command or pass it to the command as parameters using the options: <code>--provider</code> and <code>--connection</code>.
+            </blockquote>
             <br>
             <h4>Applying all migrations</h4>
             <p>

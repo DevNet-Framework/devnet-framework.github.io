@@ -12,55 +12,25 @@
             </p>
             <img src="assets/images/mvc.svg" alt="Web app home page" width="80%" height="auto">
             <br><br><br>
-            <h3>Registering MVC Service</h3>
-            <p>
-               Before using the controller component, we need first to register the MVC service inside the method <code>WebHostBuilder::register()</code> by calling the extension method <code>ServiceCollectionExtensions::addMvc()</code> which is attached to the instance of type IServiceCollection, as shown in the following code example.
-            </p>
-            <pre><code class="language-php">&lt;?php
-    
-namespace Application;
-
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
-
-public static function main(array $args = [])
-&lcub;
-   $builder = WebHost::createDefaultBuilder($args);
-   $builder->register(function ($services) &lcub;
-      // Adding mvc service
-      $services->addMvc();
-   });
-   $host = $builder->build();
-   $host->start(function ($app) &lcub;
-      $app->UseExceptionHandler();
-      $app->useRouter();
-      $app->useEndpoint(function ($routes) &lcub;
-         // Mapping routes to controllers
-         $routes->mapControllers();
-      });
-   });
-}</code></pre>
-            <br>
             <h3>Adding Controller Class</h3>
             <p>
-               Controller class can be created manually inside "Controllers" folder or by using DevNet command-line:
+               Controller class can be created manually or by using the devnet command-line:
             </p>
             <pre><code class="language-shell">devnet add controller --name HomeController</code></pre>
             <p>
-               The class below represent an example of Controller class named HomeController extends a base Controller class to inherit some MVC features, and has one action method called index and return an instance of IActionResult, with a content of <samp>"Hello World!"</samp> as a response.<br>
+               The class below represent an example of a controller class named <code>HomeController</code> extends a <code>Controller</code> base class to inherit some MVC features, and has one action method called <code>index()</code> that returns an instance of <code>IActionResult</code>, with a content of <samp>"Hello World!"</samp> as a response.<br>
             </p>
             <pre><code class="language-php">&lt;?php
   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\Route;
 
-class HomeController extends ActionController
+class HomeController extends Controller
 &lcub;
-   #[Route(path: '/')]
+   #[Route('/')]
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello World!");
@@ -118,15 +88,15 @@ class HomeController extends ActionController
 namespace Application\Controllers;
 
 use DevNet\System\Async\Task;
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\Route;
 
 use function Devnet\System\await;
 
-class HomeController extends ActionController
+class HomeController extends Controller
 &lcub;
-   #[Route(path: '/')]
+   #[Route('/')]
    public function async_index(): IActionResult
    &lcub;
       $task = Task::run(function () &lcub;
@@ -163,11 +133,11 @@ class HomeController extends ActionController
   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\Route;
 
-class BlogController extends ActionController
+class BlogController extends Controller
 &lcub;
    #[Route(path: '/posts/&lcub;id}', method: 'GET')]
    public function getPost(int $id, ?bool $excerpt): IActionResult
@@ -195,12 +165,12 @@ class BlogController extends ActionController
   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\Route;
 use Application\Models\Contact;
 
-class HomeController extends ActionController
+class HomeController extends Controller
 &lcub;
    #[Route(path: '/contact/send', method: 'POST')]
    public function send(Contact $form): IActionResult

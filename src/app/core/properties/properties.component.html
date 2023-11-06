@@ -5,17 +5,20 @@
       </div>
       <div id="content" class="flex-grow-1" style="width: 400px;">
          <article>
-            <h1>Computed Properties</h1>
+            <h1>Accessor Properties</h1>
             <hr>
             <p>
-               A computed property is a property that doesn't store a value directly. Instead, it uses a getter and a setter method to retrieve and set other properties indirectly.
-            </p>
-            <h3>Getter</h3>
-            <p>
-               A getter is a function bound to a computed property and returns a value when that property is looked up.
+               Accessor properties are methods that look like regular data properties from the outside but are invoked as methods internally when accessed as properties. This allows us to define custom logic for reading and writing the values of an object's properties, with more control over the property's behavior, such as how to validate or modify the input or output, unlike the data properties, which directly store a fixed value.
             </p>
             <p>
-               To use a getter for a computed property in DevNet, you need first to include the trait <code>DevNet\System\PropertyTrait</code> in your class to enable this feature, then define the computed property as a method prefixed with <code>get</code> that returns a value.
+               To enable the accessor property feature, you need to include the trait <code>DevNet\System\PropertyTrait</code> in your class.
+            </p>
+            <h3>Getter Accessor</h3>
+            <p>
+               The getter accessor is a function bound to a computed property and returns a value when that property is looked up.
+            </p>
+            <p>
+               Here is an example that shows how to define a getter accessor property, which is a method that has a property name prefixed with <code>get_</code> accessor and return a value.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -30,7 +33,7 @@ class Person
    public string $FirstName;
    public string $LastName;
    
-   // Defining the getter computed property.
+   // Computed property with getter accessor.
    public function get_FullName(): string
    &lcub;
       return $this->FirstName . ' ' . $this->LastName;
@@ -53,12 +56,12 @@ $person->LastName = "Doe";
 print($person->FullName); // Output: John Doe
 </code></pre>
             <br>
-            <h3>Setter</h3>
+            <h3>Setter Accessor</h3>
             <p>
-               A setter is a function bound to a computed property and will be called when there is an attempt to set that property.
+               The setter accessor is a function bound to a computed property and will be called when there is an attempt to set that property.
             </p>
             <p>
-               To use a setter for a computed property, you need to include the trait <code>DevNet\System\PropertyTrait</code> in your class to enable this feature, then define the computed property as a method prefixed with <code>set</code> that has a value as a parameter.
+               The following example shows how to define a setter accessor property as a method prefixed with <code>set_</code> accessor and take a value parameter to set object.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -73,7 +76,7 @@ class Person
    public string $FirstName;
    public string $LastName;
    
-   // Defining the setter computed property.
+   // Computed property with setter accessor.
    public function set_FullName(string $value): void
    &lcub;
       $segments = explode(' ', $value, 2);
@@ -83,7 +86,7 @@ class Person
 }
 </code></pre>
             <p>
-               And here how to set he computed property:
+               And here how to set the computed property:
             </p>
             <pre><code class="language-php">&lt;?php
                

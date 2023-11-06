@@ -91,14 +91,16 @@ $data = $task->Result;
                The async/await pattern is a feature related to the coroutine concept, where the async function can use the await operator to suspend the asynchronous operation until that operation completes and then returns a result. This enables asynchronous non-blocking functions to be structured like normal synchronous functions in the enclosing scope without blocking the main thread during the execution of the async function, which also returns a task object that represents an asynchronous operation and provides a result when the task completes successfully.
             </p>
             <pre><code class="language-php">&lt;?php
-
+           
+use DevNet\System\IO\FileAccess;
+use DevNet\System\IO\FileMode;
 use DevNet\System\IO\FileStream;
 
 use function DevNet\System\async;
 use function DevNet\System\await;
 
 $readJsonAsync = async(function($path): string &lcub;
-   $file = new FileStream($path, 'r');
+   $file = new FileStream($path, FileMode::Open, FileAccess::Read);
    // Await for the async reading to complete without blocking the outside scope.
    $json = await($file->readAsync($file->Length));
    $data = json_decode($json);
@@ -115,6 +117,8 @@ $data = $task->getAwaiter()->getResult();
             </p>
             <pre><code class="language-php">&lt;?php
 
+use DevNet\System\IO\FileAccess;
+use DevNet\System\IO\FileMode;
 use DevNet\System\IO\FileStream;
 use DevNet\System\MethodTrait;
 
@@ -126,7 +130,7 @@ class Reader &lcub;
 
    public async_readJsonAsync(function($path): string
    &lcub;
-      $file = new FileStream($path, 'r');
+      $file = new FileStream($path, FileMode::Open, FileAccess::Read);
       $json = await($file->readAsync($file->Length));
       $data = json_decode($json);
       

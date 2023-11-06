@@ -138,12 +138,12 @@ class Post
             <pre><code class="language-php">&lt;?php
 
 use Application\Models\BlogContext;
-use DevNet\Entity\MySql\MySqlDataProvider;
 use DevNet\Entity\EntityOptions;
+use DevNet\Entity\MySql\MySqlDataProvider;
 
 $options = new EntityOptions();
 $options->ProviderType = MySqlDataProvider::class;
-$options->ConnectionString = "//user:password@127.0.0.1/blog";
+$options->ConnectionString = "//username:password@127.0.0.1/blog";
 
 $blog = new BlogContext($options);
 $posts = $blog->Posts;
@@ -187,29 +187,29 @@ $posts = $blog->Posts;
             <br>
             <h3>Registering the EntityContext</h3>
             <p>
-               You can register Entity ORM as a reused service that will be injected into your application using the Extension method <code>ServiceCollectionExtensions::addEntityContext()</code> inside the method <code>WebHostBuilder::register()</code>, as shown in the following code example:
+               It is recommended that you register the Entity ORM as a reusable service to be injected into your application using the <code>ServiceCollectionExtensions::addEntityContext()</code> Extension method, which is called within the <code>WebHostBuilder::register()</code> method, with the use of the configuration provider that gets the database configuration from the <samp>"settings.json"</samp> file as shown in the following code example:
             </p>
             <pre><code class="language-php">&lt;?php
 
 namespace Application;
 
+use Application\Models\BlogContext;
 use DevNet\Web\Hosting\WebHost;
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Entity\MySql\MySqlDataProvider;
-use Application\Models\BlogContext;
 
 class Program
 &lcub;
    public static function main(array $args = [])
    &lcub;
       $builder = WebHost::createDefaultBuilder($args);
-      $builder->register(function ($services) &lcub;
+      $configuration = $builder->Configuration;
+      $builder->register(function ($services) use ($configuration) &lcub; //;
          // adding EntityContext
          $services->addEntityContext(BlogContext::class,
             function ($options) &lcub;
-               $options->ProviderType = MySqlDataProvider::class;
-               $options->ConnectionString = "//user:password@127.0.0.1/blog";
+               $options->ProviderType = $configuration->getValue('Database:ProviderType');
+               $options->ConnectionString = $configuration->getValue('Database:ConnectionString');
             }
          );
       });
@@ -218,18 +218,26 @@ class Program
 }
 </code></pre>
             <p>
-               You can then get the EntityContext using the constructor injection to add the EntityContext to the controller class and use it in the controller methods like the following example:
+               In the <samp>"settings.json"</samp> file, you need to set the database configuration, like in the following example:
+            </p>
+            <pre><code class="language-json">"Database": &lcub;
+   "ProviderType": "DevNet\\Entity\\MySql\\MySqlDataProvider",
+   "ConnectionString": "//username:password@127.0.0.1/blog"
+}
+</code></pre>
+            <p>
+               Then, you can get the <code>EntityContext</code> using the controller constructor injection, like this:
             </p>
             <pre><code class="language-php">&lt;?php
                   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\Route;
 use Application\Models\BlogContext;
 
-class BlogController extends ActionController
+class BlogController extends Controller
 &lcub;
    private BlogContext $blog;
 
@@ -238,7 +246,7 @@ class BlogController extends ActionController
       $this->blog = $blog;
    }
 
-   #[Route("/")]
+   #[Route("/blog")]
    public function index(): IActionResult
    &lcub;
       $this->view(['posts' => $this->blog->Posts]);

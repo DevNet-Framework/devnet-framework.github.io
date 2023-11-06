@@ -141,11 +141,11 @@ $app->useEndpoint(function($routes) &lcub;
                   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use Application\Services\IMyService;
 
-class HelloController extends ActionController
+class HelloController extends Controller
 &lcub;
    private IMyService $MyService;
 
@@ -168,31 +168,27 @@ class HelloController extends ActionController
                <tbody>
                   <tr>
                      <td><code>addAntiforgery(?Closure $configuration)</code></td>
-                     <td>register Antiforgery service.</td>
+                     <td>Register IAntiforgery service.</td>
                   </tr>
                   <tr>
                      <td><code>addAuthentication(?Closure $configuration)</code></td>
-                     <td>register Authentication service.</td>
+                     <td>Register IAuthentication service.</td>
                   </tr>
                   <tr>
                      <td><code>addAuthorization(?Closure $configuration)</code></td>
-                     <td>register Authorization service.</td>
+                     <td>Register IAuthorization service.</td>
                   </tr>
                   <tr>
                      <td><code>addEntityContext(?Closure $configuration)</code></td>
-                     <td>register EntityContext service.</td>
+                     <td>Register EntityContext service.</td>
                   </tr>
                   <tr>
                      <td><code>addHttpClient(?Closure $configuration)</code></td>
-                     <td>register HttpClient service.</td>
+                     <td>Register HttpClient service.</td>
                   </tr>
                   <tr>
                      <td><code>addLogging(?Closure $configuration)</code></td>
-                     <td>register ILoggerFactory service.</td>
-                  </tr>
-                  <tr>
-                     <td><code>addMvc(?Closure $configuration)</code></td>
-                     <td>register Model-View-Controller service.</td>
+                     <td>Register ILogger service.</td>
                   </tr>
                </tbody>
             </table>

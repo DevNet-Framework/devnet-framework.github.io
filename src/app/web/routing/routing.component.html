@@ -50,34 +50,34 @@ $host->start(function ($app) &lcub;
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">Methods</th>
-                     <th scope="col">Description</th>
+                     <th class="col-md-6" scope="col">Methods</th>
+                     <th class="col-md-4" scope="col">Description</th>
                   </tr>
                </thead>
                <tbody>
                   <tr>
                      <td><code>mapGet(string $pattern string|callable|array $handler)</code></td>
-                     <td>Adds a route that matches HTTP GET requests for the specified path.</td>
+                     <td>Route that matches HTTP GET request for the specified path.</td>
                   </tr>
                   <tr>
                      <td><code>mapPost(string $pattern, string|callable|array $handler)</code></td>
-                     <td>Adds a route that matches HTTP POST requests for the specified path.</td>
+                     <td>Route that matches HTTP POST request for the specified path.</td>
                   </tr>
                   <tr>
                      <td><code>mapPut(string $pattern, string|callable|array $handler)</code></td>
-                     <td>Adds a route that matches HTTP PUT requests for the specified path.</td>
+                     <td>Route that matches HTTP PUT request for the specified path.</td>
                   </tr>
                   <tr>
                      <td><code>mapDelete(string $pattern, string|callable|array $handler)</code></td>
-                     <td>Adds a route that matches HTTP DELETE requests for the specified path.</td>
+                     <td>Route that matches HTTP DELETE request for the specified path.</td>
                   </tr>
                   <tr>
                      <td><code>mapPatch(string $pattern, string|callable|array $handler)</code></td>
-                     <td>Adds a route that matches HTTP PATCH requests for the specified path.</td>
+                     <td>Route that matches HTTP PATCH request for the specified path.</td>
                   </tr>
                   <tr>
                      <td><code>mapRoute(string $pattern, string|callable|array $handler, ?string $verb = null)</code></td>
-                     <td>Adds a route that matches HTTP requests for the specified path and HTTP method, or any HTTP method if it's not specified.</td>
+                     <td>Route that matches HTTP request for the specified path and HTTP method, or any HTTP method if it's not specified.</td>
                   </tr>
                </tbody>
             </table>
@@ -172,11 +172,11 @@ $app->useEndpoint(function($routes) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Endpoint\Route;
 
-class HomeController extends ActionController
+class HomeController extends Controller
 &lcub;
    // Accept any HTTP method.
    #[Route(path: '/')]
@@ -201,7 +201,7 @@ class HomeController extends ActionController
    }
 }</code></pre>
             <blockquote class="alert alert-info">
-               <b>Note:</b> To work with controllers, You need to register the MVC service, which will be discussed in the next section.
+               <b>Note:</b> Attribute routing, requires <b>Controller</b> service, which will be discussed in the next section.
             </blockquote>
          </article>
          <nav class="no-print" aria-label="Page navigation">

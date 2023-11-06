@@ -134,16 +134,22 @@ class Program
 &lcub;
    public static function main(array $args = [])
    &lcub;
-      Console::writeLine("The foreground Colors:");
+      Console::$ForegroundColor = ConsoleColor::Black;
+      Console::$BackgroundColor = ConsoleColor::White;
+      Console::writeLine("List of the foreground Colors:");
+      Console::resetColor();
+
       foreach (ConsoleColor::cases() as $color) &lcub;
          Console::$ForegroundColor = $color;
          Console::writeLine("The foreground color &lcub;0} is &lcub;1}", $color->value, $color->name);
       }
 
-      Console::resetColor();
       Console::writeLine();
+      Console::$ForegroundColor = ConsoleColor::Black;
+      Console::$BackgroundColor = ConsoleColor::White;
+      Console::writeLine("List of the background colors:");
+      Console::resetColor();
 
-      Console::writeLine("The background Colors:");
       foreach (ConsoleColor::cases() as $color) &lcub;
          Console::$BackgroundColor = $color;
          Console::writeLine("The background color &lcub;0} is &lcub;1}", $color->value, $color->name);

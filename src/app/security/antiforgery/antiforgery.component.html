@@ -87,14 +87,14 @@ class Program
 namespace Application\Controllers;
 
 use DevNet\System\Linq;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\ActionController;
 use DevNet\Web\Endpoint\Route;
 use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Security\Tokens\Csrf\Validate;
 
 #[Authorize]
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
    #[Route(path: '/account/edit/&lcub;id}', method: 'GET')]
    public function edit(int $id): IActionResult

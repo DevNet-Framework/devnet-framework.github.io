@@ -11,11 +11,11 @@
                Authorization is the process that determines if the user has permission to access or use resources, and usually is coupled with authentication so that the server has some concept of who the user is before determining what the user can do.
             </p>
             <p>
-               The authorization is controlled by the <code>Authorize</code> filter which is responsible for enforcing the authorization policy on the endpoint action. It uses the <code>Authorization</code> service to evaluate the policy and decide which rule applies to the action. The rule can allow or deny access to the action based on various criteria.
+               The authorization is controlled by the <code>Authorize</code> filter which is responsible for enforcing the authorization policy on the endpoint action. It uses the <code>IAuthorization</code> service to evaluate the policy and decide which rule applies to the action. The rule can allow or deny access to the action based on various criteria.
             </p>
             <h3>Configuration</h3>
             <p>
-               To use the authorization feature in your application, you need first to add the <code>Authorization</code> service to the dependency, which also depends on the <code>Authentication</code> service, and the code below shows a simple way to add this feature.
+               To use the authorization feature in your application, you need first to add the <code>IAuthorization</code> service to the dependency, which also depends on the <code>IAuthentication</code> service, and the code below shows a simple way to add this feature.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -70,13 +70,15 @@ $app->useEndpoint(function($routes) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
 use DevNet\Web\Security\Authorization\Authorize;
 
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
    #[Authorize]
+   #[Route('/account', 'GET')]
    public function index(): IActionResult
    &lcub;
       $user  = $this->Context->User;
@@ -85,8 +87,19 @@ class AccountController extends ActionController
       return $this->content("Welcome &lcub;$name}");
    }
 
-   public function register(Registration $form): IActionResult
+   #[Route('/register', 'GET')]
+   public function register(): IActionResult
    &lcub;
+      return $this->view();
+   }
+
+   #[Route('/account/create', 'POST')]
+   public function create(Registration $form): IActionResult
+   &lcub;
+      if (!$form->isValid()) &lcub;
+         return $this->redirect('/register');
+      }
+
       $data = [];
       if (file_exists(__DIR__ . '/../../data.json')) &lcub;
          $json = file_get_contents(__DIR__ . '/../../data.json');
@@ -115,34 +128,39 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Web\Endpoint\Route;
 use DevNet\Web\Security\Authorization\Authorize;
 use Application\Models\Configuration;
 use Application\Models\Login;
 use Application\Models\Registration;
 
 #[Authorize]
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
+   #[Route('/account', 'GET')]
    public function index(): IActionResult
    &lcub;
       // code.
    }
 
    #[Authorize('Anonymous')]
-   public function register(Registration $form): IActionResult
+   #[Route('/register', 'GET')]
+   public function register(): IActionResult
    &lcub;
       // code.
    }
 
-   public function settings(Configuration $form): IActionResult
+   #[Route('/account/settings', 'POST')]
+   public function settings(): IActionResult
    &lcub;
       // code.
    }
 
    #[Authorize('Anonymous')]
-   public function login(login $form): IActionResult
+   #[Route('/login', 'GET')]
+   public function login(): IActionResult
    &lcub;
       // code.
    }
@@ -159,14 +177,15 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Security\Authentication\AuthenticationScheme;
 
 #[Authorize(AuthenticationScheme::CookieSession)]
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
+   #[Route(path: '/account', method: 'GET')]
    public function index(): IActionResult
    &lcub;
       // code.
@@ -179,14 +198,15 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Security\Authentication\AuthenticationScheme;
 
 #[Authorize(AuthenticationScheme::JwtBearer)]
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
+   #[Route(path: '/account', method: 'GET')]
    public function index(): IActionResult
    &lcub;
       // code.
@@ -204,13 +224,14 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Security\Authorization\Authorize;
 
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
    #[Authorize(roles: ['Administrator'])]
+   #[Route(path: '/account', method: 'GET')]
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello Administrator");
@@ -225,13 +246,14 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Security\Authorization\Authorize;
 
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
    #[Authorize(roles: ['Administrator, Manager'])]
+   #[Route(path: '/account', method: 'GET')]
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello to either Administrator or Manager");
@@ -244,14 +266,15 @@ class AccountController extends ActionController
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Endpoint\IActionResult;
 use DevNet\Web\Security\Authorization\Authorize;
 
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
    #[Authorize(roles: ['Administrator'])]
    #[Authorize(roles: ['Manager'])]
+   #[Route(path: '/account', method: 'GET')]
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello to Administrator and Manager");
@@ -302,11 +325,11 @@ class Program
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\ActionController;
+use DevNet\Web\Endpoint\Controller;
 use DevNet\Web\Security\Authorization\Authorize;
 use DevNet\Web\Endpoint\IActionResult;
 
-class AccountController extends ActionController
+class AccountController extends Controller
 &lcub;
    #[Authorize(policy: 'Administration')]
    public function index(): IActionResult
