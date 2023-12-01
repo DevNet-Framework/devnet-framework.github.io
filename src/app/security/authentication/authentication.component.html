@@ -70,7 +70,7 @@ class Program
          // Adding the authentication middleware before the endpoint middleware.
          $app->useAuthentication();
          $app->useEndpoint(function ($routes) &lcub;
-            // routes
+            // Routes
          });
       });
    }
@@ -109,12 +109,12 @@ $app->useEndpoint(function($routes) &lcub;
             return $context->Response->setStatusCode(401);
          }
 
-         $user = new ClaimsIdentity(AuthenticationScheme::CookieSession);
-         $user->addClaim(new Claim('Username' , $form->getValue('username')));
-         $user->addClaim(new Claim('Role', $user->Role));
+         $identity = new ClaimsIdentity(AuthenticationScheme::CookieSession);
+         $identity->addClaim(new Claim('Username' , $form->getValue('username')));
+         $identity->addClaim(new Claim('Role', $user->Role));
 
          $authentication = $context->Services->getService(IAuthentication::class);
-         $authentication->signIn($user, $form->getValue('remember'));
+         $authentication->signIn($identity, $form->getValue('remember'));
       }
 
       return $context->Response->redirect('/account');

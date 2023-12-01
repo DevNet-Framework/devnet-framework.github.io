@@ -22,48 +22,44 @@ use DevNet\Web\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
-   // registering the exception handler in the top order
+   // Registering the exception handler in the top order.
    $app->useExceptionHandler();
-   // some middlewares here
+   // Some middlewares here.
 });
 </code></pre>
             <br>
             <h3>Custom error handling</h3>
             <p>
-               The exception handler is very useful for debugging, but when the application runs in a production environment, it shouldn't display detailed exception information publicly, so you need to handle the errors differently with a custom error handler, e.g. log the errors and return only the status code.
+               The default configuration of the exception handler displays the Developer Exception page that shows detailed information about the error exception, which is very useful for debugging, but it is not recommended for deploying the application in the production environment, instead you need to handle the errors differently with a custom error handler, e.g. log the errors and return only the status code.
             </p>
             <p>
-               The following example shows how to register an exception handler that redirects the errors to a custom route, then the endpoint handler of that custom route handles the errors.
+               The following example shows how to register an exception handler that redirects the errors to a custom error handler endpoint to handle the errors differently.
             </p>
             <pre><code class="language-php">&lt;?php
 
 use DevNet\Web\Extensions\ApplicationBuilderExtensions;
 use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Web\Http\HttpException;
 use DevNet\Web\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
-   // registering the exception handler with a custom route handler
+   // Registering an exception handler that redirects the errors to a custom error handler.
    $app->useExceptionHandler("/error");
    $app->useRouter();
    $app->useEndpoint(function ($routes) &lcub;
-      // handle the errors in RESTfull way
+      $routes->mapGet("/", fn () => "Hello World!");
+      // The custom error handler endpoint.
       $routes->mapGet("/error", function ($context) &lcub;
-      $error = $context->Items->getValue('ErrorException');
-      $code  = $error ? $error->getCode() : 404;
-         switch ($code) &lcub;
-            case 401:
-               $context->Response->setStatusCode(401);
-               break;
-            case 403:
-               $context->Response->setStatusCode(403);
-               break;
-            case 404:
-               $context->Response->setStatusCode(404);
-               break;
-            default:
-               $context->Response->setStatusCode(500);
-               break;
+         $error = $context->Items->getValue('ErrorException');
+         $code  = $error ? $error->getCode() : 404;
+         $code  = $error instanceof HttpException ? $code : 500;
+         if ($code == 401) &lcub;
+            $context->Response->redirect('/login');
+         } else &lcub;
+            $context->Response->setStatusCode($code);
+            // You may need to log the error message here.
+            // e.g. Logger::log(LogLevel::Error, $error->getMessage());
          }
       });
    });
@@ -72,7 +68,33 @@ $host->start(function ($app) &lcub;
             <br>
             <h3>Runtime environment</h3>
             <p>
-               The DevNet web application can determine the runtime environment by reading the environment variable <samp><b>DEVNET_ENVIRONMENT</b></samp> from your operating system, which can have two values: <code>development</code> and <code>production</code>, and you can use this as an advantage to control the error-handling behavior of your application.
+               The DevNet web application can determine the runtime environment by reading the environment variable <samp><b>DEVNET_ENVIRONMENT</b></samp> from your system environment variables or from the <samp>"lunch.json"</samp> file of Visual Studio Code, which can have two values: <code>development</code> or <code>production</code>, so you can use it as an advantage to control the error-handling behavior of your application.
+            </p>
+            <p>
+               The environment variable <samp><b>DEVNET_ENVIRONMENT</b></samp> is set to <code>development</code> in the <samp>"lunch.json"</samp> file, so when you debug your application, it runs in development mode.
+            </p>
+            <pre><code class="language-json">"configurations": [
+   &lcub;
+      "name": "Launch Built-in web server",
+      "type": "php",
+      "request": "launch",
+      "cwd": "$&lcub;workspaceRoot}/webroot",
+      "runtimeArgs": [
+         "-dxdebug.mode=debug",
+         "-dxdebug.start_with_request=yes",
+         "-S",
+         "localhost:8000"
+      ],
+      "env": &lcub;
+         "DEVNET_ENVIRONMENT": "development"
+      }
+   }
+]
+</code></pre>
+            <br>
+            <h4>Controlling the error-handling conditions</h4>
+            <p>
+               By default, the Developer Exception page is enabled when the runtime environment is set to development mode, without the need to register it, but that can be controlled by adding a condition in your application pipeline to use a custom exception handler if the runtime environment is not in development mode.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -82,28 +104,26 @@ use DevNet\Web\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
-   if ($app->Environment->isDevolvement()) &lcub;
-      $app->useExceptionHandler();
-   } else &lcub;
-      // Using custom error handler in production
+   if (!$app->Environment->isDevolvement()) &lcub;
       $app->useExceptionHandler("/error");
    }
-
-   // The rest of middlewares
-   $app->useRouter();
+   // The rest of middlewares.
    ...
 });
 </code></pre>
+            <p>
+               In this way, your application will run in development or production mode, depending on the runtime environment of your system or your application.
+            </p>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/web/dependency">
+                  <a class="nav-page-link" routerLink="/docs/web/filter">
                      <i class="chevron left"></i> Previous
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/security/overview">
+                  <a class="nav-page-link" routerLink="/docs/web/dependency">
                      Next <i class="chevron right"></i>
                   </a>
                </li>

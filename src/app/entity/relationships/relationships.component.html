@@ -11,8 +11,8 @@
                A relationship describes how entities are associated with each other, represented by a referential constraint that defines which entity is the principal or dependent role in the relationship, and there are many kinds of entity relationships, such as one-to-one, one-to-many, many-to-one, and many-to-many.
             </p>
             <ul>
-               <li class="mb-2"><b>Dependent entity:</b> sometimes called the 'child,' is the entity that contains the foreign key, which is a reference to the primary key of the principal entity.</li>
-               <li class="mb-2"><b>Principal entity:</b> sometimes called the 'parent,' is the entity that contains the primary key, which is referenced as a foreign key in the dependent entity.</li>
+               <li class="mb-2"><b>Dependent entity:</b> sometimes called the "child" is the entity that contains the foreign key, which is a reference to the primary key of the principal entity.</li>
+               <li class="mb-2"><b>Principal entity:</b> sometimes called the "parent" is the entity that contains the primary key, which is referenced as a foreign key in the dependent entity.</li>
             </ul>
             <h3>Navigation property:</h3>
             <p>
@@ -31,7 +31,7 @@ namespace Application\Models;
 
 use DevNet\Entity\Annotations\ForeignKey;
 use DevNet\System\Collections\ICollection;
-use DevNet\System\Generic;
+use DevNet\System\Type;
 use DateTime;
 
 class Post
@@ -45,7 +45,7 @@ class Post
    #[ForeignKey('UserId')]
    public User $User;
 
-   #[Generic(Classification::class)]
+   #[Type(ICollection::class, [Classification::class])]
    public ICollection $Classifications;
 }
 </code></pre>
@@ -85,7 +85,7 @@ use Application\Models\BlogContext;
 
 $blog = new BlogContext();
 $user = $blog->Users->find($id);
-// iterating through the posts that are related to the selected user.
+// Iterating through the posts that are related to the selected user.
 foreach($user->Posts as $post) &lcub;
    $post->Title;
 }
@@ -187,7 +187,7 @@ use Application\Models\BlogContext;
 
 $blog = new BlogContext();
 $category = $blog->Categories->find($id);
-// Iterate the related entities through the junction entity.
+// Iterates the related entities through the junction entity.
 foreach($category->Classifications as $classification) &lcub;
    $classification->Post->Title;
 }

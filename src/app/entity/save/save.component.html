@@ -70,22 +70,22 @@ use DateTime;
 
 $blog = new BlogContext();
 
-// add new post
+// Adds new post
 $post = new Post();
 $post->Title = "Post Title";
 $post->Content = "Some content...";
 $post->Date = new DateTime("now");
 $blog->Post->add($post);
 
-// delete post with id = 2
+// Deletes post with id = 2
 $post = $blog->Post->find(2);
 $blog->Post->remove($post);
 
-// update post with id = 1
+// Updates post with id = 1
 $post = $blog->Post->find(1);
 $post->Content = "Updated content";
 
-// persist all the operations
+// Persists all the operations
 $blog->Post->save();
 </code></pre>
          </article>

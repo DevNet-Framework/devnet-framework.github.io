@@ -38,9 +38,9 @@ use DevNet\Web\Hosting\WebHost;
 $host->start(function ($app) &lcub;
    $app->UseExceptionHandler();
    $app->useRouter();
-   // additional middlewares here
+   // Additional middlewares here
    $app->useEndpoint(function ($routes) &lcub;
-      // routes
+      // Routes
       $routes->mapGet("/", fn () => "Hello World!");
    });
 });</code></pre>
@@ -200,9 +200,6 @@ class HomeController extends Controller
       return $this->statusCode(200);
    }
 }</code></pre>
-            <blockquote class="alert alert-info">
-               <b>Note:</b> Attribute routing, requires <b>Controller</b> service, which will be discussed in the next section.
-            </blockquote>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

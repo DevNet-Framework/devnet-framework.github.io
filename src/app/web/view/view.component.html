@@ -5,7 +5,7 @@
       </div>
       <div id="content" class="flex-grow-1" style="width: 400px;">
          <article>
-            <h1>View</h1>
+            <h1>Views</h1>
             <hr>
             <p>
                Views are the presentation details of the user’s interaction, in form of HTML templates with minimal
@@ -245,6 +245,38 @@ class HomeController extends Controller
    &lt;/main>
 &lt;/body>
 &lt;/html></code></pre>
+            <br>
+            <h3>The control structures</h3>
+            <p>
+               DevNet view engine uses the PHP alternative syntax for control structures, such as <code>if</code>, <code>while</code>, <code>for</code>, <code>foreach</code>, and <code>switch</code>, which use the colon (<code>:</code>) instead of opening brace and the <code>endif;</code>, <code>endwhile;</code>, <code>endfor;</code>, <code>endforeach;</code>, or <code>endswitch;</code>, respectively, instead of the closing brace.
+            </p>
+            <p>
+               The following example uses the alternative syntax of the <code>if</code> statement to display different navbars based on the user's authentication status, where the user identity is injected into the view by default when using the MVC controller.
+            </p>
+            <pre><code class="language-php-template">&lt;!DOCTYPE html>
+&lt;html lang="en">
+&lt;head>
+   &lt;meta charset="UTF-8">
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+   &lt;link rel="stylesheet" type="text/css" href="/css/style.css" />
+   &lt;title>DevNet&lt;/title>
+&lt;/head>
+&lt;body>
+   &lt;header>
+      &lt;? if ($this->User->isAuthenticated()): ?>
+         &lt;? $this->renderPartial('Shared/authenticatedUserNavbar') ?>
+      &lt;? else: ?>
+         &lt;? $this->renderPartial('Shared/anonymousUserNavbar') ?>
+      &lt;? endif; ?>
+   &lt;/header>
+   &lt;main>
+      &lt;? $this->renderBody() ?>
+   &lt;/main>
+&lt;/body>
+&lt;/html></code></pre>
+<blockquote class="alert alert-info">
+   <b>Note:</b> For more information about the PHP alternative syntax, you can visit the PHP documentation website <a target="_blank" href="https://www.php.net/manual/en/control-structures.alternative-syntax.php">here</a>
+</blockquote>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

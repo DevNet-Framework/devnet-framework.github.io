@@ -76,7 +76,7 @@ class BlogContext extends EntityContext
                </li>
             </ul>
             <p>
-               The following code example is the entity class <code>Application\Models\Post</code> used in the previous context, and it represents the <b>Post</b> table in the database where the properties represent the columns of that table.
+               The following code example is the entity class <code>Application\Models\Post</code> used in the previous context, and it represents the <b>"Post"</b> table in the database where the properties represent the columns of that table.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -139,50 +139,50 @@ class Post
 
 use Application\Models\BlogContext;
 use DevNet\Entity\EntityOptions;
-use DevNet\Entity\MySql\MySqlDataProvider;
+use DevNet\Entity\Sqlite\SqliteDataProvider;
 
 $options = new EntityOptions();
-$options->ProviderType = MySqlDataProvider::class;
-$options->ConnectionString = "//username:password@127.0.0.1/blog";
+$options->ProviderType = SqliteDataProvider::class;
+$options->ConnectionString = "/path/to/database.db3";
 
 $blog = new BlogContext($options);
 $posts = $blog->Posts;
 </code></pre>
             <br>
-            <h4>Data Providers</h4>
+            <h4>Database Providers</h4>
             <p>
-               The following table shows a list of database providers that Entity ORM supports with the corresponding connection string to each one.
+               The following table shows a list of database providers that are supported by Entity ORM.
             </p>
             <table class="table">
                <thead>
                   <tr>
-                     <th scope="col">Driver</th>
-                     <th scope="col">Data Provider</th>
-                     <th scope="col">Connection String</th>
+                     <th scope="col">Database Provider</th>
+                     <th scope="col">Database Engine</th>
                   </tr>
                </thead>
                <tbody>
                   <tr>
-                     <td>MySql</td>
                      <td><code>DevNet\Entity\MySql\MySqlDataProvider</code></td>
-                     <td><samp>"//username:password@127.0.0.1:3306/database"</samp></td>
+                     <td>MySql</td>
                   </tr>
                   <tr>
-                     <td>PostgreSql</td>
                      <td><code>DevNet\Entity\PgSql\PgSqlDataProvider</code></td>
-                     <td><samp>"//username:password@127.0.0.1:5432/database"</samp></td>
+                     <td>PostgreSql</td>
                   </tr>
                   <tr>
-                     <td>SQLite</td>
                      <td><code>DevNet\Entity\Sqlite\SqliteDataProvider</code></td>
-                     <td><samp>"//path/to/database"</samp></td>
+                     <td>SQLite</td>
                   </tr>
                </tbody>
             </table>
             <h4>Connection String</h4>
             <p>
-               The connection string used by the database providers follows the following url format:<br>
-               <code>"//[username]:[password]@[host]:[port]/[database]?[option=value]"</code>
+               The client-server database providers like "MySql" and "PostgreSql" use the following connection string format:<br>
+               <code>"host=hostname;port=port;database=dbname;user=username;password=password"</code>
+            </p>
+            <p>
+               The serverless database providers like "SQLite" use the following connection string format:<br>
+               <code>"/path/to/database.db3"</code> or <code>":memory:"</code>
             </p>
             <br>
             <h3>Registering the EntityContext</h3>
@@ -205,7 +205,7 @@ class Program
       $builder = WebHost::createDefaultBuilder($args);
       $configuration = $builder->Configuration;
       $builder->register(function ($services) use ($configuration) &lcub; //;
-         // adding EntityContext
+         // Adding EntityContext
          $services->addEntityContext(BlogContext::class,
             function ($options) &lcub;
                $options->ProviderType = $configuration->getValue('Database:ProviderType');
@@ -221,8 +221,8 @@ class Program
                In the <samp>"settings.json"</samp> file, you need to set the database configuration, like in the following example:
             </p>
             <pre><code class="language-json">"Database": &lcub;
-   "ProviderType": "DevNet\\Entity\\MySql\\MySqlDataProvider",
-   "ConnectionString": "//username:password@127.0.0.1/blog"
+   "ProviderType": "DevNet\\Entity\\PgSql\\PgSqlDataProvider",
+   "ConnectionString": "host=localhost;database=dbname;user=username;password=password"
 }
 </code></pre>
             <p>

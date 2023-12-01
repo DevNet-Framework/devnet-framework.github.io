@@ -71,27 +71,40 @@ class InitialMigration extends Migration
 &lcub;
    public function up(MigrationBuilder $builder): void
    &lcub;
-      $builder->createTable('User', function ($table) &lcub;;
+      $builder->createTable('User', function ($table) &lcub;
          $table->column('Id', 'integer')->identity(); // auto-increment
+         $table->column('Fullname', 'string', 45)->nullable(false);
          $table->column('Username', 'string', 45)->nullable(false);
          $table->column('Password', 'string', 60)->nullable(false);
+         $table->column('Role', 'string', 45)->default('User');
          $table->primaryKey('Id');
          $table->uniqueConstraint('Username');
       });
 
-      $builder->createTable('Role', function ($table) &lcub;;
+      $builder->createTable('Post', function ($table) &lcub;
          $table->column('Id', 'integer')->identity();
-         $table->column('Name', 'string', 45)->nullable(false);
-         $table->column('Description', 'string')->default('role description');
+         $table->column('UserId', 'integer');
+         $table->column('Title', 'string', 60)->nullable(false);
+         $table->column('Content', 'text');
+         $table->column('Date', 'date');
          $table->primaryKey('Id');
+         $table->foreignKey('UserId')->references('User', 'Id')->onDelete('cascade');
       });
 
-      $builder->createTable('UserRole', function ($table) &lcub;;
-         $table->column('UserId', 'integer');
-         $table->column('RoleId', 'integer');
-         $table->primaryKey('UserId', 'RoleId');
-         $table->foreignKey('UserId')->references('User', 'Id')->onDelete('cascade');
-         $table->foreignKey('RoleId')->references('Role', 'Id')->onDelete('cascade');
+      $builder->createTable('Category', function ($table) &lcub;
+         $table->column('Id', 'integer')->identity();
+         $table->column('Name', 'string', 45)->nullable(false);
+         $table->column('Description', 'string', 255)->nullable();
+         $table->primaryKey('Id');
+         $table->uniqueConstraint('Name');
+      });
+
+      $builder->createTable('PostCategory', function ($table) &lcub;
+         $table->column('PostId', 'integer');
+         $table->column('CategoryId', 'integer');
+         $table->primaryKey('PostId', 'CategoryId');
+         $table->foreignKey('PostId')->references('Post', 'Id')->onDelete('cascade');
+         $table->foreignKey('CategoryId')->references('Category', 'Id')->onDelete('cascade');
       });
    }
 
@@ -99,9 +112,10 @@ class InitialMigration extends Migration
    &lcub;
       // if the constraint ON DELETE is configured as "strict" and which is the default configuration,
       // the child table must be dropped before the parent table, otherwise will throw an error.
-      $builder->dropTable('UserRole');
+      $builder->dropTable('PostCategory');
+      $builder->dropTable('Category');
+      $builder->dropTable('Post');
       $builder->dropTable('User');
-      $builder->dropTable('Role');
    }
 }
 </code></pre>
@@ -122,17 +136,16 @@ class AlterMigration extends Migration
    public function up(MigrationBuilder $builder): void
    &lcub;
       $builder->alterTable('User', function ($table) &lcub;
-         $table->addColumn('Fullname', 'string', 60);
          $table->addColumn('Email', 'string', 45);
          $table->addColumn('Phone', 'string', 15);
          $table->addColumn('Location', 'string', 45);
       });
 
-      $builder->alterTable('Role', function ($table) &lcub;
+      $builder->alterTable('Category', function ($table) &lcub;
          $table->renameColumn('Description', 'Definition');
       });
 
-      $builder->renameTable('UserRole', 'Assignment');
+      $builder->renameTable('PostCategory', 'Classification');
    }
 
    public function down(MigrationBuilder $builder): void
@@ -144,11 +157,11 @@ class AlterMigration extends Migration
          $table->removeColumn('Location');
       });
 
-      $builder->alterTable('Role', function ($table) &lcub;
+      $builder->alterTable('Category', function ($table) &lcub;
          $table->renameColumn('Definition', 'Description');
       });
 
-      $builder->renameTable('Assignment', 'UserRole');
+      $builder->renameTable('Classification', 'PostCategory');
    }
 }
 </code></pre>
@@ -168,10 +181,10 @@ class SeedMigration extends Migration
 &lcub;
    public function up(MigrationBuilder $builder): void
    &lcub;
-      $roles = ['admin', 'moderator', 'editor', 'reader'];
+      $roles = ['uncategorized', 'featured', 'events', 'news'];
       foreach ($roles as $id => $name) &lcub;
-         $builder->insertData('Role', [
-            'Id'   => $id,
+         $builder->insertData('Category', [
+            'Id'   => ++$id,
             'Name' => $name
          ]);
       }
@@ -179,8 +192,8 @@ class SeedMigration extends Migration
 
    public function down(MigrationBuilder $builder): void
    &lcub;
-      for ($i=1; $i <= 4; $i++) &lcub;
-         $builder->deleteData('Role', ['Id' => $i]);
+      for ($i = 1; $i <= 4; $i++) &lcub;
+         $builder->deleteData('Category', ['Id' => $i]);
       }
    }
 }

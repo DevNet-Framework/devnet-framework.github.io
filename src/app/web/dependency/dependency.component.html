@@ -70,12 +70,10 @@ class Program
    public static function main(array $args = [])
    &lcub;
       $builder = WebHost::createDefaultBuilder($args);
-      $configuration = $builder->Configuration;
-
       $builder->register(function ($services) &lcub;
-         // adding services
-         services->addTransient(MyDependency::class);
-         services->addSingleton(IMyService::class, MyService::class);
+         // Adding services
+         $services->addTransient(MyDependency::class);
+         $services->addSingleton(IMyService::class, MyService::class);
       });
       ...
    }
@@ -102,14 +100,11 @@ class Program
    public static function main(array $args = [])
    &lcub;
       $builder = WebHost::createDefaultBuilder($args);
-      $configuration = $builder->Configuration;
-
       $builder->register(function ($services) &lcub;
-            
-         services->addSingleton(IService::class,
+         $services->addSingleton(IService::class,
             fn($provider) => new MyService($provider->getService(MyDependency::class)));
          
-         services->addTransient(MyDependency::class);
+         $services->addTransient(MyDependency::class);
       });
       ...
    }
@@ -127,8 +122,7 @@ $app->useEndpoint(function($routes) &lcub;
       // Getting the services
       $service1 = $context->Services->getService(IService::class);
       $service2 = $context->Services->getService(MyService::class);
-
-      // code...
+      // Code...
    });
 });
 </code></pre>
@@ -188,7 +182,7 @@ class HelloController extends Controller
                   </tr>
                   <tr>
                      <td><code>addLogging(?Closure $configuration)</code></td>
-                     <td>Register ILogger service.</td>
+                     <td>Register ILoggerFactory service.</td>
                   </tr>
                </tbody>
             </table>
@@ -196,12 +190,12 @@ class HelloController extends Controller
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/web/filter">
+                  <a class="nav-page-link" routerLink="/docs/web/exception">
                      <i class="chevron left"></i> Previous
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/web/exception">
+                  <a class="nav-page-link" routerLink="/docs/security/overview">
                      Next <i class="chevron right"></i>
                   </a>
                </li>

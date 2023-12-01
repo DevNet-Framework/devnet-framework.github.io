@@ -15,10 +15,14 @@
                To create a DevNet console project, enter the command below in the Terminal, where the argument <code>project-name</code> is any name you give to your project:
             </p>
             <pre><code class="language-shell">devnet new console --output project-name</code></pre>
+            <p>
+               Or, using the composer command-line:
+            </p>
+            <pre><code class="language-shell">composer create-project devnet/console-template project-name</code></pre>
             <br>
             <h4>Project Structure</h4>
             <p>
-               DevNet CLI will create a simple console template with the following project structure:
+               The DevNet console project has the following folder structure:
             </p>
             <pre><code class="language-shell">console-project/
 ├── bin/
@@ -54,7 +58,11 @@ class Program
             </p>
             <pre><code class="language-shell">devnet run</code></pre>
             <p>
-               The program displays a <samp>"Hello World!"</samp> message in the console and ends.
+               Or, launch the application bin file directly:
+            </p>
+            <pre><code class="language-shell">./bin/run</code></pre>
+            <p>
+               The program will display a <samp>"Hello World!"</samp> message in the console.
             </p>
             <pre><code class="language-shell">Hello World!</code></pre>
          </article>

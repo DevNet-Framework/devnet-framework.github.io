@@ -19,10 +19,18 @@
                <code>project-name</code> is any name you give to your web project:
             </p>
             <pre><code class="language-shell">devnet new web --output project-name</code></pre>
+            <p>
+               Or, using the composer command-line:
+            </p>
+            <pre><code class="language-shell">composer create-project devnet/web-template project-name</code></pre>
+            <p>
+               You can also create a DevNet web project from MVC template:
+            </p>
+            <pre><code class="language-shell">composer create-project devnet/mvc-template project-name</code></pre>
             <br>
             <h4>Project Structure</h4>
             <p>
-               DevNet CLI will create a simple web template with the following project structure:
+               The DevNet web project has the following folder structure:
             </p>
             <pre><code class="language-shell">web-project/
 ├── bin/
@@ -52,8 +60,7 @@
                <code>WebHost::createDefaultBuilder(array $args)</code> to create a <code>WebHostBuilder</code>
                instance which can configure services through the method <code>register()</code>, and
                builds a <code>WebHost</code> instance which calls the <code>start()</code> method to configure the
-               app's request pipeline, then runs the application as shown in the code below, and we will discuss
-               how to register services, middlewares and routes in details in the upcoming sections.
+               app's request pipeline, then runs the application as shown in the code below:
             </p>
             <pre><code class="language-php">&lt;?php
   
@@ -68,25 +75,22 @@ class Program
    public static function main(array $args = [])
    &lcub;
       $builder = WebHost::createDefaultBuilder($args);
-      $configuration = $builder->Configuration;
-
-      $builder->register(function ($services) use ($configuration) &lcub;
-         // services
+      $builder->register(function ($services) &lcub;
+         // Services
       });
 
       $host = $builder->build();
-
       $host->start(function ($app) &lcub;
-         // middlewares
-         $app->UseExceptionHandler();
+         // Middlewares
          $app->useRouter();
          $app->useEndpoint(function ($routes) &lcub;
-            // routes
+            // Routes
             $routes->mapGet("/", fn () => "Hello World!");
          });
       });
-    }
+   }
 }</code></pre>
+            <blockquote class="alert alert-info"><b>Note:</b> Working with services, middlewares and routes will be discussed in details in the upcoming sections.</blockquote>
             <br>
             <h3>Run the application</h3>
             <p>
@@ -101,6 +105,7 @@ class Program
                command in the terminal like the following example:
             </p>
             <pre><code class="language-shell">devnet run --host 127.0.0.1 --port 8888 --root webroot</code></pre>
+            <blockquote class="alert alert-info"><b>Note:</b> In Visual Studio Code with the PHP Xdebug extension, you can press the <b>F5</b> key button to launch the application in debug mode.</blockquote>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

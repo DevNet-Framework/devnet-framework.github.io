@@ -5,7 +5,7 @@
       </div>
       <div id="content" class="flex-grow-1" style="width: 400px;">
          <article>
-            <h1>Action Filter</h1>
+            <h1>Action Filters</h1>
             <hr>
             <p>
                Action Filters are similar to Middlewares, they allow code to be run before or after specific stages in the request processing pipeline and can choose to short-circuit the pipeline or pass the request to the next filter or the endpoint action, but the difference is that the action filters are invoked after the dispatcher selects the action to execute, just before and after the execution of the action.
@@ -32,14 +32,14 @@ class AuthenticationFilter implements IActionFilter
 
    public function async_invoke(ActionContext $context, ActionDelegate $next): void
    &lcub;
-      // short-circuiting the pipeline if does not fulfil the condition.
+      // Short-circuiting the pipeline if does not fulfil the condition.
       if (!$context->HttpContext->User) &lcub;
          $context->HttpContext->Response->setStatusCode(401);
          return;
       }
-      // await next action delegate to chain the pipeline to the next filter before executing the action.
+      // Await next action delegate to chain the pipeline to the next filter before executing the action.
       await($next($context));
-      // logging or other works can be done here after executing the action.
+      // Logging or other works can be done here after executing the action.
    }
 }
 </code></pre>
@@ -60,24 +60,24 @@ use function Devnet\System\await;
 ...
 
 $host->start(function ($app) &lcub;
-   // middlewares
+   // Middlewares
    $app->UseExceptionHandler();
    $app->useRouter();
    $app->useEndpoint(function ($routes) &lcub;
       $routes->mapGet("/users", function ($httpContext) &lcub;
-         // code...
+         // Code...
       })
-      // adding action filter class.
+      // Adding action filter class.
       ->addFilter(AuthenticationFilter::class)
 
-      // adding in-line action filter as anonymous async function.
+      // Adding in-line action filter as anonymous async function.
       ->addFilter(async(function ($actionContext, $next)) &lcub;
-         // some works can be done here before executing the action.
+         // Some works can be done here before executing the action.
          await($next);
-         // other works can be done here after executing the action.
+         // Other works can be done here after executing the action.
       }));
 
-      // other routes.
+      // Other routes.
    });
 });</code></pre>
 <p>
@@ -109,7 +109,7 @@ class AccountController extends Controller
    #[Route(path: '/user/create', method: 'POST')]
    public function create(Profile $form): IActionResult
    &lcub;
-      // code...
+      // Code...
    }
 }
 </code></pre>
@@ -142,7 +142,7 @@ class AccountController extends Controller
                   </a>
                </li>
                <li class="nav-page-item">
-                  <a class="nav-page-link" routerLink="/docs/web/dependency">
+                  <a class="nav-page-link" routerLink="/docs/web/exception">
                      Next <i class="chevron right"></i>
                   </a>
                </li>
