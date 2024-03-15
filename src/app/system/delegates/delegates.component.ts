@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'core-linq',
-  templateUrl: './linq.component.html',
-  styleUrls: ['./linq.component.css']
+  selector: 'system-delegates',
+  templateUrl: './delegates.component.html',
+  styleUrls: ['./delegates.component.css']
 })
-export class LinqComponent implements OnInit {
+export class DelegatesComponent implements OnInit {
 
   constructor() { }
 

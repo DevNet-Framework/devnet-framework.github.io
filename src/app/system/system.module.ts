@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreRoutingModule } from './core-routing.module';
+import { SystemRoutingModule } from './system-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { OverviewComponent } from './overview/overview.component';
 import { PropertiesComponent } from './properties/properties.component';
@@ -22,8 +22,8 @@ import { DelegatesComponent } from './delegates/delegates.component';
   ],
   imports: [
     CommonModule,
-    CoreRoutingModule,
+    SystemRoutingModule,
     SharedModule
   ]
 })
-export class CoreModule { }
+export class SystemModule { }

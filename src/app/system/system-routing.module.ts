@@ -9,18 +9,18 @@ import { AsynchronousComponent } from './asynchronous/asynchronous.component';
 import { DelegatesComponent } from './delegates/delegates.component';
 
 const routes: Routes = [
-  { path: 'docs/core/overview', component: OverviewComponent },
-  { path: 'docs/core/properties', component: PropertiesComponent },
-  { path: 'docs/core/extension', component: ExtensionComponent },
-  { path: 'docs/core/linq', component: LinqComponent },
-  { path: 'docs/core/generics', component: GenericsComponent },
-  { path: 'docs/core/asynchronous', component: AsynchronousComponent },
-  { path: 'docs/core/delegates', component: DelegatesComponent },
-  { path: 'docs/core', redirectTo: 'docs/core/overview', pathMatch: 'full' }
+  { path: 'docs/system/overview', component: OverviewComponent },
+  { path: 'docs/system/properties', component: PropertiesComponent },
+  { path: 'docs/system/extension', component: ExtensionComponent },
+  { path: 'docs/system/linq', component: LinqComponent },
+  { path: 'docs/system/generics', component: GenericsComponent },
+  { path: 'docs/system/asynchronous', component: AsynchronousComponent },
+  { path: 'docs/system/delegates', component: DelegatesComponent },
+  { path: 'docs/system', redirectTo: 'docs/system/overview', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CoreRoutingModule { }
+export class SystemRoutingModule { }

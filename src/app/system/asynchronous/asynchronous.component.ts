@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'core-extension',
-  templateUrl: './extension.component.html',
-  styleUrls: ['./extension.component.css']
+  selector: 'system-asynchronous',
+  templateUrl: './asynchronous.component.html',
+  styleUrls: ['./asynchronous.component.css']
 })
-export class ExtensionComponent implements OnInit {
+export class AsynchronousComponent  implements OnInit {
 
   constructor() { }
 

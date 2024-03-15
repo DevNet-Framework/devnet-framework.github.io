@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'core-properties',
-  templateUrl: './properties.component.html',
-  styleUrls: ['./properties.component.css']
+  selector: 'system-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.css']
 })
-export class PropertiesComponent implements OnInit {
+export class OverviewComponent implements OnInit {
 
   constructor() { }
 

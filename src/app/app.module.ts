@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { SetupModule } from './setup/setup.module';
-import { CoreModule } from './core/core.module';
+import { SystemModule } from './system/system.module';
 import { ConsoleModule } from './console/console.module';
 import { WebModule } from './web/web.module';
 import { EntityModule } from './entity/entity.module';
@@ -25,7 +25,7 @@ import { DocsComponent } from './docs/docs.component';
   imports: [
     BrowserModule,
     SetupModule,
-    CoreModule,
+    SystemModule,
     ConsoleModule,
     WebModule,
     EntityModule,
