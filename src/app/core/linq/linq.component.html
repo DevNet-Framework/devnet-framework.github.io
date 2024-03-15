@@ -14,7 +14,7 @@
                Any collection class of type <code>IEnumerable</code> or <code>IQueryable</code> that uses the <code>DevNet\System\MethodTrait</code> to support the extension method can take advantage of using LINQ extension methods.
             </p>
             <p>
-               The difference between <code>IEnumerable</code> and <code>IQueryable</code> types is that the implementation of the <code>IEnumerable</code> type, like the <code>ArrayList</code>, uses LINQ against in-memory data, while the implementation of the <code>IQueryable</code> type, like the <code>EntitySet</code> repository of DevNet Entity ORM, uses LINQ against SQL database, which means that this one uses <code>IQueryProvider</code> to compile the predicate expressions of the LINQ methods to SQL query syntax.
+               The difference between <code>IEnumerable</code> and <code>IQueryable</code> types is that the implementation of the <code>IEnumerable</code> type, like the <code>ArrayList</code>, uses LINQ against in-memory data, while the implementation of the <code>IQueryable</code> type, like the <code>EntitySet</code> repository of DevNet DevNet ORM, uses LINQ against SQL database, which means that this one uses <code>IQueryProvider</code> to compile the predicate expressions of the LINQ methods to SQL query syntax.
             </p>
             <h3>Using LINQ extension methods</h3>
             <p>

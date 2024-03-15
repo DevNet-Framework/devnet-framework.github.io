@@ -25,11 +25,11 @@
 namespace Application\Middlewares;
 
 use DevNet\System\MethodTrait;
-use DevNet\Web\Http\HttpContext;
-use DevNet\Web\Middleware\IMiddleware;
-use DevNet\Web\Middleware\RequestDelegate;
+use DevNet\Http\Message\HttpContext;
+use DevNet\Http\Middleware\IMiddleware;
+use DevNet\Http\Middleware\RequestDelegate;
 
-use function Devnet\System\await;
+use function DevNet\System\await;
 
 class RedirectMiddleware implements IMiddleware
 &lcub;
@@ -51,7 +51,7 @@ class RedirectMiddleware implements IMiddleware
             <br>
             <h3>Registering Middlewares</h3>
             <p>
-               Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Web\Middleware\IMiddleware</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
+               Inside the method <code>WebHost::start(Closure $configure)</code>, middlewares can be registered to the pipeline as a class that implements the interface <code>DevNet\Http\Middleware\IMiddleware</code> or as an in-line middleware defined by an anonymous async function, with the help of the following methods:
             </p>
             <ul>
                <li><code>ApplicationBuilder::use(callable $middleware)</code></li>
@@ -59,13 +59,13 @@ class RedirectMiddleware implements IMiddleware
             </ul>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
 use Application\Middlewares\MyMiddleware;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 
-use function Devnet\System\async;
-use function Devnet\System\await;
+use function DevNet\System\async;
+use function DevNet\System\await;
 ...
 
 $host->start(function ($app) &lcub;

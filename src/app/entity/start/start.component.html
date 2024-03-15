@@ -8,10 +8,10 @@
             <h1>Get Started</h1>
             <hr>
             <p>
-               Entity ORM (Object-relational Mapping) is a system that offers an automated mechanism to developers for accessing and storing the data in the database in an object-oriented way, by performing the work required to map between Entities defined in an application's programming language as classes and data stored in relational data sources as tables, without needing the data-access code to be written.
+               DevNet ORM (Object-relational Mapping) is a system that offers an automated mechanism to developers for accessing and storing the data in the database in an object-oriented way, by performing the work required to map between Entities defined in an application's programming language as classes and data stored in relational data sources as tables, without needing the data-access code to be written.
             </p>
             <p>
-               The following diagram is an abstraction of Entity ORM architecture.
+               The following diagram is an abstraction of DevNet ORM architecture.
             </p>
             <img src="assets/images/orm.svg" width="100%" height="auto">
             <br><br>
@@ -32,25 +32,25 @@
             <br>
             <h3>Installation</h3>
             <p>
-               If the DevNet framework is not fully installed, you can install the Entity ORM package into your project using Composer by running the following command in your terminal:
+               If the DevNet framework is not fully installed, you can install the DevNet ORM package into your project using Composer by running the following command in your terminal:
             </p>
             <pre><code class="language-shell">composer require devnet/entity</code></pre>
             <br>
             <h3>Defining the EntityContext</h3>
             <p>
-               The recommended way to work with Entity ORM is to define a context class in the <b>"Models"</b> folder that derives from <code>DevNet\Entity\EntityContext</code> and exposes <code>DevNet\Entity\EntitySet</code> properties that represent collections of the specified entities in the context, as shown in the following example.
+               The recommended way to work with DevNet ORM is to define a context class in the <b>"Models"</b> folder that derives from <code>DevNet\ORM\EntityContext</code> and exposes <code>DevNet\ORM\EntitySet</code> properties that represent collections of the specified entities in the context, as shown in the following example.
             </p>
             <pre><code class="language-php">&lt;?php
 
 namespace Application\Models;
 
-use DevNet\Entity\EntityContext;
-use DevNet\Entity\EntityOptions;
-use DevNet\Entity\EntitySet;
+use DevNet\ORM\EntityContext;
+use DevNet\ORM\EntityOptions;
+use DevNet\ORM\EntitySet;
 
 class BlogContext extends EntityContext
 &lcub;
-   public readonly EntitySet $Posts;
+   public EntitySet $Posts;
 
    public function __construct(EntityOptions $options)
    &lcub;
@@ -105,9 +105,9 @@ class Post
 
 namespace Application\Models;
 
-use DevNet\Entity\Annotations\Column;
-use DevNet\Entity\Annotations\Primarykey;
-use DevNet\Entity\Annotations\Table;
+use DevNet\ORM\Annotations\Column;
+use DevNet\ORM\Annotations\Primarykey;
+use DevNet\ORM\Annotations\Table;
 use DateTime;
 
 #[Table('Posts')]
@@ -133,13 +133,13 @@ class Post
             <br>
             <h3>Connecting to the Database</h3>
             <p>
-               The simplest way to connect Entity ORM to the database, is by creating an instance of the derived class of <code>EntityContext</code>, and passing the database configuration options to the constructor as follows:
+               The simplest way to connect DevNet ORM to the database, is by creating an instance of the derived class of <code>EntityContext</code>, and passing the database configuration options to the constructor as follows:
             </p>
             <pre><code class="language-php">&lt;?php
 
 use Application\Models\BlogContext;
-use DevNet\Entity\EntityOptions;
-use DevNet\Entity\Sqlite\SqliteDataProvider;
+use DevNet\ORM\EntityOptions;
+use DevNet\ORM\Sqlite\SqliteDataProvider;
 
 $options = new EntityOptions();
 $options->ProviderType = SqliteDataProvider::class;
@@ -151,7 +151,7 @@ $posts = $blog->Posts;
             <br>
             <h4>Database Providers</h4>
             <p>
-               The following table shows a list of database providers that are supported by Entity ORM.
+               The following table shows a list of database providers that are supported by DevNet ORM.
             </p>
             <table class="table">
                <thead>
@@ -162,15 +162,15 @@ $posts = $blog->Posts;
                </thead>
                <tbody>
                   <tr>
-                     <td><code>DevNet\Entity\MySql\MySqlDataProvider</code></td>
+                     <td><code>DevNet\ORM\MySql\MySqlDataProvider</code></td>
                      <td>MySql</td>
                   </tr>
                   <tr>
-                     <td><code>DevNet\Entity\PgSql\PgSqlDataProvider</code></td>
+                     <td><code>DevNet\ORM\PgSql\PgSqlDataProvider</code></td>
                      <td>PostgreSql</td>
                   </tr>
                   <tr>
-                     <td><code>DevNet\Entity\Sqlite\SqliteDataProvider</code></td>
+                     <td><code>DevNet\ORM\Sqlite\SqliteDataProvider</code></td>
                      <td>SQLite</td>
                   </tr>
                </tbody>
@@ -187,16 +187,16 @@ $posts = $blog->Posts;
             <br>
             <h3>Registering the EntityContext</h3>
             <p>
-               It is recommended that you register the Entity ORM as a reusable service to be injected into your application using the <code>ServiceCollectionExtensions::addEntityContext()</code> Extension method, which is called within the <code>WebHostBuilder::register()</code> method, with the use of the configuration provider that gets the database configuration from the <samp>"settings.json"</samp> file as shown in the following code example:
+               It is recommended that you register the DevNet ORM as a reusable service to be injected into your application using the <code>ServiceCollectionExtensions::addEntityContext()</code> Extension method, which is called within the <code>WebHostBuilder::register()</code> method, with the use of the configuration provider that gets the database configuration from the <samp>"settings.json"</samp> file as shown in the following code example:
             </p>
             <pre><code class="language-php">&lt;?php
 
 namespace Application;
 
 use Application\Models\BlogContext;
-use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
 
 class Program
 &lcub;
@@ -232,9 +232,9 @@ class Program
                   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\Route;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Route;
 use Application\Models\BlogContext;
 
 class BlogController extends Controller

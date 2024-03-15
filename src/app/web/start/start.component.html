@@ -22,11 +22,11 @@
             <p>
                Or, using the composer command-line:
             </p>
-            <pre><code class="language-shell">composer create-project devnet/web-template project-name</code></pre>
+            <pre><code class="language-shell">composer create-project devnet/web project-name</code></pre>
             <p>
                You can also create a DevNet web project from MVC template:
             </p>
-            <pre><code class="language-shell">composer create-project devnet/mvc-template project-name</code></pre>
+            <pre><code class="language-shell">composer create-project devnet/mvc project-name</code></pre>
             <br>
             <h4>Project Structure</h4>
             <p>
@@ -66,9 +66,9 @@
   
 namespace Application;
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 
 class Program
 &lcub;

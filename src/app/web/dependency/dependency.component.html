@@ -58,12 +58,12 @@ class MyService implement IService
 
 namespace Application;
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
 use Application\Services\IMyService;
 use Application\Services\MyService;
 use Application\Services\MyDependency;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 
 class Program
 &lcub;
@@ -88,12 +88,12 @@ class Program
 
 namespace Application;
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
 use Application\Services\IMyService;
 use Application\Services\MyService;
 use Application\Services\MyDependency;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 
 class Program
 &lcub;
@@ -135,9 +135,9 @@ $app->useEndpoint(function($routes) &lcub;
                   
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
 use Application\Services\IMyService;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
 
 class HelloController extends Controller
 &lcub;
@@ -161,8 +161,8 @@ class HelloController extends Controller
                </thead>
                <tbody>
                   <tr>
-                     <td><code>addAntiforgery(?Closure $configuration)</code></td>
-                     <td>Register IAntiforgery service.</td>
+                     <td><code>addAntiForgery(?Closure $configuration)</code></td>
+                     <td>Register IAntiForgery service.</td>
                   </tr>
                   <tr>
                      <td><code>addAuthentication(?Closure $configuration)</code></td>

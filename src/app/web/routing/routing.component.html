@@ -30,9 +30,9 @@
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
@@ -56,27 +56,27 @@ $host->start(function ($app) &lcub;
                </thead>
                <tbody>
                   <tr>
-                     <td><code>mapGet(string $pattern string|callable|array $handler)</code></td>
+                     <td><code>mapGet(string $pattern callable $handler)</code></td>
                      <td>Route that matches HTTP GET request for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapPost(string $pattern, string|callable|array $handler)</code></td>
+                     <td><code>mapPost(string $pattern, callable $handler)</code></td>
                      <td>Route that matches HTTP POST request for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapPut(string $pattern, string|callable|array $handler)</code></td>
+                     <td><code>mapPut(string $pattern, callable $handler)</code></td>
                      <td>Route that matches HTTP PUT request for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapDelete(string $pattern, string|callable|array $handler)</code></td>
+                     <td><code>mapDelete(string $pattern, callable $handler)</code></td>
                      <td>Route that matches HTTP DELETE request for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapPatch(string $pattern, string|callable|array $handler)</code></td>
+                     <td><code>mapPatch(string $pattern, callable $handler)</code></td>
                      <td>Route that matches HTTP PATCH request for the specified path.</td>
                   </tr>
                   <tr>
-                     <td><code>mapRoute(string $pattern, string|callable|array $handler, ?string $verb = null)</code></td>
+                     <td><code>mapRoute(string $pattern, callable $handler, ?string $verb = null)</code></td>
                      <td>Route that matches HTTP request for the specified path and HTTP method, or any HTTP method if it's not specified.</td>
                   </tr>
                </tbody>
@@ -88,11 +88,11 @@ $host->start(function ($app) &lcub;
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Http\Client\HttpClient;
-use DevNet\Web\Http\HttpContext;
+use DevNet\Http\Client\HttpClient;
+use DevNet\Http\Message\HttpContext;
 
-use function Devnet\System\async;
-use function Devnet\System\await;
+use function DevNet\System\async;
+use function DevNet\System\await;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
@@ -172,9 +172,9 @@ $app->useEndpoint(function($routes) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\Route;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Route;
 
 class HomeController extends Controller
 &lcub;

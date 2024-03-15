@@ -31,11 +31,11 @@
 
 namespace Application;
 
+use DevNet\Core\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Security\Authentication\AuthenticationScheme;
 use DevNet\System\TimeSpan;
-use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Security\Authentication\AuthenticationScheme;
 
 class Program
 &lcub;
@@ -88,10 +88,10 @@ class Program
 
 use DevNet\System\Linq;
 use DevNet\System\Collections\ArrayList;
-use DevNet\Web\Http\HttpContext;
-use DevNet\Web\Security\Authentication\AuthenticationScheme;
-use DevNet\Web\Security\Authentication\IAuthentication;
-use DevNet\Web\Security\ClaimsIdentity;
+use DevNet\Security\Authentication\AuthenticationScheme;
+use DevNet\Security\Authentication\IAuthentication;
+use DevNet\Security\ClaimsIdentity;
+use DevNet\Http\Message\HttpContext;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
@@ -141,10 +141,10 @@ $app->useEndpoint(function($routes) &lcub;
 
 use DevNet\System\Linq;
 use DevNet\System\Collections\ArrayList;
-use DevNet\Web\Http\HttpContext;
-use DevNet\Web\Security\Authentication\AuthenticationScheme;
-use DevNet\Web\Security\ClaimsIdentity;
-use DevNet\Web\Security\ClaimsType;
+use DevNet\Security\Authentication\AuthenticationScheme;
+use DevNet\Security\ClaimsIdentity;
+use DevNet\Security\ClaimsType;
+use DevNet\Http\Message\HttpContext;
 ...
 
 $app->useEndpoint(function($routes) &lcub;

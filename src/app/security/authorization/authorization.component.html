@@ -21,10 +21,10 @@
 
 namespace Application;
 
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 use DevNet\System\TimeSpan;
-use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
 
 class Program
 &lcub;
@@ -49,8 +49,8 @@ class Program
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Security\Authorization\Authorize;
-use DevNet\Web\Http\HttpContext;
+use DevNet\Core\Endpoint\Filters\Authorize;
+use DevNet\Http\Message\HttpContext;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
@@ -70,10 +70,10 @@ $app->useEndpoint(function($routes) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\Route;
-use DevNet\Web\Security\Authorization\Authorize;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
+use DevNet\Core\Endpoint\Route;
 
 class AccountController extends Controller
 &lcub;
@@ -128,13 +128,13 @@ class AccountController extends Controller
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\Route;
-use DevNet\Web\Security\Authorization\Authorize;
 use Application\Models\Configuration;
 use Application\Models\Login;
 use Application\Models\Registration;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
+use DevNet\Core\Endpoint\Route;
 
 #[Authorize]
 class AccountController extends Controller
@@ -177,10 +177,10 @@ class AccountController extends Controller
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Security\Authorization\Authorize;
-use DevNet\Web\Security\Authentication\AuthenticationScheme;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
+use DevNet\Security\Authentication\AuthenticationScheme;
 
 #[Authorize(AuthenticationScheme::CookieSession)]
 class AccountController extends Controller
@@ -198,10 +198,10 @@ class AccountController extends Controller
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Security\Authorization\Authorize;
-use DevNet\Web\Security\Authentication\AuthenticationScheme;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
+use DevNet\Security\Authentication\AuthenticationScheme;
 
 #[Authorize(AuthenticationScheme::JwtBearer)]
 class AccountController extends Controller
@@ -224,9 +224,9 @@ class AccountController extends Controller
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Security\Authorization\Authorize;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
 
 class AccountController extends Controller
 &lcub;
@@ -246,9 +246,9 @@ class AccountController extends Controller
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Security\Authorization\Authorize;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
 
 class AccountController extends Controller
 &lcub;
@@ -266,9 +266,9 @@ class AccountController extends Controller
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Security\Authorization\Authorize;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
 
 class AccountController extends Controller
 &lcub;
@@ -292,10 +292,10 @@ class AccountController extends Controller
 
 namespace Application;
 
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 use DevNet\System\TimeSpan;
-use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
 
 class Program
 &lcub;
@@ -325,9 +325,9 @@ class Program
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Security\Authorization\Authorize;
-use DevNet\Web\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Filters\Authorize;
 
 class AccountController extends Controller
 &lcub;

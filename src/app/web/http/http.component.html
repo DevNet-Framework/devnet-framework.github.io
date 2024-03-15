@@ -16,7 +16,7 @@
             </p>
             <pre><code class="language-php">&lt;?php
           
-use DevNet\Web\Http\HttpContextFactory;
+use DevNet\Http\Message\HttpContextFactory;
   
 $httpContext = HttpContextFactory::create();</code></pre>
             <br>
@@ -64,7 +64,7 @@ $value   = $cookies->getValue('name');</code></pre>
             <pre><code class="language-php">$httpContext->Response->Headers->add('name', 'value', replace: true);</code></pre>
             <br>
             <h6>Adding Response Cookie</h6>
-            <pre><code class="language-php">$options = new \DevNet\Web\Http\CookieOptions(expires: new DateTime('7 days'), path: '/');
+            <pre><code class="language-php">$options = new \DevNet\Http\Message\CookieOptions(expires: new DateTime('7 days'), path: '/');
 $httpContext->Response->Cookies->add('name', 'value', $options);</code></pre>
             <br>
             <h6>Writing Response Content</h6>
@@ -86,10 +86,10 @@ $task = $httpContext->Response->writeJsonAsync($object);</code></pre>
             </p>
             <pre><code class="language-php">&lt;?php
           
-use DevNet\Web\Http\Client\HttpClient;
+use DevNet\Http\Client\HttpClient;
 
-use function Devnet\System\async;
-use function Devnet\System\await;
+use function DevNet\System\async;
+use function DevNet\System\await;
 
 $action = async(function(): string &lcub;
    $client   = new HttpClient();

@@ -20,7 +20,7 @@
             </p>
             <ul>
                <li class="mb-2"><b>Collection navigation property:</b> is a property that contains references to multiple related entities, used to navigate through one-to-many and many-to-many relationships, defined by the type <code>DevNet\System\Collections\ICollection</code> with the annotation <code>DevNet\System\Generic</code> which specifies the type of the related entity collection.</li>
-               <li class="mb-2"><b>Reference navigation property:</b> is a property that contains a reference to a single related entity, used to navigate through one-to-one and many-to-one relationships, has the same type as the type of the related entity, and may have the annotation <code>DevNet\Entity\Annotations\ForeignKey</code> to define the name of the property that is used as a foreign key in the dependent entity.</li>
+               <li class="mb-2"><b>Reference navigation property:</b> is a property that contains a reference to a single related entity, used to navigate through one-to-one and many-to-one relationships, has the same type as the type of the related entity, and may have the annotation <code>DevNet\ORM\Annotations\ForeignKey</code> to define the name of the property that is used as a foreign key in the dependent entity.</li>
             </ul>
             <p>
                The example below demonstrates an entity class named <code>Post</code> that has two navigation properties: a reference property called <code>Post::User</code>, and a collection property called <code>Post::Classifications</code>.
@@ -29,7 +29,7 @@
 
 namespace Application\Models;
 
-use DevNet\Entity\Annotations\ForeignKey;
+use DevNet\ORM\Annotations\ForeignKey;
 use DevNet\System\Collections\ICollection;
 use DevNet\System\Type;
 use DateTime;
@@ -102,7 +102,7 @@ foreach($user->Posts as $post) &lcub;
 
 namespace Application\Models;
 
-use DevNet\Entity\Annotations\ForeignKey;
+use DevNet\ORM\Annotations\ForeignKey;
 
 class Profile
 &lcub;
@@ -163,7 +163,7 @@ class Category
 
 namespace Application\Models;
 
-use DevNet\Entity\Annotations\ForeignKey;
+use DevNet\ORM\Annotations\ForeignKey;
 
 #[PrimaryKey('PostId', 'CategoryId')]
 class Classification

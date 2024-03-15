@@ -16,9 +16,9 @@
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
@@ -37,10 +37,9 @@ $host->start(function ($app) &lcub;
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Http\HttpException;
-use DevNet\Web\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;
@@ -53,7 +52,7 @@ $host->start(function ($app) &lcub;
       $routes->mapGet("/error", function ($context) &lcub;
          $error = $context->Items->getValue('ErrorException');
          $code  = $error ? $error->getCode() : 404;
-         $code  = $error instanceof HttpException ? $code : 500;
+         $code  = $code != 0 ? $code : 500;
          if ($code == 401) &lcub;
             $context->Response->redirect('/login');
          } else &lcub;
@@ -98,9 +97,9 @@ $host->start(function ($app) &lcub;
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 ...
 
 $host->start(function ($app) &lcub;

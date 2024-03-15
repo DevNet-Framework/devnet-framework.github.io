@@ -39,19 +39,19 @@
                In addition to this scenario, the malicious site could run a script that automatically submits the form by sending the form submission as an AJAX request.
             </p>
             <br>
-            <h3>Antiforgory</h3>
+            <h3>AntiForgery</h3>
             <p>
-               To prevent cross-site request forgery attacks, the DevNet framework provides the <code>Antiforgery</code> service that generates a CSRF token, which should be included in the form data or in the request header to be verified by the server when the form is submitted.
+               To prevent cross-site request forgery attacks, the DevNet framework provides the <code>AntiForgery</code> service that generates a CSRF token, which should be included in the form data or in the request header to be verified by the server when the form is submitted.
             </p>
             <p>
-               To use the <code>Antiforgory</code> service across your application, you need to register it as a dependency in your application services with the help of the extension method <code>addAntiforgory()</code> inside the method <code>register()</code> of the <code>WebHostBuilder</code> and have the option to customize the default configurations.
+               To use the <code>AntiForgery</code> service across your application, you need to register it as a dependency in your application services with the help of the extension method <code>addAntiforgory()</code> inside the method <code>register()</code> of the <code>WebHostBuilder</code> and have the option to customize the default configurations.
             </p>
             <pre><code class="language-php">&lt;?php
 namespace Application;
 
-use DevNet\Web\Hosting\WebHost;
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
 
 class Program
 &lcub;
@@ -59,8 +59,8 @@ class Program
    &lcub;
       $builder = WebHost::createDefaultBuilder($args);
       $builder->register(function ($services) &lcub;
-         // Add antiforgery service.
-         $services->addAntiforgery();
+         // Add antiForgery service.
+         $services->addAntiForgery();
       });
       ...
    }
@@ -69,29 +69,29 @@ class Program
             <br>
             <h3>X-CSRF-TOKEN</h3>
             <p>
-               In traditional HTML-based applications, the Antiforgery tokens are passed to the server using hidden form fields, and usually, the token used in this technique is called <samp>X-CSRF-TOKEN</samp>.
+               In traditional HTML-based applications, the AntiForgery tokens are passed to the server using hidden form fields, and usually, the token used in this technique is called <samp>X-CSRF-TOKEN</samp>.
             </p>
             <p>
-               After registering the Antiforgery service with the MVC web application, it will be injected into the view so that you can generate a token in the HTML form.
+               After registering the AntiForgery service with the MVC web application, it will be injected into the view so that you can generate a token in the HTML form.
             </p>
             <pre><code class="language-php-template">&lt;form method="POST" action="/account/update/<?= $user->Id ?>">
    &lt;input type="text" name="username value="<?= $user->Username ?>" />
    &lt;input type="email" name="email" value="<?= $user->Email ?>" />
-   &lt;input type="hidden" name="X-CSRF-TOKEN" value="<?= $this->Antiforgery->getToken() ?>" />
+   &lt;input type="hidden" name="X-CSRF-TOKEN" value="<?= $this->AntiForgery->getToken() ?>" />
 &lt;/form>
 </code></pre>
             <p>
-               The controller in this example sends the view that is presented above with an Antiforgory token via the <code>edit()</code> method when the user requests to edit his account, and when the user submits the HTML form, the controller receives the request via the <code>update()</code> method, which is decorated with the <code>DevNet\Web\Security\Tokens\Csrf\Validate</code> attribute to check if the request is trusted before updating the data.
+               The controller in this example sends the view that is presented above with an Antiforgory token via the <code>edit()</code> method when the user requests to edit his account, and when the user submits the HTML form, the controller receives the request via the <code>update()</code> method, which is decorated with the <code>DevNet\Security\Tokens\Csrf\Validate</code> attribute to check if the request is trusted before updating the data.
             </p>
             <pre><code class="language-php">&lt;?php
 namespace Application\Controllers;
 
 use DevNet\System\Linq;
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\Route;
-use DevNet\Web\Security\Authorization\Authorize;
-use DevNet\Web\Security\Tokens\Csrf\Validate;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Route;
+use DevNet\Core\Endpoint\Filters\Authorize;
+use DevNet\Core\Endpoint\Filters\Validate;
 
 #[Authorize]
 class AccountController extends Controller
@@ -137,7 +137,7 @@ class AccountController extends Controller
             <br>
             <h3>X-XSRF-TOKEN</h3>
             <p>
-               In modern JavaScript-based applications, the Antiforgery tokens are sent to the server via the AJAX request headers, and usually, the token used in this technique is called <samp>X-XSRF-TOKEN</samp>.
+               In modern JavaScript-based applications, the AntiForgery tokens are sent to the server via the AJAX request headers, and usually, the token used in this technique is called <samp>X-XSRF-TOKEN</samp>.
             </p>
             <p>
                In the following example, when the user requests the <samp>"/account/create"</samp> endpoint to create a new account, the server returns an HTML form response with <samp>XSRF-TOKEN</samp> as a cookie, which must be sent back to the server via the AJAX request header when the user submits the form to the <samp>"/account/store"</samp> endpoint, which this one has an Antiforgory filter to check if the request is trusted or not before storing the data.
@@ -145,13 +145,13 @@ class AccountController extends Controller
             <pre><code class="language-php">&lt;?php
 
 use DevNet\System\Linq;
-use DevNet\Web\Http\HttpContext;
-use DevNet\Web\Security\Tokens\Csrf\Validate;
+use DevNet\Http\Message\HttpContext;
+use DevNet\Core\Endpoint\Filters\Validate;
 ...
 
 $app->useEndpoint(function($routes) &lcub;
    $routes->mapGet("/account/create", (function(HttpContext $context) &lcub;
-      $token = $context->Antiforgery->getToken();
+      $token = $context->AntiForgery->getToken();
       $context.Response->Cookies->add("XSRF-TOKEN", token);
       $html = file_get_contents("path/to/editFrom.phtml");
       $context->Response->Body->write($html);
@@ -171,7 +171,7 @@ $app->useEndpoint(function($routes) &lcub;
       file_put_contents('path/to/data.json', $json);
       $context->Response->setStatusCode(200);
    })
-   // Adds Antiforgery validation filter to the endpoint "/account/store".
+   // Adds AntiForgery validation filter to the endpoint "/account/store".
    ->addFilter(Validate::class);
 });</code></pre>
             <p>

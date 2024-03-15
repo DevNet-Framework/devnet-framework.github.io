@@ -18,12 +18,12 @@
 namespace Application\Filters;
 
 use DevNet\System\MethodTrait;
-use DevNet\Web\Endpoint\ActionContext;
-use DevNet\Web\Endpoint\ActionDelegate;
-use DevNet\Web\Endpoint\IActionFilter;
+use DevNet\Core\Endpoint\ActionContext;
+use DevNet\Core\Endpoint\ActionDelegate;
+use DevNet\Core\Endpoint\IActionFilter;
 use Attribute;
 
-use function Devnet\System\await;
+use function DevNet\System\await;
 
 #[Attribute]
 class AuthenticationFilter implements IActionFilter
@@ -50,13 +50,13 @@ class AuthenticationFilter implements IActionFilter
             </p>
             <pre><code class="language-php">&lt;?php
 
-use DevNet\Web\Extensions\ApplicationBuilderExtensions;
-use DevNet\Web\Extensions\ServiceCollectionExtensions;
-use DevNet\Web\Hosting\WebHost;
 use Application\Filters\AuthenticationFilter;
+use DevNet\Core\Extensions\ApplicationBuilderExtensions;
+use DevNet\Core\Extensions\ServiceCollectionExtensions;
+use DevNet\Core\Hosting\WebHost;
 
-use function Devnet\System\async;
-use function Devnet\System\await;
+use function DevNet\System\async;
+use function DevNet\System\await;
 ...
 
 $host->start(function ($app) &lcub;
@@ -87,12 +87,12 @@ $host->start(function ($app) &lcub;
 
 namespace Application\Controllers;
 
-use DevNet\Web\Endpoint\Controller;
-use DevNet\Web\Endpoint\IActionResult;
-use DevNet\Web\Endpoint\Route;
-use DevNet\Web\Security\Tokens\Csrf\Validate;
 use Application\Filters\AuthenticationFilter;
 use Application\Models\Profile;
+use DevNet\Core\Endpoint\Controller;
+use DevNet\Core\Endpoint\IActionResult;
+use DevNet\Core\Endpoint\Route;
+use DevNet\Security\Tokens\Csrf\Validate;
 
 // This filter will be applied to all controller's methods.
 #[AuthenticationFilter]
@@ -124,11 +124,11 @@ class AccountController extends Controller
                </thead>
                <tbody>
                   <tr>
-                     <td><code>DevNet\Web\Security\Authorization\Authorize</code></td>
+                     <td><code>DevNet\Core\Endpoint\Filters\Authorize</code></td>
                      <td>Prevent a non-authorized user from accessing the resources.</td>
                   </tr>
                   <tr>
-                     <td><code>DevNet\Web\Security\Tokens\Csrf\Validate</code></td>
+                     <td><code>DevNet\Core\Endpoint\Filters\ValidateAntiForgery</code></td>
                      <td>Prevent Cross-Site Request Forgery</td>
                   </tr>
                </tbody>
