@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'entity-start',
-  templateUrl: './start.component.html',
-  styleUrls: ['./start.component.css']
+  selector: 'orm-query',
+  templateUrl: './query.component.html',
+  styleUrls: ['./query.component.css']
 })
-export class StartComponent implements OnInit {
+export class QueryComponent implements OnInit {
 
   constructor() { }
 

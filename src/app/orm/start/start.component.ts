@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'entity-save',
-  templateUrl: './save.component.html',
-  styleUrls: ['./save.component.css']
+  selector: 'orm-start',
+  templateUrl: './start.component.html',
+  styleUrls: ['./start.component.css']
 })
-export class SaveComponent implements OnInit {
+export class StartComponent implements OnInit {
 
   constructor() { }
 

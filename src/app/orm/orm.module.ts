@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EntityRoutingModule } from './entity-routing.module';
+import { OrmRoutingModule } from './orm-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { StartComponent } from './start/start.component';
 import { QueryComponent } from './query/query.component';
@@ -18,8 +18,8 @@ import { MigrationsComponent } from './migrations/migrations.component';
   ],
   imports: [
     CommonModule,
-    EntityRoutingModule,
+    OrmRoutingModule,
     SharedModule
   ]
 })
-export class EntityModule { }
+export class OrmModule { }

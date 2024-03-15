@@ -7,7 +7,7 @@ import { SetupModule } from './setup/setup.module';
 import { SystemModule } from './system/system.module';
 import { ConsoleModule } from './console/console.module';
 import { WebModule } from './web/web.module';
-import { EntityModule } from './entity/entity.module';
+import { OrmModule } from './orm/orm.module';
 import { SecurityModule } from './security/security.module';
 
 import { AppComponent } from './app.component';
@@ -28,7 +28,7 @@ import { DocsComponent } from './docs/docs.component';
     SystemModule,
     ConsoleModule,
     WebModule,
-    EntityModule,
+    OrmModule,
     SecurityModule,
     AppRoutingModule,
     SharedModule

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'entity-query',
-  templateUrl: './query.component.html',
-  styleUrls: ['./query.component.css']
+  selector: 'orm-save',
+  templateUrl: './save.component.html',
+  styleUrls: ['./save.component.css']
 })
-export class QueryComponent implements OnInit {
+export class SaveComponent implements OnInit {
 
   constructor() { }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import hljs from 'highlight.js/lib/common';
 
 @Component({
-  selector: 'entity-relationships',
+  selector: 'orm-relationships',
   templateUrl: './relationships.component.html',
   styleUrls: ['./relationships.component.css']
 })

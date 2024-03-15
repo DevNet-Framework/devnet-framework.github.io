@@ -7,16 +7,16 @@ import { RelationshipsComponent } from './relationships/relationships.component'
 import { MigrationsComponent } from './migrations/migrations.component';
 
 const routes: Routes = [
-  { path: 'docs/entity/start', component: StartComponent },
-  { path: 'docs/entity/query', component: QueryComponent },
-  { path: 'docs/entity/save', component: SaveComponent },
-  { path: 'docs/entity/relationships', component: RelationshipsComponent },
-  { path: 'docs/entity/migrations', component: MigrationsComponent },
-  { path: 'docs/entity', redirectTo: 'docs/entity/start', pathMatch: 'full' }
+  { path: 'docs/orm/start', component: StartComponent },
+  { path: 'docs/orm/query', component: QueryComponent },
+  { path: 'docs/orm/save', component: SaveComponent },
+  { path: 'docs/orm/relationships', component: RelationshipsComponent },
+  { path: 'docs/orm/migrations', component: MigrationsComponent },
+  { path: 'docs/orm', redirectTo: 'docs/orm/start', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class EntityRoutingModule { }
+export class OrmRoutingModule { }
