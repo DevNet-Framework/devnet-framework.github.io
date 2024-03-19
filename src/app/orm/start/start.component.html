@@ -34,7 +34,7 @@
             <p>
                If the DevNet framework is not fully installed, you can install the DevNet ORM package into your project using Composer by running the following command in your terminal:
             </p>
-            <pre><code class="language-shell">composer require devnet/entity</code></pre>
+            <pre><code class="language-shell">composer require devnet/orm</code></pre>
             <br>
             <h3>Defining the EntityContext</h3>
             <p>
@@ -99,7 +99,7 @@ class Post
                Data annotations are attributes that can be applied to classes and properties to provide additional information about how they should be mapped to the database. By using data annotations, we can specify the table name and column names that should be used when mapping the entity to the database.
             </p>
             <p>
-               Assuming the entity Post presented previously has a property used as the primary key that does not follow the naming convention mentioned earlier. Instead of <code>Post::Id</code>, it has <code>Post::PostId</code>. The corresponding table in the database has a different naming. In this case, we can use data annotations to map the entity without changing its shape, like this in the following example:
+               Assuming the entity Post presented previously has a property used as the primary key that does not follow the naming convention mentioned earlier. Instead of <code>Post::Id</code>, it has <code>Post::PostId</code>, and the corresponding table in the database is <code>Posts</code>, which is a different naming. In this case, we can use data annotations to map the entity without changing its shape, like this in the following example:
             </p>
             <pre><code class="language-php">&lt;?php
 

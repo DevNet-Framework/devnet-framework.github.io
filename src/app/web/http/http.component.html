@@ -28,14 +28,13 @@ $httpContext = HttpContextFactory::create();</code></pre>
             <pre><code class="language-php">$method = $httpContext->Request->Method;</code></pre>
             <br>
             <h6>The Request URL</h6>
-            <pre><code class="language-php">$scheme = $httpContext->Request->Scheme;
-$host   = $httpContext->Request->Host->Name;
-$port   = $httpContext->Request->Host->Port;
-$path   = $httpContext->Request->Path;
-$url    = $scheme . '://' . $host . $path;</code></pre>
+            <pre><code class="language-php">$scheme = $httpContext->Request->Url->Scheme;
+$host   = $httpContext->Request->Url->Host->Name;
+$port   = $httpContext->Request->Url->Host->Port;
+$path   = $httpContext->Request->Url->Path;</code></pre>
             <br>
             <h6>The Request Query</h6>
-            <pre><code class="language-php">$query = $httpContext->Request->Query;
+            <pre><code class="language-php">$query = $httpContext->Request->Url->Query;
 $value = $query->getValue('name');</code></pre>
             <h6>The Request Form</h6>
             <pre><code class="language-php">$form  = $httpContext->Request->Form;
