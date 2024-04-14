@@ -23,7 +23,7 @@
             </ul>
             <pre><code class="language-html">&lt;h1>Congratulations! You're a Winner!&lt;/h1>
    &lt;form method="post" action="https://example.com/account/edit">
-   &lt;input type="hidden" name="email" value="malicious@example.com" />
+   &lt;input type="hidden" name="email" value="malicious&#64;example.com" />
    &lt;input type="submit" value="Collect the prize!" />
 &lt;/form>
 </code></pre>
@@ -61,10 +61,10 @@ class Program
       $builder->register(function ($services) &lcub;
          // Add antiForgery service.
          $services->addAntiForgery();
-      });
+      &#125;);
       ...
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>X-CSRF-TOKEN</h3>
@@ -96,7 +96,7 @@ use DevNet\Core\Endpoint\Filters\Validate;
 #[Authorize]
 class AccountController extends Controller
 &lcub;
-   #[Route(path: '/account/edit/&lcub;id}', method: 'GET')]
+   #[Route(path: '/account/edit/&lcub;id&#125;', method: 'GET')]
    public function edit(int $id): IActionResult
    &lcub;
       $json  = file_get_contents(__DIR__ . '/path/to/data.json');
@@ -107,13 +107,13 @@ class AccountController extends Controller
       $user = $users->where(fn ($user) => $user->Id == $id)->first();
       if (!$user) &lcub;
          Throw \Exception("page not found!", 404);
-      }
+      &#125;
       return $this->view(['user' => $user]);
-   }
+   &#125;
 
    // Adds AntiForgery validation filter as an attribute.
    #[Validate]
-   #[Route(path: '/account/update/&lcub;id}', method: 'POST')]
+   #[Route(path: '/account/update/&lcub;id&#125;', method: 'POST')]
    public function update(int $id, User $form): IActionResult
    &lcub;
       $json  = file_get_contents(__DIR__ . '/path/to/data.json');
@@ -124,15 +124,15 @@ class AccountController extends Controller
       $user = $users->where(fn ($user) => $user->Id == $id)->first();
       if (!$user) &lcub;
          Throw \Exception("page not found!", 404);
-      }
+      &#125;
       $user->Username = $from->Username;
       $user->Email = $from->Username;
       $json = json_encode($users->toArray(), JSON_PRETTY_PRINT);
       file_put_contents('path/to/data.json', $json);
 
       return $this->statusCode(200);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>X-XSRF-TOKEN</h3>
@@ -155,7 +155,7 @@ $app->useEndpoint(function($routes) &lcub;
       $context.Response->Cookies->add("XSRF-TOKEN", token);
       $html = file_get_contents("path/to/editFrom.phtml");
       $context->Response->Body->write($html);
-   }));
+   &#125;));
 
    $routes.MapPost("/account/store", (function(HttpContext $context) &lcub;
       $form = $context->Request->Form;
@@ -170,10 +170,10 @@ $app->useEndpoint(function($routes) &lcub;
       $json = json_encode($data, JSON_PRETTY_PRINT);
       file_put_contents('path/to/data.json', $json);
       $context->Response->setStatusCode(200);
-   })
+   &#125;)
    // Adds AntiForgery validation filter to the endpoint "/account/store".
    ->addFilter(Validate::class);
-});</code></pre>
+&#125;);</code></pre>
             <p>
                Here is a Javascript example that uses the AJAX request to send back the <samp>XSRF-TOKEN</samp> to the server after receiving it from the server via the response cookie.
             </p>
@@ -186,10 +186,10 @@ var request = new XMLHttpRequest();
 request.open("POST", "https://example.com/account/edit");
 request.setRequestHeader("X-XSRF-TOKEN", xsrfToken);
 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-request.send("username=user&email=user@example.com");
+request.send("username=user&email=user&#64;example.com");
 request.onload = function() &lcub;
    console.log(this.status);
- }
+ &#125;
 </code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">

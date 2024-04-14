@@ -42,12 +42,12 @@ class RedirectMiddleware implements IMiddleware
          $context->Response->setStatusCode(301);
          $context->Response->redirect("/new/path");
          return;
-      }
+      &#125;
       // Await next request delegate to chain the pipeline to the next middleware or endpoint.
       await($next($context));
       // Logging or other works can be done here after calling the next request delegate.
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Registering Middlewares</h3>
             <p>
@@ -80,14 +80,14 @@ $host->start(function ($app) &lcub;
       // Some works can be done here before calling the next request delegate.
       await($next($context));
       // Other works can be done here after calling the next request delegate.
-   }));
+   &#125;));
 
    // Other middlewares can be used here.
 
    $app->useEndpoint(function($routes) &lcub;
       // Routes
-   });
-});</code></pre>
+   &#125;);
+&#125;);</code></pre>
             <br>
             <h3>Built-in middlewares</h3>
             <table class="table">

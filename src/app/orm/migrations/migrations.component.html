@@ -36,7 +36,7 @@ class InitialMigration extends Migration
    */
    public function up(MigrationBuilder $builder): void
    &lcub;
-   }
+   &#125;
 
    /**
    * Schema definitions will be executed when the migration is downgraded
@@ -45,8 +45,8 @@ class InitialMigration extends Migration
    */
    public function down(MigrationBuilder $builder): void
    &lcub;
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <p>
                The <code>MigrationBuilder</code> class provides a fluent-like API for building migration operations, used to create, remove and modify the database schema when the method <code>up()</code> or <code>down()</code> is called.
@@ -79,7 +79,7 @@ class InitialMigration extends Migration
          $table->column('Role', 'string', 45)->default('User');
          $table->primaryKey('Id');
          $table->uniqueConstraint('Username');
-      });
+      &#125;);
 
       $builder->createTable('Post', function ($table) &lcub;
          $table->column('Id', 'integer')->identity();
@@ -89,7 +89,7 @@ class InitialMigration extends Migration
          $table->column('Date', 'date');
          $table->primaryKey('Id');
          $table->foreignKey('UserId')->references('User', 'Id')->onDelete('cascade');
-      });
+      &#125;);
 
       $builder->createTable('Category', function ($table) &lcub;
          $table->column('Id', 'integer')->identity();
@@ -97,7 +97,7 @@ class InitialMigration extends Migration
          $table->column('Description', 'string', 255)->nullable();
          $table->primaryKey('Id');
          $table->uniqueConstraint('Name');
-      });
+      &#125;);
 
       $builder->createTable('PostCategory', function ($table) &lcub;
          $table->column('PostId', 'integer');
@@ -105,8 +105,8 @@ class InitialMigration extends Migration
          $table->primaryKey('PostId', 'CategoryId');
          $table->foreignKey('PostId')->references('Post', 'Id')->onDelete('cascade');
          $table->foreignKey('CategoryId')->references('Category', 'Id')->onDelete('cascade');
-      });
-   }
+      &#125;);
+   &#125;
 
    public function down(MigrationBuilder $builder): void
    &lcub;
@@ -116,8 +116,8 @@ class InitialMigration extends Migration
       $builder->dropTable('Category');
       $builder->dropTable('Post');
       $builder->dropTable('User');
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h4>Updating the database schema</h4>
@@ -139,14 +139,14 @@ class AlterMigration extends Migration
          $table->addColumn('Email', 'string', 45);
          $table->addColumn('Phone', 'string', 15);
          $table->addColumn('Location', 'string', 45);
-      });
+      &#125;);
 
       $builder->alterTable('Category', function ($table) &lcub;
          $table->renameColumn('Description', 'Definition');
-      });
+      &#125;);
 
       $builder->renameTable('PostCategory', 'Classification');
-   }
+   &#125;
 
    public function down(MigrationBuilder $builder): void
    &lcub;
@@ -155,15 +155,15 @@ class AlterMigration extends Migration
          $table->removeColumn('Email';
          $table->removeColumn('Phone');
          $table->removeColumn('Location');
-      });
+      &#125;);
 
       $builder->alterTable('Category', function ($table) &lcub;
          $table->renameColumn('Definition', 'Description');
-      });
+      &#125;);
 
       $builder->renameTable('Classification', 'PostCategory');
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h4>Seeding the database</h4>
@@ -187,16 +187,16 @@ class SeedMigration extends Migration
             'Id'   => ++$id,
             'Name' => $name
          ]);
-      }
-   }
+      &#125;
+   &#125;
 
    public function down(MigrationBuilder $builder): void
    &lcub;
       for ($i = 1; $i <= 4; $i++) &lcub;
          $builder->deleteData('Category', ['Id' => $i]);
-      }
-   }
-}
+      &#125;
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Applying migrations</h3>

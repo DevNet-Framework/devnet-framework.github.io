@@ -57,8 +57,8 @@ class HomeController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->view();
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h4>Returning Explicit View</h4>
             <p>
@@ -83,8 +83,8 @@ class HomeController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->view(name: "Template/home");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Passing data to the view</h3>
             <p>
@@ -110,8 +110,8 @@ class HomeController extends Controller
          'page' => 'Home'
       ];
       return $this->view($data);
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <p>
                And here is an example of a view that retrieves the passed data by accessing the keys of the ViewData property.
             </p>

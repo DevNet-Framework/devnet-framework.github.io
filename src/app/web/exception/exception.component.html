@@ -25,7 +25,7 @@ $host->start(function ($app) &lcub;
    // Registering the exception handler in the top order.
    $app->useExceptionHandler();
    // Some middlewares here.
-});
+&#125;);
 </code></pre>
             <br>
             <h3>Custom error handling</h3>
@@ -55,14 +55,14 @@ $host->start(function ($app) &lcub;
          $code  = $code != 0 ? $code : 500;
          if ($code == 401) &lcub;
             $context->Response->redirect('/login');
-         } else &lcub;
+         &#125; else &lcub;
             $context->Response->setStatusCode($code);
             // You may need to log the error message here.
             // e.g. Logger::log(LogLevel::Error, $error->getMessage());
-         }
-      });
-   });
-});
+         &#125;
+      &#125;);
+   &#125;);
+&#125;);
 </code></pre>
             <br>
             <h3>Runtime environment</h3>
@@ -77,7 +77,7 @@ $host->start(function ($app) &lcub;
       "name": "Launch Built-in web server",
       "type": "php",
       "request": "launch",
-      "cwd": "$&lcub;workspaceRoot}/webroot",
+      "cwd": "$&lcub;workspaceRoot&#125;/webroot",
       "runtimeArgs": [
          "-dxdebug.mode=debug",
          "-dxdebug.start_with_request=yes",
@@ -86,8 +86,8 @@ $host->start(function ($app) &lcub;
       ],
       "env": &lcub;
          "DEVNET_ENVIRONMENT": "development"
-      }
-   }
+      &#125;
+   &#125;
 ]
 </code></pre>
             <br>
@@ -105,10 +105,10 @@ use DevNet\Core\Hosting\WebHost;
 $host->start(function ($app) &lcub;
    if (!$app->Environment->isDevolvement()) &lcub;
       $app->useExceptionHandler("/error");
-   }
+   &#125;
    // The rest of middlewares.
    ...
-});
+&#125;);
 </code></pre>
             <p>
                In this way, your application will run in development or production mode, depending on the runtime environment of your system or your application.

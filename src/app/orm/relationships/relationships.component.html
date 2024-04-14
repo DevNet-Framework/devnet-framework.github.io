@@ -47,7 +47,7 @@ class Post
 
    #[Type(ICollection::class, [Classification::class])]
    public ICollection $Classifications;
-}
+&#125;
 </code></pre>
             <br>
             <h3>One to Many</h3>
@@ -74,7 +74,7 @@ class User
 
    #[Type(ICollection, [Post::class])]
    public ICollection $Posts;
-}
+&#125;
 </code></pre>
             <p>
                Here is an example that demonstrates how to navigate and iterate through the related entities of the principal entity.
@@ -88,7 +88,7 @@ $user = $blog->Users->find($id);
 // Iterating through the posts that are related to the selected user.
 foreach($user->Posts as $post) &lcub;
    $post->Title;
-}
+&#125;
 </code></pre>
             <br>
             <h3>One to one</h3>
@@ -115,7 +115,7 @@ class Profile
 
    #[ForeignKey('UserId')]
    public User $User;
-}
+&#125;
 </code></pre>
             <p>
                Here is an example that shows how the related entities navigate to each other:
@@ -154,7 +154,7 @@ class Category
 
    #[Type(ICollection::class, [Classification::class])]
    public ICollection $Classification;
-}
+&#125;
 </code></pre>
             <p>
                And here is the junction entity <code>Classification</code> associated with the two principal entities, <code>Category</code>, and <code>Post</code>, with two foreign keys <code>Classification::CategoryId</code> and <code>Classification::PostId</code> as the primary key.
@@ -176,7 +176,7 @@ class Classification
 
    #[ForeignKey('CategoryId')]
    public Category $Category;
-}
+&#125;
 </code></pre>
             <p>
                This is an example that shows how to navigate the many-to-many relationship by iterating through the junction entity.
@@ -190,7 +190,7 @@ $category = $blog->Categories->find($id);
 // Iterates the related entities through the junction entity.
 foreach($category->Classifications as $classification) &lcub;
    $classification->Post->Title;
-}
+&#125;
 </code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">

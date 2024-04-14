@@ -42,8 +42,8 @@ $host->start(function ($app) &lcub;
    $app->useEndpoint(function ($routes) &lcub;
       // Routes
       $routes->mapGet("/", fn () => "Hello World!");
-   });
-});</code></pre>
+   &#125;);
+&#125;);</code></pre>
             <p>
                The following table shows the available routing methods and their descriptions.
             </p>
@@ -100,27 +100,27 @@ $app->useEndpoint(function($routes) &lcub;
       $client  = new HttpClient();
       $content = await($client->getStringAsync('www.example.com'));
       await($context->Response->writeAsync($content));
-   }));
-});</code></pre>
+   &#125;));
+&#125;);</code></pre>
             <br>
             <h3>Route Template</h3>
             <p>
                A route template is a string pattern composed of segments, separated by a slash <code>"/"</code> used to define how the endpoint matches the URL Path, by splitting the URL path into segments and matching each segment with the route pattern segment in the same corresponding order.
             </p>
             <p>
-               The segment pattern can be literal or parameter enclosed in curly brackets <code>"&lcub; }"</code> to hold a potential value of its corresponding matched URL segment, and this parameter can be mandatory or optionally by adding interrogation point <code>"?"</code> or it can have a default value using the equal sign <code>"="</code> after the route parameter name followed by a value.
+               The segment pattern can be literal or parameter enclosed in curly brackets <code>"&lcub; &#125;"</code> to hold a potential value of its corresponding matched URL segment, and this parameter can be mandatory or optionally by adding interrogation point <code>"?"</code> or it can have a default value using the equal sign <code>"="</code> after the route parameter name followed by a value.
             </p>
             <p>
-               The following code example shows a simple get route with a callback request handler, that retrieves the value of the parameter <code>&lcub;id}</code> from <code>HttpContext</code> to look for a product in the repository and then returns the data as a JSON response.
+               The following code example shows a simple get route with a callback request handler, that retrieves the value of the parameter <code>&lcub;id&#125;</code> from <code>HttpContext</code> to look for a product in the repository and then returns the data as a JSON response.
             </p>
             <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
-   $routes->mapGet("/api/products/&lcub;id?}", function(HttpContext $context) &lcub;
+   $routes->mapGet("/api/products/&lcub;id?&#125;", function(HttpContext $context) &lcub;
       $id = $context->Request->RouteValues["id"];
       $product = ProductRepository::find($id);
       return $context->Response->writeJsonAsync($product);
-   });
-});</code></pre>
+   &#125;);
+&#125;);</code></pre>
             <p>
                The following table demonstrates a list of route templates examples:
             </p>
@@ -137,15 +137,15 @@ $app->useEndpoint(function($routes) &lcub;
                      <td>/contact</td>
                   </tr>
                   <tr>
-                     <td>/&lcub;language}/shop</td>
+                     <td>/&lcub;language&#125;/shop</td>
                      <td>/en/shop</td>
                   </tr>
                   <tr>
-                     <td>/posts/&lcub;title?}</td>
+                     <td>/posts/&lcub;title?&#125;</td>
                      <td>/posts or /posts/my-post</td>
                   </tr>
                   <tr>
-                     <td>/&lcub;page=home}</td>
+                     <td>/&lcub;page=home&#125;</td>
                      <td>/ or /about</td>
                   </tr>
                </tbody>
@@ -164,7 +164,7 @@ $app->useEndpoint(function($routes) &lcub;
             <pre><code class="language-php">...
 $app->useEndpoint(function($routes) &lcub;
    $routes->mapControllers();
-});</code></pre>
+&#125;);</code></pre>
             <p>
                Then, you can use attributes to decorate your controller's action methods with their associated routes.
             </p>
@@ -183,23 +183,23 @@ class HomeController extends Controller
    public function index(int $id): IActionResult
    &lcub;
       return $this->view();
-   }
+   &#125;
 
    // Accept only the HTTP method GET.
    #[Route(path: '/contact', method: 'GET')]
    public function contact(): IActionResult
    &lcub;
       return $this->view();
-   }
+   &#125;
 
    // Accept only the HTTP method POST.
    #[Route(path: '/contact/submit', method: 'POST')]
    public function submit(string $subject, string $message): IActionResult
    &lcub;
-      mail("email@example.com", $subject, $message);
+      mail("email&#64;example.com", $subject, $message);
       return $this->statusCode(200);
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

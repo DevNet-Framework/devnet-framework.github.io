@@ -37,8 +37,8 @@ class Person
    public function get_FullName(): string
    &lcub;
       return $this->FirstName . ' ' . $this->LastName;
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <p>
                And here how you can access the computed property:
@@ -82,8 +82,8 @@ class Person
       $segments = explode(' ', $value, 2);
       $this->FirstName = $segments[0] ?? '';
       $this->LastName = $segments[1] ?? '';
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <p>
                And here how to set the computed property:

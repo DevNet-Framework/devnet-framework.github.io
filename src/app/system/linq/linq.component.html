@@ -40,8 +40,8 @@ $list[] = new Employee(6, 'ted');
             <h5>Picking</h5>
             <pre><code class="language-php">$first = $list->first();
 $last  = $list->last();
-print("First employee is &lcub;$first->Name} with Id &lcub;$first->Id}\n");
-print("Last employee is &lcub;$last->Name} with Id &lcub;$last->Id}\n");
+print("First employee is &lcub;$first->Name&#125; with Id &lcub;$first->Id&#125;\n");
+print("Last employee is &lcub;$last->Name&#125; with Id &lcub;$last->Id&#125;\n");
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">First employee is bob with Id 1
@@ -53,16 +53,16 @@ Last employee is ted with Id 6
 
 $employees = $list->where(fn($employee) => $employee->Id > 2);
 foreach ($employees as $employee) &lcub;
-      print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
-}
+      print("&lcub;$employee->Id&#125; => &lcub;$employee->Name&#125;\n");
+&#125;
 
 print("\n");
 print("Employees with Name ted\n");
 
 $employees = $list->where(fn($employee) => $employee->Name == 'ted');
 foreach ($employees as $employee) &lcub;
-      print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
-}
+      print("&lcub;$employee->Id&#125; => &lcub;$employee->Name&#125;\n");
+&#125;
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">Employees with Id greater than 2
@@ -81,16 +81,16 @@ Employees with Name ted
 
 $employees = $list->orderBy(fn($employee) => $employee->Name);
 foreach ($employees as $employee) &lcub;
-print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
-}
+print("&lcub;$employee->Id&#125; => &lcub;$employee->Name&#125;\n");
+&#125;
 
 print("\n");
 print("Descending order by Id\n");
 
 $employees = $list->orderByDescending(fn($employee) => $employee->Id);
 foreach ($employees as $employee) &lcub;
-print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
-}
+print("&lcub;$employee->Id&#125; => &lcub;$employee->Name&#125;\n");
+&#125;
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">Ascending order by Name
@@ -115,8 +115,8 @@ Descending order by Id
 $employees = $list->skip(2)->take(3);
 
 foreach ($employees as $employee) &lcub;
-   print("&lcub;$employee->Id} => &lcub;$employee->Name}\n");
-}
+   print("&lcub;$employee->Id&#125; => &lcub;$employee->Name&#125;\n");
+&#125;
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">3 => ted
@@ -129,9 +129,9 @@ foreach ($employees as $employee) &lcub;
 $max   = $list->max(fn($employee) => $employee->Id);
 $min   = $list->min(fn($employee) => $employee->Id);
 
-print("Total employees => &lcub;$count}\n");
-print("Max employee Id => &lcub;$max}\n");
-print("Min employee Id => &lcub;$min}\n");
+print("Total employees => &lcub;$count&#125;\n");
+print("Max employee Id => &lcub;$max&#125;\n");
+print("Min employee Id => &lcub;$min&#125;\n");
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">Total employees => 6
@@ -144,8 +144,8 @@ Min employee Id => 1
 $groups = $list->groupBy(fn($employee) => $employee->Name);
 
 foreach ($groups as $group) &lcub;
-   print("Total employees in &lcub;$group->Key} group => &lcub;$group->count()}\n");
-}
+   print("Total employees in &lcub;$group->Key&#125; group => &lcub;$group->count()&#125;\n");
+&#125;
 </code></pre>
             <h6>Output:</h6>
             <pre><code class="language-shell">Total employees in bob group => 1

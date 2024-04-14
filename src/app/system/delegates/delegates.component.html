@@ -26,8 +26,8 @@ class MyDelegate extends Delegate
    public function myDelegate(array $args): string
    &lcub;
       // The body is left empty.
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Defining the handler</h3>
@@ -44,8 +44,8 @@ class MyHandler
    public function handle(array $args): string
    &lcub;
       return serialize($args);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Using the delegate</h3>
@@ -60,7 +60,7 @@ $myAction = new MyDelegate([new MyHandler(), 'handle']);
 // Or Associating in-line closure function of the same signature
 $myAction = new MyDelegate(function(array $args): string &lcub;
    return serialize($args);
-});
+&#125;);
 
 $args = ['value1', 'value2'];
 
@@ -80,7 +80,7 @@ $myAction = new MyDelegate();
 $myAction[] = [new MyHandler(), 'handle'];
 $myAction[] = function(array $args): string &lcub;
    return json_encode($args);
-};
+&#125;;
 
 $args = ['value1', 'value2'];
 
@@ -91,7 +91,7 @@ $result = $myAction($args);
 $results = [];
 foreach($myAction as $action) &lcub;
    $results[] = $action->invoke($args);
-}
+&#125;
 </code></pre>
             <br>
             <h3>Event</h3>
@@ -127,7 +127,7 @@ class Button
       $this->Title = $title;
       $this->click = new EventHandler();
       $this->keypress = new EventHandler();
-   }
+   &#125;
 
    public function addListener(string $event, callable $handler): void
    &lcub;
@@ -139,20 +139,20 @@ class Button
             $this->keypress[] = $handler;
             break;
          default:
-            throw \Exception("The event &lcub;$event} does not exist!");
-      }
-   }
+            throw \Exception("The event &lcub;$event&#125; does not exist!");
+      &#125;
+   &#125;
 
    public function click(): void
    &lcub;
       $this->click->invoke($this, new EventArgs);
-   }
+   &#125;
 
    public function keypress(): void
    &lcub;
       $this->keypress->invoke($this, new EventArgs);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <p>
                And the following example represents a <code>Window</code> class as a subscriber that can subscribe handlers to the <code>Button</code> events.
@@ -174,13 +174,13 @@ class Window
       $this->MyButton = new Button("My button");
       // Subscribe to the click event.
       $this->MyButton->addListener('click', [$this, 'onMyButtonClick']);
-   }
+   &#125;
 
    public function onMyButtonClick(object $sender, EventArgs $event): void
    &lcub;
-      print("&lcub;$sender->Title} was clicked");
-   }
-}
+      print("&lcub;$sender->Title&#125; was clicked");
+   &#125;
+&#125;
 </code></pre>
             <p>
                And here is a working example of triggering the click event of the Window's button.

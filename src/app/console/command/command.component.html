@@ -95,10 +95,10 @@ class Program
          if ($version) &lcub;
             Console::writeLine("watch command-line: v1.0.0");
             return;
-         }
+         &#125;
 
          Console::writeLine("Try 'watch --help' to get information about the command's usage.");
-      });
+      &#125;);
 
       // Defines the child command.
       $subcommand = new CommandLine('time', 'Display the current time');
@@ -109,18 +109,18 @@ class Program
          $timezone = $args->get('timezone');
          if ($timezone) &lcub;
             $datetime->setTimezone(new DateTimeZone($timezone->Value));
-         }
+         &#125;
 
          Console::writeLine($datetime->format('H:i:s'));
-      }
+      &#125;
 
       // Adds the child command.
       $rootCommand->addCommand($subcommand);
 
       // Parsing the input, then invoking the command.
       $rootCommand->invoke($args);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <blockquote class="alert alert-info">
                <b>Note:</b> You can run your command-line application by executing the bin file of your application <code>./bin/run</code>

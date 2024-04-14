@@ -35,13 +35,13 @@ class Program
          // The authentication service is needed for authorization service.
          $services->addAuthentication(function ($builder) &lcub;
             $builder->addCookie();
-         });
+         &#125;);
          // Adding the authorization service
          $services->addAuthorization();
-      });
+      &#125;);
       ...
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Simple Authorization</h3>
             <p>
@@ -58,11 +58,11 @@ $app->useEndpoint(function($routes) &lcub;
       $user  = $context->User;
       $claim = $user->findClaim(fn ($claim) => $claim->Type == "name");
       $name  = $claim ? $claim->Value : null;
-      return $context->Response->writeAsync("Welcome &lcub;$name}");
-   })
+      return $context->Response->writeAsync("Welcome &lcub;$name&#125;");
+   &#125;)
    // Adding the authorize filter.
    ->addFilter(new Authorize());
-});</code></pre>
+&#125;);</code></pre>
             <p>
                You can also apply the <code>Authorize</code> filter to a controller's action methods using the attribute syntax.
             </p>
@@ -84,27 +84,27 @@ class AccountController extends Controller
       $user  = $this->Context->User;
       $claim = $user->findClaim(fn ($claim) => $claim->Type == "name");
       $name  = $claim ? $claim->Value : null;
-      return $this->content("Welcome &lcub;$name}");
-   }
+      return $this->content("Welcome &lcub;$name&#125;");
+   &#125;
 
    #[Route('/register', 'GET')]
    public function register(): IActionResult
    &lcub;
       return $this->view();
-   }
+   &#125;
 
    #[Route('/account/create', 'POST')]
    public function create(Registration $form): IActionResult
    &lcub;
       if (!$form->isValid()) &lcub;
          return $this->redirect('/register');
-      }
+      &#125;
 
       $data = [];
       if (file_exists(__DIR__ . '/../../data.json')) &lcub;
          $json = file_get_contents(__DIR__ . '/../../data.json');
          $data = json_decode($json);
-      }
+      &#125;
 
       $user = new User();
       $user->Username = $form->Username;
@@ -116,8 +116,8 @@ class AccountController extends Controller
       file_put_contents(__DIR__ . '/../../data.json', $json);
 
       return $this->content("The user was successfully created.");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <p>
                Another way to restrict access to the controller's action method is to use the Authorize attribute on the entire controller class, which applies the Authorize filter to all the action methods in the controller. But, If you want to exclude some action methods from that, you can use the <code>Authorize("Anonymous")</code> attribute on those methods to override the class-level filter that requires the user to be authenticated and allow access to anyone.
             </p>
@@ -143,28 +143,28 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       // code.
-   }
+   &#125;
 
    #[Authorize('Anonymous')]
    #[Route('/register', 'GET')]
    public function register(): IActionResult
    &lcub;
       // code.
-   }
+   &#125;
 
    #[Route('/account/settings', 'POST')]
    public function settings(): IActionResult
    &lcub;
       // code.
-   }
+   &#125;
 
    #[Authorize('Anonymous')]
    #[Route('/login', 'GET')]
    public function login(): IActionResult
    &lcub;
       // code.
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h4>Authorization with a specific scheme</h4>
             <p>
@@ -189,8 +189,8 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       // code.
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <p>
                And the following example code authorizes only token-based authentication.
             </p>
@@ -210,8 +210,8 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       // code.
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Role-based Authorization</h3>
             <p>
@@ -235,8 +235,8 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello Administrator");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h4>Authorization with multiple roles</h4>
             <p>
@@ -257,8 +257,8 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello to either Administrator or Manager");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <p>
                When applying multiple Authorize attributes, the associated resources can only be accessed if the user satisfies all specified roles, unlike the previous example, where the user only needs to have at least one of the roles.
             </p>
@@ -278,8 +278,8 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello to Administrator and Manager");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Policy-based Authorization</h3>
             <p>
@@ -305,18 +305,18 @@ class Program
       $builder->register(function ($services) &lcub;
          $services->addAuthentication(function ($builder) &lcub;
             $builder->addCookie();
-         });
+         &#125;);
          // Adding the authorization service with policy
          $services->addAuthorization(function($config) &lcub;
             $config->addPolicy("Administration", function ($policy) &lcub;
                $policy->RequireClaim('EmployeeNumber');
                $policy->RequireClaim('Role', ['Administrator', 'Manager']);
-            }
-         });
-      });
+            &#125;
+         &#125;);
+      &#125;);
       ...
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <p>
                And here is an example of how to apply a policy in the Authorize attribute using the named argument <code>policy:</code>
@@ -335,8 +335,8 @@ class AccountController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->content("Administration space");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

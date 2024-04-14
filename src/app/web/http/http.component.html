@@ -97,9 +97,9 @@ $action = async(function(): string &lcub;
    $content  = null;
    while(!$response->Body->EndOfStream) &lcub;
       $content .= await($response->Body->readAsync(1024));
-   }
+   &#125;
    return $content;
-});
+&#125;);
 
 $task = $action();</code></pre>
             <br>

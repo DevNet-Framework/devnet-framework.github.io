@@ -56,8 +56,8 @@ class BlogContext extends EntityContext
    &lcub;
       parent::__construct($options);
       $this->Posts = $this->set(Post::class);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h4>Entity Type</h4>
@@ -91,7 +91,7 @@ class Post
    public string $Title;
    public string $Content;
    public DateTime $Date;
-}
+&#125;
 </code></pre>
             <br>
             <h4>Data annotations</h4>
@@ -128,7 +128,7 @@ class Post
 
    #[Column('date')]
    public DateTime $Date;
-}
+&#125;
 </code></pre>
             <br>
             <h3>Connecting to the Database</h3>
@@ -210,12 +210,12 @@ class Program
             function ($options) &lcub;
                $options->ProviderType = $configuration->getValue('Database:ProviderType');
                $options->ConnectionString = $configuration->getValue('Database:ConnectionString');
-            }
+            &#125;
          );
-      });
+      &#125;);
       ...
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <p>
                In the <samp>"settings.json"</samp> file, you need to set the database configuration, like in the following example:
@@ -223,7 +223,7 @@ class Program
             <pre><code class="language-json">"Database": &lcub;
    "ProviderType": "DevNet\\Entity\\PgSql\\PgSqlDataProvider",
    "ConnectionString": "host=localhost;database=dbname;user=username;password=password"
-}
+&#125;
 </code></pre>
             <p>
                Then, you can get the <code>EntityContext</code> using the controller constructor injection, like this:
@@ -244,14 +244,14 @@ class BlogController extends Controller
    public function __construct(BlogContext $blog)
    &lcub;
       $this->blog = $blog;
-   }
+   &#125;
 
    #[Route("/blog")]
    public function index(): IActionResult
    &lcub;
       $this->view(['posts' => $this->blog->Posts]);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">

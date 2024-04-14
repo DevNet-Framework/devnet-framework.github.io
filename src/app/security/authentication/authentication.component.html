@@ -51,16 +51,16 @@ class Program
                $options->CookieName = "Identity";
                $options->CookiePath = "/";
                $options->ExpireTime = TimeSpan::fromDays(7);
-            });
+            &#125;);
             // Adding token-based authentication handler
             $builder->addJwtBearer(AuthenticationScheme::JwtBearer, function ($options) &lcub;
                $options->SecurityKey = "jwt security key";
                // Optionally you can configure the following validation options
                $options->Issuer = "127.0.0.1:8000"; // server address
                $options->Audience = "127.0.0.1:8080"; // client address
-            });
-         });
-      });
+            &#125;);
+         &#125;);
+      &#125;);
       
       $host = $builder->build();
 
@@ -71,10 +71,10 @@ class Program
          $app->useAuthentication();
          $app->useEndpoint(function ($routes) &lcub;
             // Routes
-         });
-      });
-   }
-}
+         &#125;);
+      &#125;);
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Cookie-based Authentication</h3>
@@ -107,7 +107,7 @@ $app->useEndpoint(function($routes) &lcub;
          $user = $users->where(fn ($user) => $user->Username == $form->getValue('username'))->first();
          if (!$user || !password_verify($form->getValue('password'), $user->Password)) &lcub;
             return $context->Response->setStatusCode(401);
-         }
+         &#125;
 
          $identity = new ClaimsIdentity(AuthenticationScheme::CookieSession);
          $identity->addClaim(new Claim('Username' , $form->getValue('username')));
@@ -115,17 +115,17 @@ $app->useEndpoint(function($routes) &lcub;
 
          $authentication = $context->Services->getService(IAuthentication::class);
          $authentication->signIn($identity, $form->getValue('remember'));
-      }
+      &#125;
 
       return $context->Response->redirect('/account');
-   });
+   &#125;);
 
    $routes->mapGet("/logout", function(HttpContext $context) &lcub;
       $authentication = $context->Services->getService(IAuthentication::class);
       $authentication->signOut();
       return $context->Response->redirect('/login');
-   })
-});</code></pre>
+   &#125;)
+&#125;);</code></pre>
             <br>
             <h3>Token-based Authentication</h3>
             <p>
@@ -160,7 +160,7 @@ $app->useEndpoint(function($routes) &lcub;
          $user = $users->where(fn ($user) => $user->Username == $form->getValue('username'))->first();
          if (!$user || $user->Password != $form->getValue('password')) &lcub;
             return $context->Response->setStatusCode(401);
-         }
+         &#125;
 
          $claims = new ClaimsIdentity(AuthenticationScheme::JwtBearer);
          $claims->addClaim(new Claim('sub', $form->getValue('username')));
@@ -175,11 +175,11 @@ $app->useEndpoint(function($routes) &lcub;
 
          // Need to send the token to the client.
          return $context->Response->WriteJsonAsync(['jwt' => $signedToken]);
-      }
+      &#125;
 
       return $context->Response->redirect('/account');
-   }));
-});</code></pre>
+   &#125;));
+&#125;);</code></pre>
             <blockquote class="alert alert-warning">
                <b>Important:</b> The client should send back the JWT token in the Authorization header using the Bearer schema in the following format: <code>Authorization: Bearer &lt;token></code>
             </blockquote>

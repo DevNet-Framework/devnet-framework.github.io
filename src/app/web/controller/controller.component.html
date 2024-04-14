@@ -34,8 +34,8 @@ class HomeController extends Controller
    public function index(): IActionResult
    &lcub;
       return $this->content("Hello World!");
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Action Result</h3>
             <p>
@@ -101,13 +101,13 @@ class HomeController extends Controller
    &lcub;
       $task = Task::run(function () &lcub;
          return "Hello World!";
-      });
+      &#125;);
 
       $content = await($task);
 
       return $this->content($content);
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
             <br>
             <h3>Model binding</h3>
             <p>
@@ -139,16 +139,16 @@ use DevNet\Core\Endpoint\Route;
 
 class BlogController extends Controller
 &lcub;
-   #[Route(path: '/posts/&lcub;id}', method: 'GET')]
+   #[Route(path: '/posts/&lcub;id&#125;', method: 'GET')]
    public function getPost(int $id, ?bool $excerpt): IActionResult
    &lcub;
       if ($excerpt) &lcub;
-         return $this->content("Excerpt from the content of the post: &lcub;$id}");
-      }
+         return $this->content("Excerpt from the content of the post: &lcub;$id&#125;");
+      &#125;
 
-      return $this->content("The full content of the post: &lcub;$id}");
-   }
-}</code></pre>
+      return $this->content("The full content of the post: &lcub;$id&#125;");
+   &#125;
+&#125;</code></pre>
             <p>
                Assuming the user requests the following URL: <samp>"/posts/1/?excerpt=true"</samp><br>
                The model binder will retrieve the value <code>1</code> from the route data and provide it to the <code>$id</code> parameter and the value <code>true</code> from the query string to the <code>$excerpt</code> parameter.
@@ -177,12 +177,12 @@ class HomeController extends Controller
    &lcub;
       if (!$form->isValid()) &lcub;
          return $this->content("All required fields must be filled out!");
-      }
+      &#125;
 
-      mail("email@example.com", $form->Subject, $form->Message);
+      mail("email&#64;example.com", $form->Subject, $form->Message);
       return $this->statusCode(200);
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
 <p>
    And here is the code for the <code>Contact</code> model that is used as a parameter in the controller action method.
 </p>
@@ -199,11 +199,11 @@ class Contact
    &lcub;
       if (isset($this->Subject) && isset($this->Message)) &lcub;
          return true
-      }
+      &#125;
 
       return false;
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

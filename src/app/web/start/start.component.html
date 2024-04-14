@@ -77,7 +77,7 @@ class Program
       $builder = WebHost::createDefaultBuilder($args);
       $builder->register(function ($services) &lcub;
          // Services
-      });
+      &#125;);
 
       $host = $builder->build();
       $host->start(function ($app) &lcub;
@@ -86,10 +86,10 @@ class Program
          $app->useEndpoint(function ($routes) &lcub;
             // Routes
             $routes->mapGet("/", fn () => "Hello World!");
-         });
-      });
-   }
-}</code></pre>
+         &#125;);
+      &#125;);
+   &#125;
+&#125;</code></pre>
             <blockquote class="alert alert-info"><b>Note:</b> Working with services, middlewares and routes will be discussed in details in the upcoming sections.</blockquote>
             <br>
             <h3>Run the application</h3>

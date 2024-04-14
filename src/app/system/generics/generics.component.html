@@ -45,20 +45,20 @@ class Collection implements IEnumerable
    &lcub;
       // Setting the generic type argument.
       $this->setGenericArguments($typeName);
-   }
+   &#125;
 
    private function add(#[Type('T')] $item): void
    &lcub;
       // Checking the the type of the arguments before using them.
       $this->checkArgumentTypes(func_get_args());
       $this->items[] = $item;
-   }
+   &#125;
 
    public function getIterator(): Enumerator
    &lcub;
       return new Enumerator($this->items);
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Generic type argument</h3>
@@ -107,18 +107,18 @@ class EmployeeProvider
    &lcub;
       $this->checkArgumentTypes(func_get_args());
       $this->employees = $employees;
-   }
+   &#125;
 
    public function get(int $id): ?Employee
    &lcub;
       foreach ($this->employees as $employee) &lcub;
          if ($employee->Id == $id) &lcub;
             return $employee;
-         }
-      }
+         &#125;
+      &#125;
       return null;
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Multiple type parameters</h3>
@@ -142,15 +142,15 @@ class Collection
    public function __construct(string $keyTypeName, string $valueTypeName)
    &lcub;
       $this->setGenericArguments($keyTypeName, $valueTypeName);
-   }
+   &#125;
 
    private function add(#[Type('K')] $key, #[Type('V')] $value): void
    &lcub;
       $this->checkArgumentTypes(func_get_args());
       $this->items[$key()] = $value();
-   }
+   &#125;
    ...
-}
+&#125;
 </code></pre>
             <br>
             <h3>Built-in generic collections</h3>

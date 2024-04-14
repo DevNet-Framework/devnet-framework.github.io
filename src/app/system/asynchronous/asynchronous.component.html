@@ -30,17 +30,17 @@ function readFileAsync(string $path): Task &lcub;
          if ($content === false) &lcub;
             // Throws an exception on failure.
             throw new \Exception("Unable to read from the file");
-         }
+         &#125;
          $result .= $content;
-      }
+      &#125;
 
       fclose($file);
       // Returns a result on success.
       return $result;
-   });
+   &#125;);
 
    return $task;
-}
+&#125;
 
 $task = readFileAsync('path/to/file');
 
@@ -51,15 +51,15 @@ someWork();
 while (true) &lcub;
    if ($task->IsCompleted) &lcub;
       break;
-   }
-}
+   &#125;
+&#125;
 
 try &lcub;
    // Getting the result when the task is completed.
    $result = $task->Result;
-} catch ($exception $e) &lcub;
+&#125; catch ($exception $e) &lcub;
    // Logging the error report if the task is failed.
-}
+&#125;
 </code></pre>
             <br>
             <h3>Continuation Task</h3>
@@ -77,10 +77,10 @@ function readJsonAsync(string $path): Task &lcub;
    $task2 = $task1->then(function($task1) &lcub;
       $data = $task1->Result;
       return json_decode($data);
-   });
+   &#125;);
 
    return $task2;
-}
+&#125;
 
 $task = readJsonAsync('path/to/data.json');
 $data = $task->Result;
@@ -107,7 +107,7 @@ $readJsonAsync = async(function($path): string &lcub;
 
    $file->close();
    return $data;
-});
+&#125;);
 
 $task = $readJsonAsync('path/to/data.json');
 $data = $task->getAwaiter()->getResult();
@@ -136,8 +136,8 @@ class Reader &lcub;
       
       $file->close();
       return $data;
-   });
-}
+   &#125;);
+&#125;
 
 $reader = new Reader();
 $task = $reader->readJsonAsync('path/to/data.json');

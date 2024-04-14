@@ -35,8 +35,8 @@ class Program
       Console::writeLine("Text with a new line:");
       Console::write("Some text");
       Console::write(", printed in the same line.");
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <h5>Output</h5>
             <pre><code class="language-shell">Text with a new line:
@@ -45,7 +45,7 @@ Some text, printed in the same line.
             <br>
             <h4>Format string</h4>
             <p>
-               A format string is a string that contains placeholders indicated by braces <code>&lcub;index}</code> with an index number corresponding to the values that are passed as arguments to be inserted into the string result, like in the following example.
+               A format string is a string that contains placeholders indicated by braces <code>&lcub;index&#125;</code> with an index number corresponding to the values that are passed as arguments to be inserted into the string result, like in the following example.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -58,16 +58,16 @@ class Program
 &lcub;
    public static function main(array $args = [])
    &lcub;
-      Console::write("Name: &lcub;0} Age: &lcub;1}", "John Doe", 25);
-   }
-}
+      Console::write("Name: &lcub;0&#125; Age: &lcub;1&#125;", "John Doe", 25);
+   &#125;
+&#125;
 </code></pre>
             <h5>Output</h5>
             <pre><code class="language-shell">Name: John Doe Age: 25</code></pre>
             <br>
             <h4>Control formatting</h4>
             <p>
-               Control formatting is a way to specify how the inserted value should be displayed in the result string using a format specifier such as <code>&lcub;index, width}</code>, where The width defines the character space that the inserted value will occupy and how it will align in that space. If the width is positive, then the inserted value will be right-aligned, and if the width is negative, it will be left-aligned, like in the example below.
+               Control formatting is a way to specify how the inserted value should be displayed in the result string using a format specifier such as <code>&lcub;index, width&#125;</code>, where The width defines the character space that the inserted value will occupy and how it will align in that space. If the width is positive, then the inserted value will be right-aligned, and if the width is negative, it will be left-aligned, like in the example below.
             </p>
             <pre><code class="language-php">&lt;?php
 
@@ -80,9 +80,9 @@ class Program
 &lcub;
    public static function main(array $args = [])
    &lcub;
-      Console::write("Name: &lcub;0, -12} Age: &lcub;1, 5}", "John Doe", 25);
-   }
-}
+      Console::write("Name: &lcub;0, -12&#125; Age: &lcub;1, 5&#125;", "John Doe", 25);
+   &#125;
+&#125;
 </code></pre>
             <h5>Output</h5>
             <pre><code class="language-shell">Name: John Doe     Age:    25</code></pre>
@@ -108,8 +108,8 @@ class Program
       Console::writeLine("The screen has been cleared.");
       sleep(1);
       Console::clear();
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Console Color</h3>
@@ -144,8 +144,8 @@ class Program
 
       foreach (ConsoleColor::cases() as $color) &lcub;
          Console::$ForegroundColor = $color;
-         Console::writeLine("The foreground color &lcub;0} is &lcub;1}", $color->value, $color->name);
-      }
+         Console::writeLine("The foreground color &lcub;0&#125; is &lcub;1&#125;", $color->value, $color->name);
+      &#125;
 
       Console::writeLine();
       Console::$ForegroundColor = ConsoleColor::Black;
@@ -155,12 +155,12 @@ class Program
 
       foreach (ConsoleColor::cases() as $color) &lcub;
          Console::$BackgroundColor = $color;
-         Console::writeLine("The background color &lcub;0} is &lcub;1}", $color->value, $color->name);
-      }
+         Console::writeLine("The background color &lcub;0&#125; is &lcub;1&#125;", $color->value, $color->name);
+      &#125;
 
       Console::resetColor();
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h4>Colors</h4>

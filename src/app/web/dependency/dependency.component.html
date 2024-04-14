@@ -22,8 +22,8 @@ class MyService implement IService
    public function __construct(MyDependency $dependency)
    &lcub;
       $this->Dependency = $dependency;
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h2>Service Container</h2>
@@ -74,10 +74,10 @@ class Program
          // Adding services
          $services->addTransient(MyDependency::class);
          $services->addSingleton(IMyService::class, MyService::class);
-      });
+      &#125;);
       ...
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Registering services using custom factory</h3>
@@ -105,10 +105,10 @@ class Program
             fn($provider) => new MyService($provider->getService(MyDependency::class)));
          
          $services->addTransient(MyDependency::class);
-      });
+      &#125;);
       ...
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Requesting Services</h3>
@@ -123,8 +123,8 @@ $app->useEndpoint(function($routes) &lcub;
       $service1 = $context->Services->getService(IService::class);
       $service2 = $context->Services->getService(MyService::class);
       // Code...
-   });
-});
+   &#125;);
+&#125;);
 </code></pre>
             <br>
             <h3>Requesting services through controller</h3>
@@ -146,9 +146,9 @@ class HelloController extends Controller
    public function __construct(IMyService $myService)
    &lcub;
       $this->MyService = $myService;
-   }
+   &#125;
    ...
-}
+&#125;
 </code></pre>
             <br>
             <h3>Built-in services</h3>

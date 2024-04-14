@@ -15,8 +15,8 @@
                For quick deployment on Apache server, your web project contains already <code>.htaccess</code> file in the public directory <code>./webroot/</code> with the following configuration:
             </p>
             <pre><code class="language-apache">RewriteEngine On
-RewriteCond %&lcub;REQUEST_FILENAME} !-f
-RewriteCond %&lcub;REQUEST_FILENAME} !-d
+RewriteCond %&lcub;REQUEST_FILENAME&#125; !-f
+RewriteCond %&lcub;REQUEST_FILENAME&#125; !-d
 RewriteRule ^ index.php [QSA,L]</code></pre>
             <br>
             <h3>IIS configuration</h3>
@@ -31,8 +31,8 @@ RewriteRule ^ index.php [QSA,L]</code></pre>
             &lt;rule name="slim" patternSyntax="Wildcard">
             &lt;match url="*" />
             &lt;conditions>
-               &lt;add input="&lcub;REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-               &lt;add input="&lcub;REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+               &lt;add input="&lcub;REQUEST_FILENAME&#125;" matchType="IsFile" negate="true" />
+               &lt;add input="&lcub;REQUEST_FILENAME&#125;" matchType="IsDirectory" negate="true" />
             &lt;/conditions>
             &lt;action type="Rewrite" url="index.php" />
             &lt;/rule>
@@ -54,15 +54,15 @@ RewriteRule ^ index.php [QSA,L]</code></pre>
 
    location / &lcub;
       try_files  $uri $uri/ /index.php?$query_string;
-   }
+   &#125;
 
    location ~ \.php$ &lcub;
       fastcgi_pass   127.0.0.1:9000;
       fastcgi_index  index.php;
       fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
       include        fastcgi_params;
-   }
-}</code></pre>
+   &#125;
+&#125;</code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">
             <ul class="nav-page">

@@ -26,7 +26,7 @@ class Employee
 
    public string $Name;
    public float $Salary ;
-}
+&#125;
 </code></pre>
             <br>
             <h3>Extension class</h3>
@@ -45,8 +45,8 @@ class EmployeeExtension
    public static function getIncome(Employee $employee, float $tax): float
    &lcub;
       return $employee->Salary - $employee->Salary * $tax;
-   }
-}
+   &#125;
+&#125;
 </code></pre>
             <br>
             <h3>Calling the extension method</h3>
@@ -67,7 +67,7 @@ $tax = 0.15;
 // Calling the extension method as if it belongs to the employee instance.
 $income = $employee->getIncome($tax);
 
-print("Income: &lcub;$income}$"); // Income: 21250$
+print("Income: &lcub;$income&#125;$"); // Income: 21250$
 </code></pre>
             <p>
                When calling the extension method, the first parameter will be skipped because it's the target reference, and the second parameter will become the first one, the third one will become the second one, and so on...
