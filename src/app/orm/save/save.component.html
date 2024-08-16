@@ -26,8 +26,8 @@ $post->Content = "Some content...";
 $post->Date = new DateTime("now");
 
 $blog = new BlogContext();
-$blog->Post->add($post);
-$blog->Post->save();
+$blog->Posts->add($post);
+$blog->save();
 </code></pre>
             <br>
             <h3>Deleting Data</h3>
@@ -39,8 +39,8 @@ $blog->Post->save();
 use Application\Models\BlogContext;
 
 $blog = new BlogContext();
-$post = $blog->Post->find(1);
-$blog->Post->remove($post);
+$post = $blog->Posts->find(1);
+$blog->Posts->remove($post);
 $blog->save();
 </code></pre>
             <br>
@@ -53,7 +53,7 @@ $blog->save();
 use Application\Models\BlogContext;
 
 $blog = new BlogContext();
-$post = $blog->Post->find(1);
+$post = $blog->Posts->find(1);
 $post->Content = "Updated content";
 $blog->save();
 </code></pre>
@@ -75,18 +75,18 @@ $post = new Post();
 $post->Title = "Post Title";
 $post->Content = "Some content...";
 $post->Date = new DateTime("now");
-$blog->Post->add($post);
+$blog->Posts->add($post);
 
 // Deletes post with id = 2
-$post = $blog->Post->find(2);
-$blog->Post->remove($post);
+$post = $blog->Posts->find(2);
+$blog->Posts->remove($post);
 
 // Updates post with id = 1
-$post = $blog->Post->find(1);
+$post = $blog->Posts->find(1);
 $post->Content = "Updated content";
 
 // Persists all the operations
-$blog->Post->save();
+$blog->save();
 </code></pre>
          </article>
          <nav class="no-print" aria-label="Page navigation">

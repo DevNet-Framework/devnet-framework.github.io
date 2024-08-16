@@ -83,7 +83,7 @@ $post = $blog->Posts->where(fn($post) => $post->Title == "My first post")->first
             ->toArray();
 </code></pre>
             <p>
-               And this one will be compiled then executed in SQL like this:
+               And this one will be compiled then executed in SQL as following:
             </p>
             <pre><code class="language-sql">SELECT * FROM Blog.Post ORDER BY Date DESC, Title DESC;</code></pre>
             <br>
@@ -96,7 +96,7 @@ $post = $blog->Posts->where(fn($post) => $post->Title == "My first post")->first
             </p>
             <pre><code class="language-php">$posts = $blog->Posts->skip(5)->take(10)->toArray();</code></pre>
             <p>
-               Which will be executed in SQL like this:
+               Which will be compiled then executed in SQL like this:
             </p>
             <pre><code class="language-sql">SELECT * FROM Blog.Post LIMIT 5,10;</code></pre>
             <br>
@@ -122,7 +122,7 @@ $posts = $blog->Posts->skip(($page - 1) * $size)->take($size)->toArray();
             ->toArray();
 </code></pre>
             <p>
-               Which will be compiled then executed in SQL like this:
+               And that will be compiled then executed in SQL like this:
             </p>
             <pre><code class="language-sql">SELECT * FROM Blog.Post WHERE Date = '2023-01-01' AND Likes > 200 ORDER BY Title LIMIT 10;</code></pre>
             <blockquote class="alert alert-info">
