@@ -181,8 +181,8 @@ class SeedMigration extends Migration
 &lcub;
    public function up(MigrationBuilder $builder): void
    &lcub;
-      $roles = ['uncategorized', 'featured', 'events', 'news'];
-      foreach ($roles as $id => $name) &lcub;
+      $categories = ['uncategorized', 'featured', 'events', 'news'];
+      foreach ($categories as $id => $name) &lcub;
          $builder->insertData('Category', [
             'Id'   => ++$id,
             'Name' => $name

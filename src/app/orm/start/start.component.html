@@ -207,7 +207,7 @@ class Program
       $builder->register(function ($services) use ($configuration) &lcub; //;
          // Adding EntityContext
          $services->addEntityContext(BlogContext::class,
-            function ($options) &lcub;
+            function ($options) use ($configuration) &lcub; //;
                $options->ProviderType = $configuration->getValue('Database:ProviderType');
                $options->ConnectionString = $configuration->getValue('Database:ConnectionString');
             &#125;
